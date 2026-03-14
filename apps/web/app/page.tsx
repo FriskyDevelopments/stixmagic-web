@@ -1,52 +1,55 @@
-import { FeatureGrid, Hero, Panel, Tabs } from '@stixmagic/ui';
+import {
+  ArchitectureOverview,
+  CTASection,
+  FeatureGrid,
+  Hero,
+  HowItWorks,
+  Panel,
+  Roadmap
+} from '@stixmagic/ui';
 
 const features = [
   {
     tag: 'Web App',
     title: 'Pack builder UI',
-    description: 'Create sticker packs, preview masks, and orchestrate triggers in one workflow.'
+    description:
+      'Create sticker packs, preview masks, and orchestrate triggers in one unified workflow.'
   },
   {
     tag: 'Bot Platform',
     title: 'Chat-native execution',
-    description: 'Telegram-first bot integration detects sticker usage and resolves actions in real-time.'
+    description:
+      'Telegram-first bot integration detects sticker usage and resolves actions in real time.'
   },
   {
     tag: 'Sticker Engine',
     title: 'Asset optimization pipeline',
-    description: 'Transforms uploads into production-ready sticker assets with metadata and mask state.'
+    description:
+      'Transforms uploads into production-ready sticker assets with metadata and mask state.'
   },
   {
     tag: 'Trigger Engine',
     title: 'Programmable interactions',
-    description: 'Maps sticker events into responses, commands, automations, and external integrations.'
-  }
-];
-
-const statusTabs = [
-  {
-    id: 'vision',
-    label: 'Vision',
-    content:
-      'Stix Magic turns stickers into interactive interface objects where every sticker can launch behavior in chat.'
+    description:
+      'Maps sticker events into responses, commands, automations, and external integrations.'
   },
   {
-    id: 'platform',
-    label: 'Platform',
-    content:
-      'The architecture is built for Telegram today with clean contracts for Discord, Slack, and future channels.'
+    tag: 'Masks',
+    title: 'Processing pipeline',
+    description:
+      'Composable mask shapes define how sticker assets are cropped, framed, and exported.'
   },
   {
-    id: 'development',
-    label: 'Development Status',
-    content:
-      'Monorepo foundations are scaffolded with web, bot, API, sticker processing, and trigger services ready for iteration.'
+    tag: 'Platform',
+    title: 'Cross-platform future',
+    description:
+      'Clean service contracts ensure Stix Magic can extend beyond Telegram to any messaging platform.'
   }
 ];
 
 export default function HomePage() {
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-12 pb-10">
       <Hero
         badge="Interactive Sticker Platform"
         title="Stix Magic makes stickers programmable."
@@ -55,25 +58,35 @@ export default function HomePage() {
         secondaryCta="Read Architecture"
       />
 
-      <FeatureGrid items={features} />
-
       <section className="grid gap-4 lg:grid-cols-2">
         <Panel>
-          <h2 className="text-xl font-semibold text-text">Vision</h2>
+          <p className="text-xs uppercase tracking-wider text-accent-cyan">What is Stix Magic?</p>
+          <h2 className="mt-3 text-xl font-semibold text-text">Sticker alchemy for chat.</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Stix Magic introduces sticker alchemy: image assets transformed into executable chat objects with composable
-            trigger logic.
+            Stix Magic is a sticker alchemy platform where sticker assets become programmable interaction
+            objects in chat. Every pack you build carries logic. Every sticker you send can trigger something
+            real.
           </p>
         </Panel>
         <Panel variant="secondary">
-          <h2 className="text-xl font-semibold text-text">Development Focus</h2>
+          <p className="text-xs uppercase tracking-wider text-accent-violet">Architecture</p>
+          <h2 className="mt-3 text-xl font-semibold text-text">Built for the long run.</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Current priorities include robust sticker processing, trigger observability, and a premium product interface.
+            A clean monorepo of apps, services, and shared packages. Sticker processing, trigger resolution,
+            and bot runtime are independent services with clear contracts — ready to scale.
           </p>
         </Panel>
       </section>
 
-      <Tabs items={statusTabs} />
+      <FeatureGrid items={features} />
+
+      <ArchitectureOverview />
+
+      <HowItWorks />
+
+      <Roadmap />
+
+      <CTASection />
     </div>
   );
 }

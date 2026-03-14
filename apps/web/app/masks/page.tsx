@@ -30,6 +30,15 @@ export default function MasksPage() {
       <MaskCatalog masks={masks} />
 
       <Panel variant="secondary">
+        <h2 className="text-xl font-semibold text-text">Coming soon</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          Advanced mask compositing, animated transformations, and programmable behaviors are planned for future
+          releases. Custom mask uploads, blend modes, and trigger-aware processing will unlock a new tier of
+          sticker expressiveness across platforms.
+        </p>
+      </Panel>
+
+      <Panel variant="secondary">
         <h2 className="text-xl font-semibold text-text">FAQ</h2>
         <div className="mt-4 space-y-4">
           {faq.map((item) => (
