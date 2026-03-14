@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+ARG APP_NAME
+
+WORKDIR /workspace
+RUN corepack enable
+
+COPY package.json pnpm-workspace.yaml tsconfig.base.json turbo.json ./
+COPY apps/web/package.json apps/web/package.json
+COPY apps/bot/package.json apps/bot/package.json
+COPY services/api/package.json services/api/package.json
+COPY services/sticker-engine/package.json services/sticker-engine/package.json
+COPY services/trigger-engine/package.json services/trigger-engine/package.json
+COPY packages/ui/package.json packages/ui/package.json
+COPY packages/types/package.json packages/types/package.json
+COPY packages/config/package.json packages/config/package.json
+
+RUN pnpm install --no-frozen-lockfile
+
+COPY . .
+RUN pnpm --filter ${APP_NAME} build
+
+CMD sh -c "pnpm --filter ${APP_NAME} start"
