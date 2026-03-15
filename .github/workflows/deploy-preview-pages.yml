@@ -1,4 +1,4 @@
-name: Deploy Preview Web to GitHub Pages
+name: Deploy Preview Web (External Pages Repo)
 
 on:
   push:
@@ -7,15 +7,13 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages-preview
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy-preview:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,32 +33,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Configure preview custom domain
-        env:
-          PREVIEW_DOMAIN: ${{ vars.PAGES_PREVIEW_DOMAIN }}
-        run: |
-          DOMAIN="${PREVIEW_DOMAIN:-preview.stixmagic.com}"
-          echo "$DOMAIN" > apps/web/public/CNAME
-          echo "Using preview domain: $DOMAIN"
-
       - name: Build static web app
         env:
           GITHUB_PAGES: 'true'
           CUSTOM_DOMAIN: ${{ vars.PAGES_PREVIEW_DOMAIN || 'preview.stixmagic.com' }}
         run: pnpm --filter @stixmagic/web build
 
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish to preview Pages repository
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: apps/web/out
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          personal_token: ${{ secrets.PREVIEW_REPO_TOKEN }}
+          external_repository: ${{ vars.PREVIEW_PAGES_REPO || format('{0}/stixmagic-web-preview', github.repository_owner) }}
+          publish_branch: gh-pages
+          publish_dir: apps/web/out
+          cname: ${{ vars.PAGES_PREVIEW_DOMAIN || 'preview.stixmagic.com' }}
+          force_orphan: true

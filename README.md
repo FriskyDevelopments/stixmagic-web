@@ -101,21 +101,31 @@ git push -u origin main
 
 ### Preview Environment (`preview.stixmagic.com`)
 
-This repo includes `.github/workflows/deploy-preview-pages.yml` for a trial/staging deploy flow.
+This repo includes `.github/workflows/deploy-preview-pages.yml` to deploy preview builds into a separate GitHub Pages repository, so production and preview can stay live at the same time.
 
-1. Create a long-lived preview branch and push it:
+1. Create a preview Pages repository (example: `FriskyDevelopments/stixmagic-web-preview`).
+
+2. In the preview repository settings, configure **Pages** source as:
+	- **Deploy from branch**
+	- Branch: `gh-pages` / root
+
+3. In this main repository (`stixmagic-web`), add an Actions secret:
+	- Name: `PREVIEW_REPO_TOKEN`
+	- Value: GitHub token with write access to the preview repository
+
+4. Add repository variables:
+	- `PREVIEW_PAGES_REPO=FriskyDevelopments/stixmagic-web-preview`
+	- `PAGES_PREVIEW_DOMAIN=preview.stixmagic.com`
+
+5. Create a long-lived preview branch and push it:
 
 ```bash
 git checkout -b preview
 git push -u origin preview
 ```
 
-2. Add repository variable `PAGES_PREVIEW_DOMAIN` with value `preview.stixmagic.com`.
-
-3. In DNS, add a `CNAME` record:
+6. In Cloudflare DNS, add a `CNAME` record:
    - Host: `preview`
-   - Target: `<owner>.github.io`
+	- Target: `FriskyDevelopments.github.io`
 
-4. Push to `preview` branch (or run the preview workflow manually) to deploy live.
-
-> Note: GitHub Pages serves one active site per repository. If you need `stixmagic.com` and `preview.stixmagic.com` live at the same time, use a second Pages repo (or a separate hosting target) for preview.
+7. Push to `preview` branch (or run the preview workflow manually) to deploy live.
