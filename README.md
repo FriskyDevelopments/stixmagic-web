@@ -1,6 +1,6 @@
 # Stix Magic
 
-Stix Magic is a sticker alchemy platform where sticker assets become programmable interaction objects in chat.
+Stix  is a sticker alchemy platform where sticker assets become programmable interacMagiction objects in chat.
 
 ## Monorepo Structure
 
@@ -32,7 +32,7 @@ stixmagic
 - `@stixmagic/bot`: Telegram bot command and sticker-event runtime.
 - `@stixmagic/api`: Packs, stickers, and triggers API.
 - `@stixmagic/sticker-engine`: Sticker processing pipeline orchestration.
-- `@stixmagic/trigger-engine`: Sticker action execution runtime.
+- `@stixmagic/trigger-engine`: Sticker action  runtime.
 
 ## Quick Start
 
@@ -65,7 +65,7 @@ pnpm dev
 ## Product UI
 
 - Landing page: architecture, vision, feature grid, status tabs.
-- Masks page: dynamic mask catalog with live selection preview and pipeline explanation.
+- Masks page: dynamic mask catalog with live selection preview and pipeline explanation.execution
 
 ## Deployment
 
@@ -93,3 +93,8 @@ git push -u origin main
 3. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
 
 4. Each push to `main` auto-deploys the web app to GitHub Pages.
+
+5. (Optional) Use a short custom subdomain (for example `go.yourdomain.com`):
+	- Add a repository variable named `PAGES_CUSTOM_DOMAIN` with your subdomain value.
+	- In your DNS provider, create a `CNAME` record from the subdomain (for example `go`) to `<owner>.github.io`.
+	- Push to `main` (or run the workflow manually). The workflow writes a `CNAME` file automatically.
