@@ -129,3 +129,9 @@ git push -u origin preview
 	- Target: `FriskyDevelopments.github.io`
 
 7. Push to `preview` branch (or run the preview workflow manually) to deploy live.
+
+8. Manual deploy from any branch:
+	- Open Actions → **Deploy Preview Web (External Pages Repo)**
+	- Click **Run workflow**
+	- Set `source_ref` to a branch/tag/SHA (for example `copilot/implement-stix-magic-webpage`)
+	- Run to publish that revision to `preview.stixmagic.com`

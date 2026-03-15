@@ -4,6 +4,11 @@ on:
   push:
     branches: [preview]
   workflow_dispatch:
+    inputs:
+      source_ref:
+        description: 'Branch, tag, or commit SHA to deploy to preview'
+        required: true
+        default: 'preview'
 
 permissions:
   contents: read
@@ -18,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref_name }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
