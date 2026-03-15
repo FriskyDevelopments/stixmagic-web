@@ -1,0 +1,66 @@
+name: Deploy Preview Web to GitHub Pages
+
+on:
+  push:
+    branches: [preview]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-preview
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Configure preview custom domain
+        env:
+          PREVIEW_DOMAIN: ${{ vars.PAGES_PREVIEW_DOMAIN }}
+        run: |
+          DOMAIN="${PREVIEW_DOMAIN:-preview.stixmagic.com}"
+          echo "$DOMAIN" > apps/web/public/CNAME
+          echo "Using preview domain: $DOMAIN"
+
+      - name: Build static web app
+        env:
+          GITHUB_PAGES: 'true'
+          CUSTOM_DOMAIN: ${{ vars.PAGES_PREVIEW_DOMAIN || 'preview.stixmagic.com' }}
+        run: pnpm --filter @stixmagic/web build
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

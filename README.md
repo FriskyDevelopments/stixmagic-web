@@ -98,3 +98,24 @@ git push -u origin main
 	- Add a repository variable named `PAGES_CUSTOM_DOMAIN` with your subdomain value.
 	- In your DNS provider, create a `CNAME` record from the subdomain (for example `go`) to `<owner>.github.io`.
 	- Push to `main` (or run the workflow manually). The workflow writes a `CNAME` file automatically.
+
+### Preview Environment (`preview.stixmagic.com`)
+
+This repo includes `.github/workflows/deploy-preview-pages.yml` for a trial/staging deploy flow.
+
+1. Create a long-lived preview branch and push it:
+
+```bash
+git checkout -b preview
+git push -u origin preview
+```
+
+2. Add repository variable `PAGES_PREVIEW_DOMAIN` with value `preview.stixmagic.com`.
+
+3. In DNS, add a `CNAME` record:
+   - Host: `preview`
+   - Target: `<owner>.github.io`
+
+4. Push to `preview` branch (or run the preview workflow manually) to deploy live.
+
+> Note: GitHub Pages serves one active site per repository. If you need `stixmagic.com` and `preview.stixmagic.com` live at the same time, use a second Pages repo (or a separate hosting target) for preview.
