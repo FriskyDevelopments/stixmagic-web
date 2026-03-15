@@ -4,39 +4,24 @@ import { motion } from 'framer-motion';
 
 const phases = [
   {
-    phase: 'Foundation',
+    phase: 'Available now',
     status: 'complete',
-    items: ['Monorepo scaffolding', 'Package boundaries', 'Type definitions', 'CI configuration']
+    items: ['Sticker pack creation flow', 'Core mask catalog', 'Telegram-ready publishing path', 'Live project updates']
   },
   {
-    phase: 'Platform Core',
+    phase: 'In progress',
     status: 'active',
-    items: [
-      'Sticker processing pipeline',
-      'Pack management API',
-      'Mask system',
-      'Web UI foundation'
-    ]
+    items: ['Smoother publishing UX', 'More polished creator controls', 'Expanded interaction options', 'Faster feedback loop']
   },
   {
-    phase: 'Interaction Engine',
+    phase: 'Coming next',
     status: 'upcoming',
-    items: [
-      'Trigger definition system',
-      'Bot runtime integration',
-      'Real-time event processing',
-      'Observability layer'
-    ]
+    items: ['Ready-made interaction templates', 'Deeper bot behavior options', 'Improved reliability at scale', 'Better creator insights']
   },
   {
-    phase: 'Expansion',
+    phase: 'Future',
     status: 'future',
-    items: [
-      'Multi-platform support',
-      'Advanced mask compositing',
-      'Programmable behaviors',
-      'Developer SDK'
-    ]
+    items: ['Support for more chat platforms', 'Advanced visual mask effects', 'Team workflows and collaboration', 'Marketplace-style discovery']
   }
 ];
 
@@ -57,10 +42,10 @@ const statusLabels: Record<string, string> = {
 export const Roadmap = () => (
   <section className="space-y-4">
     <div>
-      <p className="text-xs uppercase tracking-wider text-accent-cyan">Development</p>
-      <h2 className="mt-2 text-2xl font-semibold text-text">Roadmap</h2>
+      <p className="text-xs uppercase tracking-wider text-accent-cyan">Product journey</p>
+      <h2 className="mt-2 text-2xl font-semibold text-text">What’s shipping over time</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        Stix Magic is being built incrementally. Here is where things stand.
+        Stix Magic is evolving in clear stages so creators get value early and often.
       </p>
     </div>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

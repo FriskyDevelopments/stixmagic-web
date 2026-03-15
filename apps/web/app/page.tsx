@@ -10,40 +10,40 @@ import {
 
 const features = [
   {
-    tag: 'Web App',
-    title: 'Pack builder UI',
+    tag: 'Create',
+    title: 'Build sticker packs in minutes',
     description:
-      'Create sticker packs, preview masks, and orchestrate triggers in one unified workflow.'
+      'Pick your images, choose a mask style, and publish a clean pack without a complex setup.'
   },
   {
-    tag: 'Bot Platform',
-    title: 'Chat-native execution',
+    tag: 'Share',
+    title: 'Made for Telegram communities',
     description:
-      'Telegram-first bot integration detects sticker usage and resolves actions in real time.'
+      'Your stickers are ready for real chat moments, reactions, and group conversations.'
   },
   {
-    tag: 'Sticker Engine',
-    title: 'Asset optimization pipeline',
+    tag: 'Quality',
+    title: 'Consistent look on every sticker',
     description:
-      'Transforms uploads into production-ready sticker assets with metadata and mask state.'
+      'Automatic processing helps your stickers feel polished, readable, and on-brand.'
   },
   {
-    tag: 'Trigger Engine',
-    title: 'Programmable interactions',
+    tag: 'Interact',
+    title: 'Turn stickers into actions',
     description:
-      'Maps sticker events into responses, commands, automations, and external integrations.'
+      'Connect each sticker to simple outcomes like replies, reactions, or automations.'
   },
   {
-    tag: 'Masks',
-    title: 'Processing pipeline',
+    tag: 'Style',
+    title: 'Mask styles for every vibe',
     description:
-      'Composable mask shapes define how sticker assets are cropped, framed, and exported.'
+      'From classic to expressive shapes, preview and pick the look that fits your pack.'
   },
   {
-    tag: 'Platform',
-    title: 'Cross-platform future',
+    tag: 'Scale',
+    title: 'Grow from a single pack',
     description:
-      'Clean service contracts ensure Stix Magic can extend beyond Telegram to any messaging platform.'
+      'Start small, then expand your sticker experience as your audience grows.'
   }
 ];
 
@@ -51,29 +51,30 @@ export default function HomePage() {
   return (
     <div className="space-y-12 pb-10">
       <Hero
-        badge="Interactive Sticker Platform"
-        title="Stix Magic makes stickers programmable."
-        subtitle="Build sticker packs that trigger chat actions, automations, and live interactions across messaging platforms."
-        primaryCta="Launch Product UI"
-        secondaryCta="Read Architecture"
+        badge="For creators and communities"
+        title="Make stickers people actually want to use."
+        subtitle="Create beautiful sticker packs fast and add lightweight interactions that make chats more fun."
+        primaryCta="Explore Masks"
+        primaryHref="/masks"
+        secondaryCta="See How It Works"
+        secondaryHref="#how-it-works"
       />
 
       <section className="grid gap-4 lg:grid-cols-2">
         <Panel>
           <p className="text-xs uppercase tracking-wider text-accent-cyan">What is Stix Magic?</p>
-          <h2 className="mt-3 text-xl font-semibold text-text">Sticker alchemy for chat.</h2>
+          <h2 className="mt-3 text-xl font-semibold text-text">A faster way to ship better stickers.</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Stix Magic is a sticker alchemy platform where sticker assets become programmable interaction
-            objects in chat. Every pack you build carries logic. Every sticker you send can trigger something
-            real.
+            Stix Magic helps you turn simple images into polished sticker packs with personality. Build once,
+            publish quickly, and keep your audience engaged with playful interactions.
           </p>
         </Panel>
         <Panel variant="secondary">
-          <p className="text-xs uppercase tracking-wider text-accent-violet">Architecture</p>
-          <h2 className="mt-3 text-xl font-semibold text-text">Built for the long run.</h2>
+          <p className="text-xs uppercase tracking-wider text-accent-violet">Why creators like it</p>
+          <h2 className="mt-3 text-xl font-semibold text-text">Powerful without the complexity.</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            A clean monorepo of apps, services, and shared packages. Sticker processing, trigger resolution,
-            and bot runtime are independent services with clear contracts — ready to scale.
+            You get quality output, simple workflows, and room to grow. Advanced capabilities stay behind the
+            scenes so the day-to-day experience stays clean.
           </p>
         </Panel>
       </section>

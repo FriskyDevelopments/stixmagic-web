@@ -5,37 +5,33 @@ import { motion } from 'framer-motion';
 const steps = [
   {
     number: '01',
-    title: 'Upload or create asset',
-    description:
-      'Start with any image. The sticker engine accepts uploads from the workspace UI or direct API input.'
+    title: 'Pick your image',
+    description: 'Start with any image you want to turn into a sticker.'
   },
   {
     number: '02',
-    title: 'Process with sticker engine',
-    description:
-      'The sticker engine applies your chosen mask, resizes to spec, and optimizes the asset for chat delivery.'
+    title: 'Choose a mask style',
+    description: 'Select the shape that best matches your style, brand, or community vibe.'
   },
   {
     number: '03',
-    title: 'Attach trigger logic',
-    description:
-      'Define what happens when someone uses your sticker — commands, messages, webhooks, or bot reactions.'
+    title: 'Add a simple interaction',
+    description: 'Optionally connect a sticker to a reply, reaction, or automation.'
   },
   {
     number: '04',
-    title: 'Activate in chat',
-    description:
-      'Deploy your pack via the Telegram bot. Every sticker usage fires its attached trigger in real time.'
+    title: 'Share and watch it spread',
+    description: 'Publish to chat and let your community use stickers that feel alive.'
   }
 ];
 
 export const HowItWorks = () => (
-  <section className="space-y-4">
+  <section id="how-it-works" className="space-y-4">
     <div>
-      <p className="text-xs uppercase tracking-wider text-accent-cyan">Process</p>
+      <p className="text-xs uppercase tracking-wider text-accent-cyan">Simple flow</p>
       <h2 className="mt-2 text-2xl font-semibold text-text">How it works</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        From raw asset to interactive chat object in four steps.
+        Go from idea to shareable sticker pack in four easy steps.
       </p>
     </div>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

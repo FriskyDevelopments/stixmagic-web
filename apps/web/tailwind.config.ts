@@ -9,15 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#05060b',
-        panel: '#0b0d14',
-        'panel-secondary': '#10131d',
-        text: '#f5f7ff',
-        muted: '#aeb6cf',
-        'accent-primary': '#4d86ff',
-        'accent-cyan': '#7cf2ff',
-        'accent-violet': '#9d7dff',
-        'accent-pink': '#ff7fdc'
+        background: '#080c18',
+        panel: '#0d1222',
+        'panel-secondary': '#12192e',
+        text: '#e0f0ff',
+        muted: '#4a6080',
+        'accent-primary': '#6366f1',
+        'accent-cyan': '#00d4ff',
+        'accent-indigo': '#818cf8',
+        'accent-violet': '#a855f7',
+        'accent-pink': '#ec4899',
+        'accent-teal': '#2dd4bf',
+        'accent-orange': '#f97316'
       }
     }
   },
