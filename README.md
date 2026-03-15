@@ -1,6 +1,6 @@
 # Stix Magic
 
-Stix  is a sticker alchemy platform where sticker assets become programmable interacMagiction objects in chat.
+Stix Magic is a sticker alchemy platform where sticker assets become programmable interaction objects in chat.
 
 ## Monorepo Structure
 
@@ -32,7 +32,7 @@ stixmagic
 - `@stixmagic/bot`: Telegram bot command and sticker-event runtime.
 - `@stixmagic/api`: Packs, stickers, and triggers API.
 - `@stixmagic/sticker-engine`: Sticker processing pipeline orchestration.
-- `@stixmagic/trigger-engine`: Sticker action  runtime.
+- `@stixmagic/trigger-engine`: Sticker action execution runtime.
 
 ## Quick Start
 
@@ -65,7 +65,7 @@ pnpm dev
 ## Product UI
 
 - Landing page: architecture, vision, feature grid, status tabs.
-- Masks page: dynamic mask catalog with live selection preview and pipeline explanation.execution
+- Masks page: dynamic mask catalog with live selection preview and pipeline explanation.
 
 ## Deployment
 
