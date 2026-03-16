@@ -4,6 +4,7 @@ export * from './components/GalleryCard';
 export * from './components/GalleryGrid';
 export * from './components/GeneratorScaffold';
 export * from './components/Hero';
+export * from './components/HeroAssetShowcase';
 export * from './components/MaskCard';
 export * from './components/MaskCatalog';
 export * from './components/MaskHeroPreview';
