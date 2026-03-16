@@ -1,3 +1,4 @@
+export * from './components/AssetPreview';
 export * from './components/FeatureGrid';
 export * from './components/GalleryCard';
 export * from './components/GalleryGrid';

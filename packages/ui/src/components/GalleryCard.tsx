@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import type { AssetPreviewItem } from '@stixmagic/types';
 import { cn } from '../lib/cn';
+import { AssetPreview } from './AssetPreview';
 
 interface GalleryCardProps {
   asset: AssetPreviewItem;
@@ -17,19 +18,15 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
       className
     )}
   >
-    <div className="relative h-32 w-full bg-panel-secondary flex items-center justify-center">
-      {asset.previewUrl ? (
-        <img src={asset.previewUrl} alt={asset.name} className="h-full w-full object-contain p-3" />
-      ) : (
-        <span className="text-3xl">✦</span>
-      )}
+    <div className="relative h-32 w-full bg-panel-secondary">
+      <AssetPreview url={asset.previewUrl} alt={asset.name} imageClassName="h-full w-full object-contain p-3" />
       {asset.formats.includes('gif') && (
         <span className="absolute left-2 top-2 rounded bg-accent-primary/80 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-text">
           GIF
         </span>
       )}
       {asset.formats.includes('webm') && (
-        <span className="absolute left-2 bottom-2 rounded bg-accent-cyan/80 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-background">
+        <span className="absolute bottom-2 left-2 rounded bg-accent-cyan/80 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-background">
           WebM
         </span>
       )}
@@ -50,3 +47,4 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
     </div>
   </motion.div>
 );
+

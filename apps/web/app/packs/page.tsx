@@ -1,11 +1,12 @@
 import { PackGrid, Panel, Tabs } from '@stixmagic/ui';
-import { SAMPLE_PACKS } from '../data/packs';
+import { loadPipelineManifest } from '../integrations/manifest';
 
 const categoryTabs = [
   {
     id: 'all',
     label: 'All Packs',
-    content: 'Browse all available MagicStix packs across categories. Each pack includes multiple assets in supported export formats.'
+    content:
+      'Browse all available MagicStix packs across categories. Each pack includes multiple assets in supported export formats.'
   },
   {
     id: 'motion',
@@ -24,7 +25,10 @@ const categoryTabs = [
   }
 ];
 
-export default function PacksPage() {
+export default async function PacksPage() {
+  const manifest = await loadPipelineManifest();
+  const packs = manifest.packs;
+
   return (
     <div className="space-y-8 pb-10">
       <Panel>
@@ -45,9 +49,9 @@ export default function PacksPage() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-text">All packs</h2>
-          <span className="text-sm text-muted">{SAMPLE_PACKS.length} packs</span>
+          <span className="text-sm text-muted">{packs.length} packs</span>
         </div>
-        <PackGrid packs={SAMPLE_PACKS} />
+        <PackGrid packs={packs} />
       </div>
 
       <Panel variant="secondary">
@@ -56,7 +60,11 @@ export default function PacksPage() {
           All packs are produced by the MagicStix bot pipeline. Pack metadata, asset counts, and format availability are
           read from pipeline manifests. As new packs are generated, they appear here automatically.
         </p>
+        <p className="mt-2 text-xs text-muted/60">
+          Manifest version: <span className="font-mono text-accent-cyan">{manifest.version}</span>
+        </p>
       </Panel>
     </div>
   );
 }
+

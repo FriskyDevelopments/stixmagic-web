@@ -1,14 +1,21 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { ProductPack } from '@stixmagic/types';
+import type { PlanTier, ProductPack } from '@stixmagic/types';
 import { PACK_CATEGORY_LABELS } from '@stixmagic/types';
 import { cn } from '../lib/cn';
+import { AssetPreview } from './AssetPreview';
 
 interface PackCardProps {
   pack: ProductPack;
   className?: string;
 }
+
+const planBadgeClasses: Record<PlanTier, string> = {
+  free: 'bg-panel-secondary text-muted',
+  premium: 'bg-accent-primary/20 text-accent-primary',
+  pro: 'bg-accent-violet/20 text-accent-violet'
+};
 
 export const PackCard = ({ pack, className }: PackCardProps) => (
   <motion.div
@@ -18,19 +25,21 @@ export const PackCard = ({ pack, className }: PackCardProps) => (
       className
     )}
   >
-    <div className="relative h-40 w-full bg-panel-secondary flex items-center justify-center">
-      {pack.previewUrl ? (
-        <img src={pack.previewUrl} alt={pack.name} className="h-full w-full object-cover" />
-      ) : (
-        <div className="flex flex-col items-center gap-2">
-          <div className="h-16 w-16 rounded-xl bg-accent-primary/20 flex items-center justify-center">
-            <span className="text-2xl text-accent-primary">✦</span>
-          </div>
-        </div>
-      )}
+    <div className="relative h-40 w-full bg-panel-secondary">
+      <AssetPreview url={pack.previewUrl} alt={pack.name} imageClassName="h-full w-full object-cover" />
       {pack.featured && (
         <span className="absolute right-3 top-3 rounded-full bg-accent-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-text">
           Featured
+        </span>
+      )}
+      {pack.plan && (
+        <span
+          className={cn(
+            'absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide',
+            planBadgeClasses[pack.plan]
+          )}
+        >
+          {pack.plan}
         </span>
       )}
     </div>
@@ -65,3 +74,4 @@ export const PackCard = ({ pack, className }: PackCardProps) => (
     </div>
   </motion.div>
 );
+
