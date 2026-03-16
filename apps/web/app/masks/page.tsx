@@ -22,17 +22,19 @@ export default function MasksPage() {
       <Panel>
         <h1 className="text-3xl font-semibold text-text">Choose your sticker style</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
-          Try each mask, preview the shape instantly, and find the look that fits your pack before publishing.
+          Try each mask, preview the shape instantly, and forge the look that fits your pack before
+          releasing it into the world.
         </p>
       </Panel>
 
       <MaskCatalog masks={masks} />
 
       <Panel variant="secondary">
-        <h2 className="text-xl font-semibold text-text">Coming soon</h2>
+        <h2 className="text-xl font-semibold text-text">More magic coming soon</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          More creative styles are on the roadmap, including custom mask uploads and richer visual effects.
-          The goal is to help every creator make stickers that feel unique and recognizable.
+          More creative styles are being forged in the laboratory, including custom mask uploads and richer
+          visual effects. The goal is to help every creator make stickers that feel unique and distinctly
+          their own.
         </p>
       </Panel>
 
