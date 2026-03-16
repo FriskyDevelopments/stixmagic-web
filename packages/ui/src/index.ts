@@ -1,5 +1,6 @@
 export * from './components/ArchitectureOverview';
 export * from './components/CTASection';
+export * from './components/ComingSoonLanding';
 export * from './components/FeatureGrid';
 export * from './components/Hero';
 export * from './components/HowItWorks';

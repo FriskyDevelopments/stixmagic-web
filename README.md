@@ -98,6 +98,7 @@ git push -u origin main
 	- Add a repository variable named `PAGES_CUSTOM_DOMAIN` with your subdomain value.
 	- In your DNS provider, create a `CNAME` record from the subdomain (for example `go`) to `<owner>.github.io`.
 	- Push to `main` (or run the workflow manually). The workflow writes a `CNAME` file automatically.
+	- If `PAGES_CUSTOM_DOMAIN` is `stixmagic.com` (or `www.stixmagic.com`), the `/` route renders an animated "Coming Soon" landing screen.
 
 ### Preview Environment (`preview.stixmagic.com`)
 

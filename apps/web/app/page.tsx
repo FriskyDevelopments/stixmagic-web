@@ -1,12 +1,16 @@
 import {
   ArchitectureOverview,
   CTASection,
+  ComingSoonLanding,
   FeatureGrid,
   Hero,
   HowItWorks,
   Panel,
   Roadmap
 } from '@stixmagic/ui';
+
+const customDomain = (process.env.CUSTOM_DOMAIN ?? '').trim().toLowerCase();
+const isMainDomainBuild = customDomain === 'stixmagic.com' || customDomain === 'www.stixmagic.com';
 
 const features = [
   {
@@ -48,6 +52,10 @@ const features = [
 ];
 
 export default function HomePage() {
+  if (isMainDomainBuild) {
+    return <ComingSoonLanding />;
+  }
+
   return (
     <div className="space-y-12 pb-10">
       <Hero
