@@ -1,38 +1,60 @@
-# Stix Magic
+# MagicStix Web
 
-Stix Magic is a sticker alchemy platform where sticker assets become programmable interaction objects in chat.
+The public-facing presentation, catalog, and generator frontend for the MagicStix visual asset ecosystem.
+
+## What this repo is
+
+This repository is the **web layer** of the MagicStix ecosystem. It showcases, previews, and catalogs assets produced by the `stixmagic-bot` pipeline. No asset generation logic lives here.
+
+```
+stixmagic-bot  →  generates assets, packs, metadata
+stixmagic-web  →  displays, previews, serves them
+```
 
 ## Monorepo Structure
 
 ```txt
-stixmagic
-├── apps
-│   ├── web
-│   └── bot
-├── services
-│   ├── api
-│   ├── sticker-engine
-│   └── trigger-engine
-├── packages
-│   ├── ui
-│   ├── config
-│   └── types
-├── docs
-│   ├── architecture
-│   ├── product
-│   └── roadmap
-└── infra
-	├── docker
-	└── deploy
+stixmagic-web/
+├── apps/
+│   ├── web/           — Next.js site (main app)
+│   └── bot/           — Bot runtime (separate concern)
+├── packages/
+│   ├── ui/            — Shared React components
+│   ├── types/         — Domain types and interfaces
+│   └── config/        — Typed environment config
+├── docs/
+│   ├── architecture/  — System architecture docs
+│   ├── product/       — Product vision
+│   ├── roadmap/       — Development roadmap
+│   └── web/           — Web-specific docs
+└── infra/
+    ├── docker/
+    └── deploy/
 ```
 
-## Core Services
+## Site Pages
 
-- `@stixmagic/web`: Next.js product and landing interface.
-- `@stixmagic/bot`: Telegram bot command and sticker-event runtime.
-- `@stixmagic/api`: Packs, stickers, and triggers API.
-- `@stixmagic/sticker-engine`: Sticker processing pipeline orchestration.
-- `@stixmagic/trigger-engine`: Sticker action execution runtime.
+| Page | Path | Description |
+|---|---|---|
+| Home | `/` | Landing — ecosystem overview and positioning |
+| Ecosystem | `/ecosystem` | Explains the bot/web repo split and what MagicStix produces |
+| Pack Catalog | `/packs` | Browse all MagicStix packs by category |
+| Gallery | `/gallery` | Asset preview gallery with GIF/WebM indicators |
+| Generator | `/generator` | Generator UI scaffold (pipeline integration ready) |
+| Masks | `/masks` | Mask catalog for sticker processing pipeline |
+
+## UI Components
+
+The `@stixmagic/ui` package provides:
+
+- `Hero` — landing section hero
+- `FeatureGrid` — 2–4 column feature highlight grid
+- `PackCard` / `PackGrid` — pack catalog cards and grid
+- `GalleryCard` / `GalleryGrid` — asset preview cards and grid
+- `GeneratorScaffold` — step-based generator UI with coming-soon states
+- `Panel` — content panel with default/secondary variants
+- `Tabs` — tab switcher for content sections
+- `MaskCatalog` / `MaskCard` / `MaskHeroPreview` — mask browsing UI
 
 ## Quick Start
 
@@ -48,48 +70,31 @@ pnpm install
 cp .env.example .env
 ```
 
-3. Run all services:
+3. Run web app in development:
 
 ```bash
-pnpm dev
+pnpm --filter @stixmagic/web dev
 ```
 
-## API Endpoints
+4. Build:
 
-- `POST /stickers`
-- `GET /packs`
-- `POST /packs`
-- `GET /triggers`
-- `POST /triggers`
+```bash
+pnpm --filter @stixmagic/web build
+```
 
-## Product UI
+## Documentation
 
-- Landing page: architecture, vision, feature grid, status tabs.
-- Masks page: dynamic mask catalog with live selection preview and pipeline explanation.
+- [`docs/web/web-architecture.md`](docs/web/web-architecture.md) — site architecture and directory structure
+- [`docs/web/content-structure.md`](docs/web/content-structure.md) — content types and data sources
+- [`docs/web/pack-pages.md`](docs/web/pack-pages.md) — pack catalog and page architecture
+- [`docs/web/generator-ui-plan.md`](docs/web/generator-ui-plan.md) — generator frontend plan
+- [`docs/web/pipeline-integration.md`](docs/web/pipeline-integration.md) — pipeline manifest and API integration
 
 ## Deployment
 
-- Local container stack: `infra/docker/docker-compose.yml`
-- Deployment topology: `infra/deploy/production-architecture.md`
+The web app deploys to GitHub Pages via `.github/workflows/deploy-pages.yml` on every push to `main`.
 
-### GitHub Pages (web app)
+1. Create a GitHub repo and push to `main`.
+2. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
+3. Each push to `main` auto-deploys the static export.
 
-This repo includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml` that deploys `apps/web` as a static site.
-
-1. Create a GitHub repo and set remote:
-
-```bash
-git remote add origin https://github.com/<you>/<repo>.git
-```
-
-2. First push:
-
-```bash
-git add .
-git commit -m "chore: initial monorepo setup"
-git push -u origin main
-```
-
-3. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
-
-4. Each push to `main` auto-deploys the web app to GitHub Pages.

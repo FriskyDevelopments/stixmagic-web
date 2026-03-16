@@ -1,5 +1,68 @@
 export type Platform = 'telegram' | 'discord' | 'slack';
 
+export type AssetFormat = 'gif' | 'webm' | 'webp' | 'png' | 'mp4';
+
+export type PackCategory =
+  | 'motion-alphabet'
+  | 'neon-signals'
+  | 'dj-pack'
+  | 'cloud-pack'
+  | 'overlay-starter'
+  | 'emoji-set'
+  | 'symbols';
+
+export const PACK_CATEGORY_LABELS: Record<PackCategory, string> = {
+  'motion-alphabet': 'Motion Alphabet',
+  'neon-signals': 'Neon Signals',
+  'dj-pack': 'DJ Pack',
+  'cloud-pack': 'Cloud Pack',
+  'overlay-starter': 'Overlay Starter',
+  'emoji-set': 'Emoji Set',
+  symbols: 'Symbols'
+};
+
+/** Sentinel value for pack/asset preview URLs that are pending pipeline integration. */
+export const PENDING_PREVIEW_URL = '' as const;
+
+export type AssetTag = 'animated' | 'looping' | 'overlay' | 'sticker' | 'letter' | 'symbol' | 'neon' | 'music';
+
+export interface AssetPreviewItem {
+  id: string;
+  name: string;
+  description: string;
+  previewUrl: string;
+  formats: AssetFormat[];
+  tags: AssetTag[];
+  packId: string;
+}
+
+export interface ProductPack {
+  id: string;
+  name: string;
+  category: PackCategory;
+  description: string;
+  previewUrl: string;
+  assetCount: number;
+  tags: AssetTag[];
+  formats: AssetFormat[];
+  featured: boolean;
+}
+
+export interface GeneratorStyle {
+  id: string;
+  name: string;
+  description: string;
+  previewUrl: string;
+  category: PackCategory;
+}
+
+export interface PipelineManifest {
+  version: string;
+  generatedAt: string;
+  packs: ProductPack[];
+  assets: AssetPreviewItem[];
+}
+
 export type ActionType = 'send_message' | 'run_command' | 'call_webhook' | 'bot_reaction';
 
 export type MaskType =
