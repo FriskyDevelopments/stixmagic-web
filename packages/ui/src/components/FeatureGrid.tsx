@@ -25,7 +25,9 @@ export const FeatureGrid = ({ items }: FeatureGridProps) => (
       >
         <Panel className="h-full">
           <p className="text-xs uppercase tracking-wider text-accent-cyan">{item.tag}</p>
-          <h3 className="mt-3 text-lg font-semibold text-text">{item.title}</h3>
+          <h3 className="mt-3 bg-gradient-to-r from-accent-cyan to-accent-indigo bg-clip-text text-lg font-semibold text-transparent">
+            {item.title}
+          </h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
         </Panel>
       </motion.div>
