@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from 'react';
 import type { MaskDefinition } from '@stixmagic/types';
-import { MaskCard } from './MaskCard';
-import { MaskHeroPreview } from './MaskHeroPreview';
-import { Panel } from './Panel';
+import { MaskCard } from './MaskCard.js';
+import { MaskHeroPreview } from './MaskHeroPreview.js';
+import { Panel } from './Panel.js';
 
 interface MaskCatalogProps {
   masks: MaskDefinition[];

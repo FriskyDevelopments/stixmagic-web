@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import type { MaskDefinition } from '@stixmagic/types';
-import { cn } from '../lib/cn';
+import { cn } from '../lib/cn.js';
 
 interface MaskCardProps {
   mask: MaskDefinition;

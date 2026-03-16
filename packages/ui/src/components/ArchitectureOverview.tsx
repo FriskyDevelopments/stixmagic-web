@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Panel } from './Panel';
+import { Panel } from './Panel.js';
 
 const groups = [
   {
