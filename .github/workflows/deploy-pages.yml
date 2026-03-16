@@ -43,11 +43,17 @@ jobs:
             echo "$CUSTOM_DOMAIN" > apps/web/public/CNAME
           fi
 
-      - name: Build static web app
+      - name: Build static web app or redirect page
         env:
           GITHUB_PAGES: 'true'
           CUSTOM_DOMAIN: ${{ vars.PAGES_CUSTOM_DOMAIN }}
-        run: pnpm --filter @stixmagic/web build
+          REDIRECT_TARGET: ${{ vars.PAGES_REDIRECT_TARGET }}
+        run: |
+          if [ -n "$REDIRECT_TARGET" ]; then
+            node scripts/build-redirect.js "$REDIRECT_TARGET" apps/web/out
+          else
+            pnpm --filter @stixmagic/web build
+          fi
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
