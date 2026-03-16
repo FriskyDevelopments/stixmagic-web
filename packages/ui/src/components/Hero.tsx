@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 interface HeroProps {
@@ -50,18 +51,18 @@ export const Hero = ({
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{subtitle}</p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <a
+        <Link
           href={primaryHref}
           className="rounded-xl bg-gradient-to-r from-accent-primary via-accent-indigo to-accent-violet px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_24px_rgba(99,102,241,0.45)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_36px_rgba(168,85,247,0.55)]"
         >
           {primaryCta}
-        </a>
-        <a
+        </Link>
+        <Link
           href={secondaryHref}
           className="rounded-xl border border-accent-primary/25 bg-panel-secondary px-5 py-3 text-sm font-semibold text-text transition hover:border-accent-cyan/60 hover:text-accent-cyan"
         >
           {secondaryCta}
-        </a>
+        </Link>
       </div>
     </motion.div>
   </section>
