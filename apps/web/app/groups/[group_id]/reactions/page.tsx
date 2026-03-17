@@ -1,5 +1,5 @@
+import { MOCK_GROUPS, getGroup } from '../../../lib/mock-data';
 import { notFound } from 'next/navigation';
-import { MOCK_GROUPS, getGroup, getRules } from '../../../lib/mock-data';
 import ReactionsEditor from './ReactionsEditor';
 
 export function generateStaticParams() {
@@ -14,7 +14,6 @@ export default function ReactionsPage({ params }: Props) {
   const group = getGroup(params.group_id);
   if (!group) notFound();
 
-  const rules = getRules(group.id);
-
-  return <ReactionsEditor groupId={group.id} groupName={group.name} initialRules={rules} />;
+  return <ReactionsEditor groupId={group.id} groupName={group.name} />;
 }
+

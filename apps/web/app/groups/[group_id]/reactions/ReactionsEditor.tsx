@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
 import { Panel } from '@stixmagic/ui';
+import { getRules, createRule, toggleRule, deleteRule } from '../../../lib/api-client';
 
 interface Props {
   groupId: string;
   groupName: string;
-  initialRules: ReactionRule[];
 }
 
 const TRIGGER_OPTIONS: { value: TriggerType; label: string; icon: string; hint: string }[] = [
@@ -21,6 +21,12 @@ const RESPONSE_OPTIONS: { value: ResponseType; label: string; icon: string; hint
   { value: 'sticker', label: 'Sticker', icon: '🎨', hint: 'Reply with a sticker' },
   { value: 'animation', label: 'Animation', icon: '✨', hint: 'Reply with an animation (GIF)' },
   { value: 'button_action', label: 'Button Action', icon: '🔘', hint: 'Show inline keyboard buttons' }
+];
+
+const COMMON_EMOJIS = [
+  '✨', '🔥', '❤️', '😂', '🎉', '👍', '💯', '🚀',
+  '⭐', '💎', '🌟', '👏', '🤔', '😍', '🙏', '💪',
+  '🎯', '🏆', '✅', '🤩', '😎', '🫡', '🥰', '💀'
 ];
 
 interface FormState {
@@ -39,47 +45,82 @@ const EMPTY_FORM: FormState = {
   responseContent: ''
 };
 
-export default function ReactionsEditor({ groupId, groupName, initialRules }: Props) {
-  const [rules, setRules] = useState<ReactionRule[]>(initialRules);
+const RESPONSE_PLACEHOLDER: Record<ResponseType, string> = {
+  message: 'e.g. ✨ Magic activated!',
+  sticker: 'Paste the sticker file ID from Telegram',
+  animation: 'Paste the animation (GIF) file ID from Telegram',
+  button_action: 'e.g. {"text":"Click me","url":"https://t.me/yourbot"}'
+};
+
+const RESPONSE_HINT: Partial<Record<ResponseType, string>> = {
+  sticker:
+    'To get a sticker file ID: forward the sticker to @userinfobot or use the /sticker command with your Stix Magic bot.',
+  animation:
+    'To get a GIF file ID: send the animation in a chat with your Stix Magic bot, which will reply with the file ID.'
+};
+
+export default function ReactionsEditor({ groupId, groupName }: Props) {
+  const [rules, setRules] = useState<ReactionRule[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [saving, setSaving] = useState(false);
   const [testResult, setTestResult] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
-  const handleToggle = (id: string) => {
-    setRules((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, enabled: !r.enabled } : r))
-    );
+  useEffect(() => {
+    getRules(groupId).then((r) => {
+      setRules(r);
+      setLoading(false);
+    });
+  }, [groupId]);
+
+  const setTriggerType = (triggerType: TriggerType) =>
+    setForm((prev) => ({ ...prev, triggerType, triggerValue: '' }));
+
+  const setResponseType = (responseType: ResponseType) =>
+    setForm((prev) => ({ ...prev, responseType, responseContent: '' }));
+
+  const handleToggle = async (id: string, current: boolean) => {
+    setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
+    await toggleRule(groupId, id, !current);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     setRules((prev) => prev.filter((r) => r.id !== id));
+    await deleteRule(groupId, id);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.name.trim() || !form.triggerValue.trim() || !form.responseContent.trim()) return;
-    const newRule: ReactionRule = {
-      id: `r${Date.now()}`,
-      groupId,
-      name: form.name,
-      triggerType: form.triggerType,
-      triggerValue: form.triggerValue,
-      responseType: form.responseType,
-      responseContent: form.responseContent,
-      enabled: true,
-      createdAt: new Date().toISOString().split('T')[0] ?? '',
-      updatedAt: new Date().toISOString().split('T')[0] ?? ''
-    };
-    setRules((prev) => [...prev, newRule]);
-    setForm(EMPTY_FORM);
-    setShowForm(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    setSaving(true);
+    setError(null);
+    try {
+      const newRule = await createRule(groupId, {
+        name: form.name,
+        triggerType: form.triggerType,
+        triggerValue: form.triggerValue,
+        responseType: form.responseType,
+        responseContent: form.responseContent,
+        enabled: true
+      });
+      setRules((prev) => [...prev, newRule]);
+      setForm(EMPTY_FORM);
+      setShowForm(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Failed to save the rule: ${message}. Please try again.`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleTest = (rule: ReactionRule) => {
     setTestResult(
-      `✅ Test fired! Trigger: "${rule.triggerValue}" → Response: "${rule.responseContent}"`
+      `✅ Test fired! Trigger: "${rule.triggerValue}" → Response (${rule.responseType}): "${rule.responseContent}"`
     );
     setTimeout(() => setTestResult(null), 4000);
   };
@@ -124,7 +165,13 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
 
       {saved && (
         <div className="rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-accent-teal">
-          ✅ Rule saved successfully!
+          ✅ Rule saved successfully and will be applied to the group immediately.
+        </div>
+      )}
+
+      {error && (
+        <div className="rounded-xl border border-accent-pink/30 bg-accent-pink/10 px-4 py-3 text-sm text-accent-pink">
+          ⚠️ {error}
         </div>
       )}
 
@@ -138,6 +185,7 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
         <Panel>
           <h2 className="font-semibold text-text">Create Reaction Rule</h2>
           <div className="mt-5 space-y-5">
+            {/* Rule Name */}
             <div>
               <label className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Rule Name
@@ -151,6 +199,7 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
               />
             </div>
 
+            {/* Trigger Type */}
             <div>
               <label className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Type
@@ -159,7 +208,7 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
                 {TRIGGER_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
-                    onClick={() => setForm({ ...form, triggerType: opt.value })}
+                    onClick={() => setTriggerType(opt.value)}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
@@ -174,21 +223,57 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
               </div>
             </div>
 
+            {/* Trigger Value */}
             <div>
               <label className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Value
               </label>
-              <input
-                type="text"
-                value={form.triggerValue}
-                onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
-                placeholder={
-                  form.triggerType === 'emoji' ? 'e.g. ✨ or 🔥' : 'e.g. sticker_file_id'
-                }
-                className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
-              />
+
+              {form.triggerType === 'emoji' ? (
+                <>
+                  <p className="mt-1 text-xs text-muted">
+                    Click an emoji to select it, or type your own below.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2 rounded-xl border border-accent-primary/10 bg-background/40 p-3">
+                    {COMMON_EMOJIS.map((emoji) => (
+                      <button
+                        key={emoji}
+                        onClick={() => setForm({ ...form, triggerValue: emoji })}
+                        className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 ${
+                          form.triggerValue === emoji ? 'bg-accent-primary/30 ring-1 ring-accent-primary/50' : ''
+                        }`}
+                        title={emoji}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    value={form.triggerValue}
+                    onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
+                    placeholder="Selected emoji will appear here, or type your own"
+                    className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
+                  />
+                </>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    value={form.triggerValue}
+                    onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
+                    placeholder="Paste the sticker file ID from Telegram"
+                    className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
+                  />
+                  <p className="mt-1.5 text-xs text-muted">
+                    💡 To find a sticker&apos;s file ID: forward the sticker to your Stix Magic bot
+                    and it will reply with the file ID you can paste here.
+                  </p>
+                </>
+              )}
             </div>
 
+            {/* Response Type */}
             <div>
               <label className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Type
@@ -197,7 +282,7 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
                 {RESPONSE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
-                    onClick={() => setForm({ ...form, responseType: opt.value })}
+                    onClick={() => setResponseType(opt.value)}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
@@ -212,27 +297,34 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
               </div>
             </div>
 
+            {/* Response Content */}
             <div>
               <label className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Content
               </label>
-              <input
-                type="text"
-                value={form.responseContent}
-                onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
-                placeholder={
-                  form.responseType === 'message'
-                    ? 'e.g. ✨ Magic activated!'
-                    : form.responseType === 'sticker'
-                      ? 'e.g. sticker_file_id'
-                      : form.responseType === 'animation'
-                        ? 'e.g. animation_file_id'
-                        : 'e.g. {"text":"Click me","url":"https://..."}'
-                }
-                className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
-              />
+              {form.responseType === 'message' ? (
+                <textarea
+                  value={form.responseContent}
+                  onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
+                  placeholder={RESPONSE_PLACEHOLDER.message}
+                  rows={3}
+                  className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
+                />
+              ) : (
+                <input
+                  type="text"
+                  value={form.responseContent}
+                  onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
+                  placeholder={RESPONSE_PLACEHOLDER[form.responseType]}
+                  className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
+                />
+              )}
+              {RESPONSE_HINT[form.responseType] && (
+                <p className="mt-1.5 text-xs text-muted">💡 {RESPONSE_HINT[form.responseType]}</p>
+              )}
             </div>
 
+            {/* Rule Preview */}
             {form.name && form.triggerValue && form.responseContent && (
               <div className="rounded-xl border border-accent-teal/20 bg-accent-teal/5 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-accent-teal">
@@ -254,10 +346,15 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
             <div className="flex gap-3 pt-2">
               <button
                 onClick={handleSave}
-                disabled={!form.name.trim() || !form.triggerValue.trim() || !form.responseContent.trim()}
+                disabled={
+                  saving ||
+                  !form.name.trim() ||
+                  !form.triggerValue.trim() ||
+                  !form.responseContent.trim()
+                }
                 className="rounded-lg bg-accent-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent-indigo disabled:cursor-not-allowed disabled:opacity-40"
               >
-                Save Rule
+                {saving ? 'Saving…' : 'Save Rule'}
               </button>
               <button
                 onClick={() => {
@@ -273,7 +370,21 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
         </Panel>
       )}
 
-      {rules.length === 0 && !showForm ? (
+      {loading ? (
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <Panel key={i} variant="secondary" className="animate-pulse">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-full bg-accent-primary/10" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 w-1/3 rounded bg-accent-primary/10" />
+                  <div className="h-3 w-1/2 rounded bg-accent-primary/10" />
+                </div>
+              </div>
+            </Panel>
+          ))}
+        </div>
+      ) : rules.length === 0 && !showForm ? (
         <Panel variant="secondary">
           <div className="py-6 text-center">
             <p className="text-2xl">✨</p>
@@ -302,7 +413,7 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
                         : 'bg-accent-violet/15 text-accent-violet'
                     }`}
                   >
-                    {rule.triggerType === 'emoji' ? '😀' : '🎨'}
+                    {rule.triggerType === 'emoji' ? rule.triggerValue : '🎨'}
                   </span>
                   <div>
                     <div className="flex items-center gap-2">
@@ -335,7 +446,7 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
                     Test
                   </button>
                   <button
-                    onClick={() => handleToggle(rule.id)}
+                    onClick={() => handleToggle(rule.id, rule.enabled)}
                     className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
                       rule.enabled
                         ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text'
@@ -359,3 +470,4 @@ export default function ReactionsEditor({ groupId, groupName, initialRules }: Pr
     </div>
   );
 }
+
