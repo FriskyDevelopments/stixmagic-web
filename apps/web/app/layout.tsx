@@ -38,6 +38,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Link href="/masks" className="transition hover:text-text">
                   Masks
                 </Link>
+                <Link href="/dashboard" className="transition hover:text-text">
+                  Dashboard
+                </Link>
               </nav>
             </div>
           </header>
