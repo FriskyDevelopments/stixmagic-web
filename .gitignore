@@ -17,6 +17,8 @@ dist/
 .next/
 out/
 coverage/
+*.tsbuildinfo
 
 # Env
 .env
+apps/web/tsconfig.tsbuildinfo

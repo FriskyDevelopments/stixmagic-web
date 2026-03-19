@@ -9,14 +9,14 @@ interface PanelProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 const variantClasses: Record<PanelVariant, string> = {
-  default: 'bg-panel border border-white/10',
-  secondary: 'bg-panel-secondary border border-white/5'
+  default: 'bg-panel border border-accent-primary/20',
+  secondary: 'bg-panel-secondary border border-accent-primary/10'
 };
 
 export const Panel = ({ className, variant = 'default', ...props }: PanelProps) => (
   <div
     className={cn(
-      'rounded-2xl p-6 shadow-[0_0_0_1px_rgba(124,242,255,0.04),0_24px_80px_rgba(5,6,11,0.45)] transition-transform duration-300 hover:-translate-y-1',
+      'rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_8px_36px_rgba(99,102,241,0.35)]',
       variantClasses[variant],
       className
     )}

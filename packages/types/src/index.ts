@@ -308,6 +308,39 @@ export interface StickerUsedEvent {
 
 export type DomainEvent = StickerCreatedEvent | StickerUsedEvent;
 
+export type TriggerType = 'sticker' | 'emoji';
+
+export type ResponseType = 'message' | 'sticker' | 'animation' | 'button_action';
+
+export interface GroupSettings {
+  reactionsEnabled: boolean;
+  maxReactionsPerMessage: number;
+  cooldownSeconds: number;
+}
+
+export interface TelegramGroup {
+  id: string;
+  name: string;
+  username?: string;
+  memberCount: number;
+  isAdmin: boolean;
+  settings: GroupSettings;
+  createdAt: string;
+}
+
+export interface ReactionRule {
+  id: string;
+  groupId: string;
+  name: string;
+  triggerType: TriggerType;
+  triggerValue: string;
+  responseType: ResponseType;
+  responseContent: string;
+  enabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ApiResponse<T> {
   ok: boolean;
   data: T;

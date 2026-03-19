@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? '';
 const isUserOrOrgSite = repoName.endsWith('.github.io');
-const useBasePath = process.env.GITHUB_PAGES === 'true' && repoName.length > 0 && !isUserOrOrgSite;
+const isGitHubPagesBuild = process.env.GITHUB_PAGES === 'true';
+const customDomain = process.env.CUSTOM_DOMAIN?.trim() ?? '';
+const hasCustomDomain = customDomain.length > 0;
+const useBasePath = isGitHubPagesBuild && repoName.length > 0 && !isUserOrOrgSite && !hasCustomDomain;
 const basePath = useBasePath ? `/${repoName}` : '';
 
 const nextConfig = {

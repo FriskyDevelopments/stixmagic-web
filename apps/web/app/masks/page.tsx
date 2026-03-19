@@ -4,15 +4,15 @@ import { masks } from '../data/masks';
 const faq = [
   {
     q: 'How do masks work?',
-    a: 'Masks preserve white regions and remove black regions before optimization and sticker conversion.'
+    a: 'A mask chooses the shape of your sticker by keeping the important part of your image.'
   },
   {
     q: 'Can masks drive interactions?',
-    a: 'Yes. Mask selection becomes metadata, and metadata can influence downstream trigger behavior.'
+    a: 'Yes. You can pair your sticker with simple chat actions like replies or reactions.'
   },
   {
     q: 'Are custom masks supported?',
-    a: 'The starter architecture includes built-in masks and supports extension with uploaded overlays.'
+    a: 'Built-in masks are available now, and custom mask support is planned in upcoming releases.'
   }
 ];
 
@@ -20,14 +20,23 @@ export default function MasksPage() {
   return (
     <div className="space-y-6 pb-10">
       <Panel>
-        <h1 className="text-3xl font-semibold text-text">Mask Catalog</h1>
+        <h1 className="text-3xl font-semibold text-text">Choose your sticker style</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
-          Explore built-in mask definitions used in the sticker pipeline. Selecting a mask updates the preview state,
-          metadata context, and conversion behavior for sticker output.
+          Try each mask, preview the shape instantly, and forge the look that fits your pack before
+          releasing it into the world.
         </p>
       </Panel>
 
       <MaskCatalog masks={masks} />
+
+      <Panel variant="secondary">
+        <h2 className="text-xl font-semibold text-text">More magic coming soon</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          More creative styles are being forged in the laboratory, including custom mask uploads and richer
+          visual effects. The goal is to help every creator make stickers that feel unique and distinctly
+          their own.
+        </p>
+      </Panel>
 
       <Panel variant="secondary">
         <h2 className="text-xl font-semibold text-text">FAQ</h2>

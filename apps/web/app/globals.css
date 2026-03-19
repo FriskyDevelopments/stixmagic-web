@@ -13,10 +13,101 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #05060b;
-  color: #f5f7ff;
+  background: linear-gradient(180deg, #080c18 0%, #0a1020 45%, #080c18 100%);
+  color: #e0f0ff;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial,
     Noto Sans, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Starfield particle atmosphere */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 12% 20%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 30% 70%, rgba(129, 140, 248, 0.8), transparent),
+    radial-gradient(1.8px 1.8px at 55% 15%, rgba(0, 212, 255, 0.9), transparent),
+    radial-gradient(1.4px 1.4px at 72% 62%, rgba(168, 85, 247, 0.8), transparent),
+    radial-gradient(1.2px 1.2px at 88% 26%, rgba(236, 72, 153, 0.75), transparent),
+    radial-gradient(1.6px 1.6px at 22% 86%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(2px 2px at 82% 82%, rgba(45, 212, 191, 0.75), transparent),
+    radial-gradient(1.3px 1.3px at 44% 44%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 65% 90%, rgba(129, 140, 248, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 5% 55%, rgba(0, 212, 255, 0.5), transparent);
+  opacity: 0.45;
+  animation: stix-twinkle 7s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes stix-twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* Soft floating glow blobs */
+@keyframes stix-float {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  33% {
+    transform: translateY(-12px) scale(1.03);
+  }
+  66% {
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+@keyframes stix-float-reverse {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  33% {
+    transform: translateY(10px) scale(0.97);
+  }
+  66% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.stix-float {
+  animation: stix-float 9s ease-in-out infinite;
+}
+
+.stix-float-reverse {
+  animation: stix-float-reverse 11s ease-in-out infinite;
+}
+
+/* Shimmer accent */
+@keyframes stix-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.stix-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 255, 0) 0%,
+    rgba(0, 212, 255, 0.15) 40%,
+    rgba(168, 85, 247, 0.15) 60%,
+    rgba(168, 85, 247, 0) 100%
+  );
+  background-size: 200% auto;
+  animation: stix-shimmer 4s linear infinite;
 }
 
 a {
