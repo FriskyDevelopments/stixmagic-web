@@ -4,34 +4,34 @@ import { motion } from 'framer-motion';
 
 const steps = [
   {
-    number: '01',
-    title: 'Pick your image',
-    description: 'Start with any image you want to turn into a sticker.'
+    number: '△',
+    title: 'Feed your image',
+    description: 'Start with any image — photo, illustration, or artwork — and bring it into the alchemy lab.'
   },
   {
-    number: '02',
+    number: '◯',
     title: 'Choose a mask style',
-    description: 'Select the shape that best matches your style, brand, or community vibe.'
+    description: 'Select the shape that transforms your image into a refined symbol with the right vibe.'
   },
   {
-    number: '03',
-    title: 'Add a simple interaction',
-    description: 'Optionally connect a sticker to a reply, reaction, or automation.'
+    number: '✦',
+    title: 'Add an enchantment',
+    description: 'Optionally connect your sticker to a reply, reaction, or automation for living magic in chat.'
   },
   {
-    number: '04',
-    title: 'Share and watch it spread',
-    description: 'Publish to chat and let your community use stickers that feel alive.'
+    number: '🪄',
+    title: 'Release into the world',
+    description: 'Publish to chat and watch your community wield stickers that feel alive and distinctly yours.'
   }
 ];
 
 export const HowItWorks = () => (
   <section id="how-it-works" className="space-y-4">
     <div>
-      <p className="text-xs uppercase tracking-wider text-accent-cyan">Simple flow</p>
-      <h2 className="mt-2 text-2xl font-semibold text-text">How it works</h2>
+      <p className="text-xs uppercase tracking-wider text-accent-cyan">The Λlchemy</p>
+      <h2 className="mt-2 text-2xl font-semibold text-text">How the transformation works</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        Go from idea to shareable sticker pack in four easy steps.
+        Four steps from raw image to living magic in chat.
       </p>
     </div>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -44,7 +44,7 @@ export const HowItWorks = () => (
           transition={{ duration: 0.3, delay: i * 0.08 }}
           className="relative rounded-2xl border border-white/10 bg-panel p-5"
         >
-          <p className="text-4xl font-semibold text-accent-primary/20">{step.number}</p>
+          <p className="text-3xl text-accent-primary/40">{step.number}</p>
           <h3 className="mt-2 text-base font-semibold text-text">{step.title}</h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">{step.description}</p>
         </motion.div>

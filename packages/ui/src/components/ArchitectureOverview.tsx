@@ -35,11 +35,11 @@ const groups = [
 export const ArchitectureOverview = () => (
   <section className="space-y-4">
     <div>
-      <p className="text-xs uppercase tracking-wider text-accent-cyan">Why it works</p>
-      <h2 className="mt-2 text-2xl font-semibold text-text">Built to feel simple for creators</h2>
+      <p className="text-xs uppercase tracking-wider text-accent-cyan">The laboratory</p>
+      <h2 className="mt-2 text-2xl font-semibold text-text">Built for the full alchemy cycle</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        The platform handles the heavy lifting in the background, so your focus stays on creating great
-        sticker experiences.
+        The platform handles the transformation behind the scenes, so your focus stays on crafting
+        sticker experiences that feel alive.
       </p>
     </div>
     <div className="grid gap-4 lg:grid-cols-3">

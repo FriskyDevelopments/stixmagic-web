@@ -42,10 +42,10 @@ const statusLabels: Record<string, string> = {
 export const Roadmap = () => (
   <section className="space-y-4">
     <div>
-      <p className="text-xs uppercase tracking-wider text-accent-cyan">Product journey</p>
-      <h2 className="mt-2 text-2xl font-semibold text-text">What’s shipping over time</h2>
+      <p className="text-xs uppercase tracking-wider text-accent-cyan">The journey</p>
+      <h2 className="mt-2 text-2xl font-semibold text-text">What’s forging over time</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        Stix Magic is evolving in clear stages so creators get value early and often.
+        STIX MΛGIC is evolving in clear stages so creators get value early and often.
       </p>
     </div>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

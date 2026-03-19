@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export const CTASection = () => (
@@ -15,26 +16,28 @@ export const CTASection = () => (
       <div className="absolute bottom-0 right-0 h-40 w-56 rounded-full bg-accent-violet/15 blur-3xl" />
     </div>
     <div className="relative z-10">
-      <p className="text-xs uppercase tracking-wider text-accent-cyan">Start creating</p>
-      <h2 className="mt-4 text-3xl font-semibold text-text">Ready to launch your first sticker pack?</h2>
+      <p className="text-xs uppercase tracking-widest text-accent-cyan/70">✦ ───────── ✦</p>
+      <p className="mt-4 text-xs uppercase tracking-wider text-accent-cyan">Enter the PØRTAL</p>
+      <h2 className="mt-4 text-3xl font-semibold text-text">Ready to begin your sticker alchemy?</h2>
       <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted">
-        Explore mask styles, shape your visual identity, and turn everyday chat into something your
-        community remembers.
+        Explore mask styles, shape your visual identity, and transform everyday chat into something
+        your community will remember.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a
+        <Link
           href="/masks"
           className="rounded-xl bg-gradient-to-r from-accent-primary via-accent-indigo to-accent-violet px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_24px_rgba(99,102,241,0.45)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_36px_rgba(168,85,247,0.55)]"
         >
           Explore Masks
-        </a>
+        </Link>
         <a
-          href="https://github.com/PupFr/stixmagic-web"
+          href="https://github.com/FriskyDevelopments/stixmagic-web"
           className="rounded-xl border border-accent-primary/25 bg-panel-secondary px-5 py-3 text-sm font-semibold text-text transition hover:border-accent-cyan/60 hover:text-accent-cyan"
         >
           Follow the Build
         </a>
       </div>
+      <p className="mt-10 text-xs text-accent-cyan/50 tracking-widest">△ ── ◯ ── ✦ ── ◯ ── △</p>
     </div>
   </motion.section>
 );
