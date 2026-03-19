@@ -14,10 +14,11 @@ export default function GroupsPage() {
 
   useEffect(() => {
     getGroups().then(async (fetchedGroups) => {
-      setGroups(fetchedGroups);
+      const adminGroups = fetchedGroups.filter((g) => g.isAdmin);
+      setGroups(adminGroups);
       const rulesMap: Record<string, ReactionRule[]> = {};
       await Promise.all(
-        fetchedGroups.map(async (g) => {
+        adminGroups.map(async (g) => {
           rulesMap[g.id] = await getRules(g.id);
         })
       );
@@ -125,9 +126,10 @@ export default function GroupsPage() {
             </ol>
           </div>
           {/* NEXT_PUBLIC_BOT_USERNAME is embedded at build time.
-              Set it in .env.local (or CI) before building for the correct bot link. */}
+              Set it in .env.local (or CI) before building for the correct bot link.
+              A leading "@" is stripped automatically if present. */}
           <a
-            href={`https://t.me/${process.env.NEXT_PUBLIC_BOT_USERNAME ?? 'StixMagicBot'}`}
+            href={`https://t.me/${(process.env.NEXT_PUBLIC_BOT_USERNAME ?? 'StixMagicBot').replace(/^@/, '')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 rounded-lg bg-accent-cyan/10 px-5 py-2.5 text-center text-sm font-medium text-accent-cyan transition hover:bg-accent-cyan/20"

@@ -76,6 +76,20 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
     });
   }, [groupId]);
 
+  // Clear auto-dismiss timers when the component unmounts to avoid
+  // setting state on an unmounted component.
+  useEffect(() => {
+    if (!saved) return;
+    const id = setTimeout(() => setSaved(false), 3000);
+    return () => clearTimeout(id);
+  }, [saved]);
+
+  useEffect(() => {
+    if (!testResult) return;
+    const id = setTimeout(() => setTestResult(null), 4000);
+    return () => clearTimeout(id);
+  }, [testResult]);
+
   const setTriggerType = (triggerType: TriggerType) =>
     setForm((prev) => ({ ...prev, triggerType, triggerValue: '' }));
 
@@ -83,13 +97,27 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
     setForm((prev) => ({ ...prev, responseType, responseContent: '' }));
 
   const handleToggle = async (id: string, current: boolean) => {
+    const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
-    await toggleRule(groupId, id, !current);
+    try {
+      await toggleRule(groupId, id, !current);
+    } catch (err) {
+      setRules(previousRules);
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Failed to toggle rule: ${message}`);
+    }
   };
 
   const handleDelete = async (id: string) => {
+    const previousRules = rules;
     setRules((prev) => prev.filter((r) => r.id !== id));
-    await deleteRule(groupId, id);
+    try {
+      await deleteRule(groupId, id);
+    } catch (err) {
+      setRules(previousRules);
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Failed to delete rule: ${message}`);
+    }
   };
 
   const handleSave = async () => {
@@ -109,7 +137,6 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       setForm(EMPTY_FORM);
       setShowForm(false);
       setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(`Failed to save the rule: ${message}. Please try again.`);
@@ -118,11 +145,10 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
     }
   };
 
-  const handleTest = (rule: ReactionRule) => {
+  const handleSimulate = (rule: ReactionRule) => {
     setTestResult(
-      `✅ Test fired! Trigger: "${rule.triggerValue}" → Response (${rule.responseType}): "${rule.responseContent}"`
+      `🔄 Simulated locally — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". Connect a backend to fire this in Telegram.`
     );
-    setTimeout(() => setTestResult(null), 4000);
   };
 
   return (
@@ -165,7 +191,10 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
       {saved && (
         <div className="rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-accent-teal">
-          ✅ Rule saved successfully and will be applied to the group immediately.
+          ✅ Rule saved successfully.
+          {process.env.NEXT_PUBLIC_API_URL
+            ? ' It will be applied to the group immediately.'
+            : ' Connect a backend API to persist rules to the bot.'}
         </div>
       )}
 
@@ -440,10 +469,11 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => handleTest(rule)}
+                    onClick={() => handleSimulate(rule)}
+                    title="Simulates the rule locally — connect a backend to fire it in Telegram"
                     className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5"
                   >
-                    Test
+                    Simulate
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}

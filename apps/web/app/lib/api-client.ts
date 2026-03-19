@@ -5,6 +5,10 @@ import { MOCK_GROUPS, MOCK_RULES } from './mock-data';
  * Set NEXT_PUBLIC_API_URL to your backend base URL (e.g. http://localhost:4000)
  * to connect the dashboard to a real API. When unset, all reads fall back to
  * the built-in mock data so the UI is fully browsable without a backend.
+ *
+ * NOTE: NEXT_PUBLIC_* variables are inlined at build time by Next.js (including
+ * static-export builds). Set this in .env.local or your CI environment before
+ * building to embed the correct URL.
  */
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
 
@@ -12,6 +16,7 @@ async function apiFetch<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`);
   if (!res.ok) throw new Error(`API ${res.status} for ${path}`);
   const json = (await res.json()) as { ok: boolean; data: T };
+  if (!json.ok) throw new Error(`API responded with ok=false for ${path}`);
   return json.data;
 }
 
