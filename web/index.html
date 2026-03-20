@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram VideoChat Companion Bot</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Telegram group voice chats</p>
+        <h1>Telegram VideoChat Companion Bot</h1>
+        <p class="lead">
+          A practical bot for Telegram communities that want basic room automation, live session announcements,
+          speaker queue helpers, and clear operational status during voice or video chats.
+        </p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Current capabilities</h2>
+          <ul>
+            <li>Detects Telegram video chat start and end service events.</li>
+            <li>Tracks invited participants from Telegram service messages.</li>
+            <li>Provides /vc, /status, /join, and /leave commands.</li>
+            <li>Keeps an in-memory speaker queue for lightweight room moderation.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Who it is for</h2>
+          <ul>
+            <li>Telegram group admins running recurring voice rooms.</li>
+            <li>Community moderators managing speaker order manually.</li>
+            <li>Teams that want a clean starting point instead of a demo project.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="card">
+        <h2>Known limits</h2>
+        <p>
+          Telegram bots do not expose every live room signal. This repo only claims support for the service events and
+          commands that are actually implemented today. Deeper participant presence tracking remains a documented next step.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

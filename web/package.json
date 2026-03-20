@@ -1,0 +1,12 @@
+{
+  "name": "telegram-videochat-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.mjs",
+    "build": "node src/build.mjs",
+    "start": "node src/server.mjs",
+    "typecheck": "node -e \"console.log('No TypeScript in web package')\""
+  }
+}

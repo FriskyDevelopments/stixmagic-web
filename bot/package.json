@@ -1,0 +1,16 @@
+{
+  "name": "telegram-videochat-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "build": "node src/build.mjs",
+    "start": "node dist/index.js",
+    "typecheck": "node --check src/index.js && node --check src/build.mjs && node --check src/telegram-api.js && node --check src/services/runtime.js && node --check src/commands/basic.js && node --check src/handlers/video-chat.js"
+  },
+  "dependencies": {
+    "@videochat-bot/core": "file:../core"
+  }
+}

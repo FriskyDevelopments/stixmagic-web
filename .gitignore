@@ -1,24 +1,8 @@
-# macOS
-.DS_Store
-
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-
-# Logs
-*.log
-
-# Node / monorepo
-node_modules/
-.pnpm-store/
-.turbo/
-dist/
-.next/
-out/
-coverage/
-*.tsbuildinfo
-
-# Env
+node_modules
 .env
-apps/web/tsconfig.tsbuildinfo
+.env.*
+!.env.example
+coverage
+dist
+.DS_Store
+npm-debug.log*
