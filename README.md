@@ -1,62 +1,115 @@
-# MagicStix Web
+# STIX MΛGIC Telegram Platform
 
-The public-facing presentation, catalog, and generator frontend for the MagicStix visual asset ecosystem.
+This repository now treats the **Telegram bot**, **Telegram Mini App**, and the supporting API/services as one product system preparing for production.
 
-## What this repo is
+Instead of “bot over here, web demo over there”, the repo is organized around two Telegram-facing surfaces that share one deployment story:
 
-This repository is the **web layer** of the MagicStix ecosystem. It showcases, previews, and catalogs assets produced by the `stixmagic-bot` pipeline. No asset generation logic lives here.
+- **Bot surface** — the Telegram bot is the entry point, command layer, and automation runtime.
+- **Mini App surface** — the Telegram Mini App is the operator console for groups, rules, and future deployment actions.
+- **Shared platform layer** — typed contracts, environment strategy, API assumptions, and service topology used by both.
 
+## New architecture
+
+```txt
+Telegram user/admin
+   │
+   ├── STIX MΛGIC Bot (@stixmagic/bot)
+   │      ├── Telegram commands
+   │      ├── Bot → Mini App handoff
+   │      └── Trigger execution
+   │
+   ├── STIX MΛGIC Mini App (@stixmagic/web)
+   │      ├── Group + rule management UI
+   │      ├── Telegram bootstrap/context read path
+   │      └── Uses shared Telegram API contracts
+   │
+   └── Shared Telegram API (@stixmagic/api)
+          ├── /telegram/platform
+          ├── /telegram/mini-app/bootstrap
+          ├── /groups + /groups/:id/rules
+          ├── packs / stickers / triggers
+          └── production-facing config for both surfaces
 ```
-stixmagic-bot  →  generates assets, packs, metadata
-stixmagic-web  →  displays, previews, serves them
-```
 
-## Monorepo Structure
+## Monorepo structure
 
 ```txt
 stixmagic-web/
 ├── apps/
-│   ├── web/           — Next.js site (main app)
-│   └── bot/           — Bot runtime (separate concern)
+│   ├── bot/            # Telegram bot runtime and Mini App handoff
+│   └── web/            # Next.js Telegram Mini App UI
+├── services/
+│   ├── api/            # Shared Telegram + asset API surface
+│   ├── sticker-engine/ # Sticker processing service
+│   └── trigger-engine/ # Trigger execution service
 ├── packages/
-│   ├── ui/            — Shared React components
-│   ├── types/         — Domain types and interfaces
-│   └── config/        — Typed environment config
+│   ├── config/         # Shared env parsing + Telegram platform config builders
+│   ├── types/          # Shared domain and Telegram contracts
+│   └── ui/             # Shared React UI components
 ├── docs/
-│   ├── architecture/  — System architecture docs
-│   ├── product/       — Product vision
-│   ├── roadmap/       — Development roadmap
-│   └── web/           — Web-specific docs
 └── infra/
-    ├── docker/
-    └── deploy/
 ```
 
-## Site Pages
+## What was unified
 
-| Page | Path | Description |
-|---|---|---|
-| Home | `/` | Landing — ecosystem overview and positioning |
-| Ecosystem | `/ecosystem` | Explains the bot/web repo split and what MagicStix produces |
-| Pack Catalog | `/packs` | Browse all MagicStix packs by category |
-| Gallery | `/gallery` | Asset preview gallery with GIF/WebM indicators |
-| Generator | `/generator` | Generator UI scaffold (pipeline integration ready) |
-| Masks | `/masks` | Mask catalog for sticker processing pipeline |
+### 1) Shared Telegram platform config
+Both the bot and mini app now derive from one naming and env strategy:
 
-## UI Components
+- `STIXMAGIC_API_BASE_URL`
+- `STIXMAGIC_PUBLIC_WEB_URL`
+- `TELEGRAM_BOT_USERNAME`
+- `TELEGRAM_MINI_APP_URL`
+- `TELEGRAM_BOT_MODE` (`polling` or `webhook`)
+- `TELEGRAM_WEBHOOK_URL` (required when using webhook mode)
 
-The `@stixmagic/ui` package provides:
+The web app uses corresponding build-time variables:
 
-- `Hero` — landing section hero
-- `FeatureGrid` — 2–4 column feature highlight grid
-- `PackCard` / `PackGrid` — pack catalog cards and grid
-- `GalleryCard` / `GalleryGrid` — asset preview cards and grid
-- `GeneratorScaffold` — step-based generator UI with coming-soon states
-- `Panel` — content panel with default/secondary variants
-- `Tabs` — tab switcher for content sections
-- `MaskCatalog` / `MaskCard` / `MaskHeroPreview` — mask browsing UI
+- `NEXT_PUBLIC_STIXMAGIC_API_BASE_URL`
+- `NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL`
+- `NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME`
+- `NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL`
+- `NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL`
+- `NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA`
 
-## Quick Start
+### 2) Shared Telegram contracts
+`@stixmagic/types` now includes shared Telegram-facing contracts for:
+
+- bot runtime mode
+- platform config payloads
+- mini app bootstrap/context payloads
+- reaction rule creation payloads
+
+### 3) Shared API assumptions
+The API now exposes Telegram-oriented endpoints that the mini app can use directly:
+
+- `GET /telegram/platform`
+- `GET /telegram/mini-app/bootstrap`
+- `GET /groups`
+- `GET /groups/:groupId`
+- `GET /groups/:groupId/rules`
+- `POST /groups/:groupId/rules`
+- `PATCH /groups/:groupId/rules/:ruleId`
+- `DELETE /groups/:groupId/rules/:ruleId`
+
+This replaces the previous “mostly mock UI with implied backend” split with a clearer shared contract.
+
+### 4) Bot-to-mini-app handoff
+The bot now:
+
+- presents the mini app as the primary control surface
+- uses a shared mini app URL and bot links
+- supports explicit runtime mode configuration for `polling` vs `webhook`
+- keeps Telegram commands aligned with the mini app instead of pointing to parallel flows
+
+### 5) Demo mode is explicit
+The mini app no longer quietly depends on missing env vars to decide behavior.
+
+Demo data is now an explicit build-time choice:
+
+- `NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA=true` → UI uses seeded scaffold data
+- `false` → UI expects the shared API surface and only falls back when needed
+
+## Local development
 
 1. Install dependencies:
 
@@ -64,98 +117,71 @@ The `@stixmagic/ui` package provides:
 pnpm install
 ```
 
-2. Prepare env:
+2. Copy environment template:
 
 ```bash
 cp .env.example .env
 ```
 
-3. Run web app in development:
+3. Start the platform locally:
+
+```bash
+pnpm dev
+```
+
+Or run individual surfaces/services:
 
 ```bash
 pnpm --filter @stixmagic/web dev
+pnpm --filter @stixmagic/bot dev
+pnpm --filter @stixmagic/api dev
 ```
 
-4. Build:
+## Deployment model
 
-```bash
-pnpm --filter @stixmagic/web build
-```
+### Bot
+- Deploy as a long-running worker/service.
+- Use `TELEGRAM_BOT_MODE=webhook` in production where the platform supports a stable HTTPS ingress.
+- Set `TELEGRAM_WEBHOOK_URL` to the public bot webhook endpoint.
 
-## Documentation
+### Mini App
+- Deploy as the public web surface.
+- `TELEGRAM_MINI_APP_URL` should point at the deployed Mini App route.
+- Build using the `NEXT_PUBLIC_STIXMAGIC_*` values for the production environment.
 
-- [`docs/web/web-architecture.md`](docs/web/web-architecture.md) — site architecture and directory structure
-- [`docs/web/content-structure.md`](docs/web/content-structure.md) — content types and data sources
-- [`docs/web/pack-pages.md`](docs/web/pack-pages.md) — pack catalog and page architecture
-- [`docs/web/generator-ui-plan.md`](docs/web/generator-ui-plan.md) — generator frontend plan
-- [`docs/web/pipeline-integration.md`](docs/web/pipeline-integration.md) — pipeline manifest and API integration
+### API
+- Deploy as the shared internal/public API surface used by both bot and mini app.
+- The bot and mini app should reference the same `STIXMAGIC_API_BASE_URL` / `NEXT_PUBLIC_STIXMAGIC_API_BASE_URL` target.
 
-## Deployment
+### Supporting services
+- `sticker-engine` and `trigger-engine` remain service backends for asset processing and trigger execution.
+- PostgreSQL and S3-compatible storage are still required for a real deployment.
 
-The web app deploys to GitHub Pages via `.github/workflows/deploy-pages.yml` on every push to `main`.
+## What still blocks full production readiness
 
-1. Create a GitHub repo and push to `main`.
-2. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
-3. Each push to `main` auto-deploys the static export.
+This repo is much closer to a coherent production architecture, but it is **not fully production-ready yet**.
 
-This repo includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml` that deploys `apps/web` as a static site.
+Remaining gaps:
 
-1. Create a GitHub repo and set remote:
+- No real Telegram Mini App init-data signature verification yet.
+- No persistent database-backed storage for groups/rules; API state is still in-memory scaffold data.
+- No authenticated operator/session model for admin access.
+- No webhook ingress route implemented for Telegram updates in the bot runtime.
+- No queue/job orchestration between API and sticker engine.
+- No Telegram sticker-set publish integration yet.
+- No migrations, observability, or rate limiting yet.
 
-```bash
-git remote add origin https://github.com/<you>/<repo>.git
-```
+## Recommended next steps
 
-2. First push:
+1. Implement Telegram webhook ingestion and verification.
+2. Replace in-memory group/rule storage with PostgreSQL-backed models.
+3. Validate Telegram Mini App init data server-side before returning bootstrap data.
+4. Add authenticated admin identity and authorization boundaries.
+5. Move trigger execution and sticker processing onto durable async jobs.
+6. Implement real Telegram sticker publishing and pack lifecycle flows.
 
-```bash
-git add .
-git commit -m "chore: initial monorepo setup"
-git push -u origin main
-```
+## Docs
 
-3. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
-
-4. Each push to `main` auto-deploys the web app to GitHub Pages.
-
-5. (Optional) Use a short custom subdomain (for example `go.yourdomain.com`):
-	- Add a repository variable named `PAGES_CUSTOM_DOMAIN` with your subdomain value.
-	- In your DNS provider, create a `CNAME` record from the subdomain (for example `go`) to `<owner>.github.io`.
-	- Push to `main` (or run the workflow manually). The workflow writes a `CNAME` file automatically.
-
-### Preview Environment (`preview.stixmagic.com`)
-
-This repo includes `.github/workflows/deploy-preview-pages.yml` to deploy preview builds into a separate GitHub Pages repository, so production and preview can stay live at the same time.
-
-1. Create a preview Pages repository (example: `FriskyDevelopments/stixmagic-web-preview`).
-
-2. In the preview repository settings, configure **Pages** source as:
-	- **Deploy from branch**
-	- Branch: `gh-pages` / root
-
-3. In this main repository (`stixmagic-web`), add an Actions secret:
-	- Name: `PREVIEW_REPO_TOKEN`
-	- Value: GitHub token with write access to the preview repository
-
-4. Add repository variables:
-	- `PREVIEW_PAGES_REPO=FriskyDevelopments/stixmagic-web-preview`
-	- `PAGES_PREVIEW_DOMAIN=preview.stixmagic.com`
-
-5. Create a long-lived preview branch and push it:
-
-```bash
-git checkout -b preview
-git push -u origin preview
-```
-
-6. In Cloudflare DNS, add a `CNAME` record:
-   - Host: `preview`
-	- Target: `FriskyDevelopments.github.io`
-
-7. Push to `preview` branch (or run the preview workflow manually) to deploy live.
-
-8. Manual deploy from any branch:
-	- Open Actions → **Deploy Preview Web (External Pages Repo)**
-	- Click **Run workflow**
-	- Set `source_ref` to a branch/tag/SHA (for example `copilot/implement-stix-magic-webpage`)
-	- Run to publish that revision to `preview.stixmagic.com`
+- [`infra/deploy/production-architecture.md`](infra/deploy/production-architecture.md)
+- [`docs/architecture/api-design.md`](docs/architecture/api-design.md)
+- [`docs/architecture/event-flow.md`](docs/architecture/event-flow.md)
