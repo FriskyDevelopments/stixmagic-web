@@ -1,161 +1,121 @@
-# MagicStix Web
+# Telegram VideoChat Companion Bot
 
-The public-facing presentation, catalog, and generator frontend for the MagicStix visual asset ecosystem.
+A focused Telegram bot project for group voice chats, video chats, and live rooms.
 
-## What this repo is
+This repository is intentionally practical: it removes the previous demo branding and keeps only a working foundation for a real Telegram room-assistant product.
 
-This repository is the **web layer** of the MagicStix ecosystem. It showcases, previews, and catalogs assets produced by the `stixmagic-bot` pipeline. No asset generation logic lives here.
+## What it does
 
-```
-stixmagic-bot  →  generates assets, packs, metadata
-stixmagic-web  →  displays, previews, serves them
-```
+The bot is designed for Telegram group admins and community moderators who run recurring voice or video sessions and need lightweight automation inside the room.
 
-## Monorepo Structure
+### Current capabilities
+
+- Detects Telegram `video_chat_started` and `video_chat_ended` service messages.
+- Tracks invited participants from `video_chat_participants_invited` events.
+- Announces that a session has started.
+- Provides room commands:
+  - `/vc`
+  - `/status`
+  - `/join`
+  - `/leave`
+- Maintains an in-memory speaker queue.
+- Ships with a minimal landing page in `web/` instead of a fake dashboard.
+
+## Repo structure
 
 ```txt
-stixmagic-web/
-├── apps/
-│   ├── web/           — Next.js site (main app)
-│   └── bot/           — Bot runtime (separate concern)
-├── packages/
-│   ├── ui/            — Shared React components
-│   ├── types/         — Domain types and interfaces
-│   └── config/        — Typed environment config
-├── docs/
-│   ├── architecture/  — System architecture docs
-│   ├── product/       — Product vision
-│   ├── roadmap/       — Development roadmap
-│   └── web/           — Web-specific docs
-└── infra/
-    ├── docker/
-    └── deploy/
+.
+├── bot/    # Telegram bot runtime, commands, and event handlers
+├── core/   # Shared config, formatting, and session-state logic
+├── web/    # Minimal static landing page
+└── docs/   # Audit notes and product-facing documentation
 ```
 
-## Site Pages
+## Local development
 
-| Page | Path | Description |
-|---|---|---|
-| Home | `/` | Landing — ecosystem overview and positioning |
-| Ecosystem | `/ecosystem` | Explains the bot/web repo split and what MagicStix produces |
-| Pack Catalog | `/packs` | Browse all MagicStix packs by category |
-| Gallery | `/gallery` | Asset preview gallery with GIF/WebM indicators |
-| Generator | `/generator` | Generator UI scaffold (pipeline integration ready) |
-| Masks | `/masks` | Mask catalog for sticker processing pipeline |
-
-## UI Components
-
-The `@stixmagic/ui` package provides:
-
-- `Hero` — landing section hero
-- `FeatureGrid` — 2–4 column feature highlight grid
-- `PackCard` / `PackGrid` — pack catalog cards and grid
-- `GalleryCard` / `GalleryGrid` — asset preview cards and grid
-- `GeneratorScaffold` — step-based generator UI with coming-soon states
-- `Panel` — content panel with default/secondary variants
-- `Tabs` — tab switcher for content sections
-- `MaskCatalog` / `MaskCard` / `MaskHeroPreview` — mask browsing UI
-
-## Quick Start
-
-1. Install dependencies:
+### 1. Install dependencies
 
 ```bash
-pnpm install
+npm install
 ```
 
-2. Prepare env:
+### 2. Configure environment
 
 ```bash
 cp .env.example .env
 ```
 
-3. Run web app in development:
+Required variable:
+
+- `TELEGRAM_BOT_TOKEN`
+
+Optional variables:
+
+- `BOT_USERNAME`
+- `SESSION_ANNOUNCE_TEMPLATE`
+- `WEB_PORT`
+
+### 3. Run in development
 
 ```bash
-pnpm --filter @stixmagic/web dev
+npm run dev
 ```
 
-4. Build:
+This starts:
+
+- the Telegram bot in watch mode
+- the static landing page at `http://localhost:3000`
+
+### 4. Build
 
 ```bash
-pnpm --filter @stixmagic/web build
+npm run build
 ```
 
-## Documentation
-
-- [`docs/web/web-architecture.md`](docs/web/web-architecture.md) — site architecture and directory structure
-- [`docs/web/content-structure.md`](docs/web/content-structure.md) — content types and data sources
-- [`docs/web/pack-pages.md`](docs/web/pack-pages.md) — pack catalog and page architecture
-- [`docs/web/generator-ui-plan.md`](docs/web/generator-ui-plan.md) — generator frontend plan
-- [`docs/web/pipeline-integration.md`](docs/web/pipeline-integration.md) — pipeline manifest and API integration
-
-## Deployment
-
-The web app deploys to GitHub Pages via `.github/workflows/deploy-pages.yml` on every push to `main`.
-
-1. Create a GitHub repo and push to `main`.
-2. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
-3. Each push to `main` auto-deploys the static export.
-
-This repo includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml` that deploys `apps/web` as a static site.
-
-1. Create a GitHub repo and set remote:
+### 5. Start the bot
 
 ```bash
-git remote add origin https://github.com/<you>/<repo>.git
+npm start
 ```
 
-2. First push:
+## Product positioning
 
-```bash
-git add .
-git commit -m "chore: initial monorepo setup"
-git push -u origin main
-```
+This is an early-stage but real foundation for a Telegram live-room assistant.
 
-3. In GitHub repo settings, set **Pages** source to **GitHub Actions**.
+It is intentionally narrow:
 
-4. Each push to `main` auto-deploys the web app to GitHub Pages.
+- no fake generator UI
+- no unrelated sticker-pipeline narrative
+- no placeholder product theater
 
-5. (Optional) Use a short custom subdomain (for example `go.yourdomain.com`):
-	- Add a repository variable named `PAGES_CUSTOM_DOMAIN` with your subdomain value.
-	- In your DNS provider, create a `CNAME` record from the subdomain (for example `go`) to `<owner>.github.io`.
-	- Push to `main` (or run the workflow manually). The workflow writes a `CNAME` file automatically.
+## Known limitations
 
-### Preview Environment (`preview.stixmagic.com`)
+Telegram bots do not expose every voice-chat presence signal. This codebase only claims support for what is currently implemented.
 
-This repo includes `.github/workflows/deploy-preview-pages.yml` to deploy preview builds into a separate GitHub Pages repository, so production and preview can stay live at the same time.
+### Implemented today
 
-1. Create a preview Pages repository (example: `FriskyDevelopments/stixmagic-web-preview`).
+- room start/end detection through Telegram service events
+- invited participant tracking from service messages
+- simple speaker queue commands
+- room status output
 
-2. In the preview repository settings, configure **Pages** source as:
-	- **Deploy from branch**
-	- Branch: `gh-pages` / root
+### Not implemented yet
 
-3. In this main repository (`stixmagic-web`), add an Actions secret:
-	- Name: `PREVIEW_REPO_TOKEN`
-	- Value: GitHub token with write access to the preview repository
+- persistent storage
+- moderator permissions and admin-only controls
+- queue rotation automation
+- session timers and reminders
+- richer analytics for room attendance
+- deeper participant join/leave tracking if Telegram exposes additional usable events for bots
 
-4. Add repository variables:
-	- `PREVIEW_PAGES_REPO=FriskyDevelopments/stixmagic-web-preview`
-	- `PAGES_PREVIEW_DOMAIN=preview.stixmagic.com`
+## Roadmap
 
-5. Create a long-lived preview branch and push it:
+1. Add persistence for sessions and queues.
+2. Add admin-only moderation commands.
+3. Add scheduled reminders and session timers.
+4. Add optional webhook mode and deployment recipes.
+5. Add room stats once reliable event coverage is available.
 
-```bash
-git checkout -b preview
-git push -u origin preview
-```
+## Audit
 
-6. In Cloudflare DNS, add a `CNAME` record:
-   - Host: `preview`
-	- Target: `FriskyDevelopments.github.io`
-
-7. Push to `preview` branch (or run the preview workflow manually) to deploy live.
-
-8. Manual deploy from any branch:
-	- Open Actions → **Deploy Preview Web (External Pages Repo)**
-	- Click **Run workflow**
-	- Set `source_ref` to a branch/tag/SHA (for example `copilot/implement-stix-magic-webpage`)
-	- Run to publish that revision to `preview.stixmagic.com`
+See `docs/audit.md` for the cleanup summary and what was removed.
