@@ -1,27 +1,86 @@
-import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
+import { loadTelegramClientEnv } from '@stixmagic/config';
+import type {
+  ApiResponse,
+  CreateReactionRuleRequest,
+  ReactionRule,
+  TelegramGroup,
+  TelegramMiniAppBootstrap
+} from '@stixmagic/types';
 import { MOCK_GROUPS, MOCK_RULES } from './mock-data';
 
-/**
- * Set NEXT_PUBLIC_API_URL to your backend base URL (e.g. http://localhost:4000)
- * to connect the dashboard to a real API. When unset, all reads fall back to
- * the built-in mock data so the UI is fully browsable without a backend.
- *
- * NOTE: NEXT_PUBLIC_* variables are inlined at build time by Next.js (including
- * static-export builds). Set this in .env.local or your CI environment before
- * building to embed the correct URL.
- */
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
+const clientEnv = loadTelegramClientEnv();
+const API_BASE = clientEnv.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL;
+const DEMO_MODE = clientEnv.NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA === 'true';
 
-async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`);
+async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(init?.headers ?? {})
+    }
+  });
+
   if (!res.ok) throw new Error(`API ${res.status} for ${path}`);
-  const json = (await res.json()) as { ok: boolean; data: T };
+  const json = (await res.json()) as ApiResponse<T>;
   if (!json.ok) throw new Error(`API responded with ok=false for ${path}`);
   return json.data;
 }
 
+export async function getMiniAppBootstrap(): Promise<TelegramMiniAppBootstrap> {
+  if (DEMO_MODE) {
+    return {
+      config: {
+        productName: 'STIX MΛGIC',
+        platform: 'telegram',
+        runtimeMode: 'polling',
+        botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+        miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+        apiBaseUrl: API_BASE,
+        links: {
+          botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+          miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+          botStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}`,
+          miniAppStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}/app`
+        }
+      },
+      context: {
+        launchSource: 'direct',
+        initDataUnsafe: null
+      },
+      groups: MOCK_GROUPS
+    };
+  }
+
+  try {
+    return await apiFetch<TelegramMiniAppBootstrap>('/telegram/mini-app/bootstrap');
+  } catch {
+    return {
+      config: {
+        productName: 'STIX MΛGIC',
+        platform: 'telegram',
+        runtimeMode: 'polling',
+        botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+        miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+        apiBaseUrl: API_BASE,
+        links: {
+          botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+          miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+          botStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}`,
+          miniAppStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}/app`
+        }
+      },
+      context: {
+        launchSource: 'direct',
+        initDataUnsafe: null
+      },
+      groups: MOCK_GROUPS
+    };
+  }
+}
+
 export async function getGroups(): Promise<TelegramGroup[]> {
-  if (!API_BASE) return MOCK_GROUPS;
+  if (DEMO_MODE) return MOCK_GROUPS;
   try {
     return await apiFetch<TelegramGroup[]>('/groups');
   } catch {
@@ -30,7 +89,7 @@ export async function getGroups(): Promise<TelegramGroup[]> {
 }
 
 export async function getGroup(id: string): Promise<TelegramGroup | null> {
-  if (!API_BASE) return MOCK_GROUPS.find((g) => g.id === id) ?? null;
+  if (DEMO_MODE) return MOCK_GROUPS.find((g) => g.id === id) ?? null;
   try {
     return await apiFetch<TelegramGroup>(`/groups/${id}`);
   } catch {
@@ -39,7 +98,7 @@ export async function getGroup(id: string): Promise<TelegramGroup | null> {
 }
 
 export async function getRules(groupId: string): Promise<ReactionRule[]> {
-  if (!API_BASE) return MOCK_RULES[groupId] ?? [];
+  if (DEMO_MODE) return MOCK_RULES[groupId] ?? [];
   try {
     return await apiFetch<ReactionRule[]>(`/groups/${groupId}/rules`);
   } catch {
@@ -49,20 +108,17 @@ export async function getRules(groupId: string): Promise<ReactionRule[]> {
 
 export async function createRule(
   groupId: string,
-  rule: Omit<ReactionRule, 'id' | 'groupId' | 'createdAt' | 'updatedAt'>
+  rule: CreateReactionRuleRequest
 ): Promise<ReactionRule> {
   const today = new Date().toISOString().split('T')[0];
-  if (!API_BASE) {
+  if (DEMO_MODE) {
     return { ...rule, id: `r${Date.now()}`, groupId, createdAt: today, updatedAt: today };
   }
-  const res = await fetch(`${API_BASE}/groups/${groupId}/rules`, {
+
+  return await apiFetch<ReactionRule>(`/groups/${groupId}/rules`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(rule)
   });
-  if (!res.ok) throw new Error('Failed to create rule');
-  const json = (await res.json()) as { ok: boolean; data: ReactionRule };
-  return json.data;
 }
 
 export async function toggleRule(
@@ -70,19 +126,20 @@ export async function toggleRule(
   ruleId: string,
   enabled: boolean
 ): Promise<void> {
-  if (!API_BASE) return;
-  const res = await fetch(`${API_BASE}/groups/${groupId}/rules/${ruleId}`, {
+  if (DEMO_MODE) return;
+  await apiFetch<ReactionRule>(`/groups/${groupId}/rules/${ruleId}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ enabled })
   });
-  if (!res.ok) throw new Error(`Failed to toggle rule ${ruleId}`);
 }
 
 export async function deleteRule(groupId: string, ruleId: string): Promise<void> {
-  if (!API_BASE) return;
-  const res = await fetch(`${API_BASE}/groups/${groupId}/rules/${ruleId}`, {
+  if (DEMO_MODE) return;
+  await apiFetch<{ deleted: boolean }>(`/groups/${groupId}/rules/${ruleId}`, {
     method: 'DELETE'
   });
-  if (!res.ok) throw new Error(`Failed to delete rule ${ruleId}`);
+}
+
+export function isDemoModeEnabled(): boolean {
+  return DEMO_MODE;
 }

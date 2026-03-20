@@ -4,15 +4,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
-import { getGroups, getRules } from '../lib/api-client';
+import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
 export default function DashboardPage() {
   const [groups, setGroups] = useState<TelegramGroup[]>(MOCK_GROUPS);
   const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(MOCK_RULES);
   const [loading, setLoading] = useState(true);
+  const [launchSource, setLaunchSource] = useState('direct');
 
   useEffect(() => {
+    getMiniAppBootstrap().then((bootstrap) => setLaunchSource(bootstrap.context.launchSource));
+
     getGroups().then(async (fetchedGroups) => {
       setGroups(fetchedGroups);
       const rulesMap: Record<string, ReactionRule[]> = {};
@@ -40,11 +43,13 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8 pb-10">
       <Panel>
-        <p className="text-xs uppercase tracking-wider text-accent-cyan">Admin Dashboard</p>
-        <h1 className="mt-3 text-3xl font-semibold text-text">Stix Magic Dashboard</h1>
+        <p className="text-xs uppercase tracking-wider text-accent-cyan">Telegram Mini App / Control Center</p>
+        <h1 className="mt-3 text-3xl font-semibold text-text">STIX MΛGIC Telegram Control Center</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
-          Configure magic reactions for your Telegram groups. Select a group to manage its reaction
-          rules, or create new ones to automate responses.
+          Manage the same Telegram product system the bot launches. Groups, reaction rules, and future deployment actions all route through this mini app surface.
+        </p>
+        <p className="mt-3 text-xs text-muted">
+          Launch source: <span className="text-text">{launchSource}</span>. {isDemoModeEnabled() ? 'Demo data is enabled for this build.' : 'Live API mode is enabled for this build.'}
         </p>
       </Panel>
 

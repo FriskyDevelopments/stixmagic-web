@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
 import { Panel } from '@stixmagic/ui';
-import { getRules, createRule, toggleRule, deleteRule } from '../../../lib/api-client';
+import { getRules, createRule, toggleRule, deleteRule, isDemoModeEnabled } from '../../../lib/api-client';
 
 interface Props {
   groupId: string;
@@ -147,7 +147,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
   const handleSimulate = (rule: ReactionRule) => {
     setTestResult(
-      `🔄 Simulated locally — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". Connect a backend to fire this in Telegram.`
+      `🔄 Simulated locally — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". Wire Telegram execution in the bot runtime for full production behavior.`
     );
   };
 
@@ -192,9 +192,9 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       {saved && (
         <div className="rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-accent-teal">
           ✅ Rule saved successfully.
-          {process.env.NEXT_PUBLIC_API_URL
-            ? ' It will be applied to the group immediately.'
-            : ' Connect a backend API to persist rules to the bot.'}
+          {isDemoModeEnabled()
+            ? ' Demo mode is enabled, so this rule exists only in local scaffold data.'
+            : ' It will be applied through the shared Telegram API surface.'}
         </div>
       )}
 

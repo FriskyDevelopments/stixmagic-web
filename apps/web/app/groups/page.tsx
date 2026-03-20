@@ -4,15 +4,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
-import { getGroups, getRules } from '../lib/api-client';
+import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
 export default function GroupsPage() {
   const [groups, setGroups] = useState<TelegramGroup[]>(MOCK_GROUPS);
   const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(MOCK_RULES);
   const [loading, setLoading] = useState(true);
+  const [botUrl, setBotUrl] = useState('https://t.me/StixMagicBot');
 
   useEffect(() => {
+    getMiniAppBootstrap().then((bootstrap) => setBotUrl(bootstrap.config.links.botStartUrl));
+
     getGroups().then(async (fetchedGroups) => {
       const adminGroups = fetchedGroups.filter((g) => g.isAdmin);
       setGroups(adminGroups);
@@ -46,6 +49,7 @@ export default function GroupsPage() {
             </p>
           </div>
         </div>
+        <p className="text-xs text-muted">{isDemoModeEnabled() ? 'Demo mode shows seeded groups and rules.' : 'Live mode reads groups and rules from the shared API surface.'}</p>
       </Panel>
 
       {loading ? (
@@ -114,8 +118,7 @@ export default function GroupsPage() {
           <div>
             <p className="text-sm font-medium text-text">Don&apos;t see your group?</p>
             <p className="mt-1 text-sm text-muted">
-              Add the Stix Magic bot to your Telegram group and promote it to admin so it can
-              detect triggers and send reactions.
+              Add the STIX MΛGIC bot to your Telegram group and promote it to admin so the bot and mini app stay aligned on the same group inventory and rule set.
             </p>
             <ol className="mt-3 space-y-1 text-xs text-muted">
               <li>1. Open your Telegram group settings</li>
@@ -125,16 +128,13 @@ export default function GroupsPage() {
               <li>5. Refresh this page — your group will appear automatically</li>
             </ol>
           </div>
-          {/* NEXT_PUBLIC_BOT_USERNAME is embedded at build time.
-              Set it in .env.local (or CI) before building for the correct bot link.
-              A leading "@" is stripped automatically if present. */}
           <a
-            href={`https://t.me/${(process.env.NEXT_PUBLIC_BOT_USERNAME ?? 'StixMagicBot').replace(/^@/, '')}`}
+            href={botUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 rounded-lg bg-accent-cyan/10 px-5 py-2.5 text-center text-sm font-medium text-accent-cyan transition hover:bg-accent-cyan/20"
           >
-            Open Bot in Telegram →
+            Open Telegram Bot →
           </a>
         </div>
       </Panel>

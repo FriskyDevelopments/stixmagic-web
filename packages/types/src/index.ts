@@ -230,6 +230,7 @@ export function validatePipelineManifest(raw: unknown): ValidationResult<Pipelin
 }
 
 export type ActionType = 'send_message' | 'run_command' | 'call_webhook' | 'bot_reaction';
+export type BotRuntimeMode = 'polling' | 'webhook';
 
 export type MaskType =
   | 'default'
@@ -341,6 +342,53 @@ export interface ReactionRule {
   updatedAt: string;
 }
 
+export interface TelegramMiniAppUser {
+  id: string;
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface TelegramMiniAppInitData {
+  queryId?: string;
+  authDate?: string;
+  hash?: string;
+  user?: TelegramMiniAppUser;
+  chatType?: string;
+  chatInstance?: string;
+  startParam?: string;
+}
+
+export interface TelegramMiniAppContext {
+  launchSource: 'bot_command' | 'deep_link' | 'direct';
+  initDataUnsafe: TelegramMiniAppInitData | null;
+  rawInitData?: string;
+}
+
+export interface TelegramSurfaceLinks {
+  botUsername: string;
+  miniAppUrl: string;
+  botStartUrl: string;
+  miniAppStartUrl: string;
+}
+
+export interface TelegramPlatformConfig {
+  productName: string;
+  platform: 'telegram';
+  runtimeMode: BotRuntimeMode;
+  botUsername: string;
+  miniAppUrl: string;
+  apiBaseUrl: string;
+  webhookUrl?: string;
+  links: TelegramSurfaceLinks;
+}
+
+export interface TelegramMiniAppBootstrap {
+  config: TelegramPlatformConfig;
+  context: TelegramMiniAppContext;
+  groups: TelegramGroup[];
+}
+
 export interface ApiResponse<T> {
   ok: boolean;
   data: T;
@@ -362,6 +410,15 @@ export interface CreateTriggerRequest {
   stickerId: string;
   actionType: ActionType;
   actionPayload: Record<string, unknown>;
+}
+
+export interface CreateReactionRuleRequest {
+  name: string;
+  triggerType: TriggerType;
+  triggerValue: string;
+  responseType: ResponseType;
+  responseContent: string;
+  enabled: boolean;
 }
 
 export const BUILTIN_MASKS: MaskDefinition[] = [
