@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "workspaces": [
     "bot",
     "core",
     "web"
   ],
   "scripts": {
-    "dev": "bash -lc 'npm run dev:bot & npm run dev:web & wait'",
+    "dev": "node scripts/dev.mjs",
     "dev:bot": "npm run dev -w bot",
     "dev:web": "npm run dev -w web",
     "build": "npm run build -w core && npm run build -w bot && npm run build -w web",
