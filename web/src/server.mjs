@@ -1,9 +1,14 @@
 import http from 'node:http';
 import { readFileSync, existsSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { extname, resolve, normalize, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const port = Number(process.env.WEB_PORT || 3000);
-const baseDir = existsSync(new URL('../dist', import.meta.url)) ? new URL('../dist', import.meta.url) : new URL('..', import.meta.url);
+const distUrl = new URL('../dist', import.meta.url);
+const srcUrl = new URL('..', import.meta.url);
+const baseDir = existsSync(fileURLToPath(distUrl))
+  ? fileURLToPath(distUrl)
+  : fileURLToPath(srcUrl);
 const contentTypes = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -11,8 +16,17 @@ const contentTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  const requested = req.url === '/' ? '/index.html' : req.url || '/index.html';
-  const filePath = join(baseDir.pathname, requested.replace(/^\//, ''));
+  const { pathname } = new URL(req.url || '/', `http://localhost`);
+  const normalizedPathname = normalize(pathname);
+  const fileName = normalizedPathname === '/' || normalizedPathname === '' ? 'index.html' : normalizedPathname.replace(/^\//, '');
+  const filePath = resolve(baseDir, fileName);
+
+  const rel = relative(baseDir, filePath);
+  if (rel.startsWith('..') || resolve(filePath) === baseDir) {
+    res.writeHead(403, { 'content-type': 'text/plain; charset=utf-8' });
+    res.end('Forbidden');
+    return;
+  }
 
   try {
     const body = readFileSync(filePath);

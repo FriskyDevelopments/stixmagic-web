@@ -33,6 +33,11 @@ The bot is designed for Telegram group admins and community moderators who run r
 
 ## Local development
 
+### Requirements
+
+- **Node.js ≥ 22** (uses native `fetch`, `node --watch`, and `node:url` built-ins)
+- **npm ≥ 10** (workspace support required)
+
 ### 1. Install dependencies
 
 ```bash
