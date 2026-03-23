@@ -35,6 +35,7 @@ export class SessionStore {
     session.endedAt = undefined;
     session.speakerQueue = [];
     session.invitedParticipantIds = [];
+    session.announcementsSent = 0;
     return session;
   }
 
