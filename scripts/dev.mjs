@@ -28,7 +28,8 @@ for (const p of procs) {
     if (exitedCount === procs.length) process.exit(exitCode);
   });
 
-  p.on('error', () => {
+  p.on('error', (err) => {
+    console.error(`Failed to start process: ${err.message}`);
     exitedCount += 1;
     killAll(1);
     if (exitedCount === procs.length) process.exit(exitCode);
