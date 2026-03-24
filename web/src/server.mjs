@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { readFileSync, existsSync } from 'node:fs';
-import { extname, isAbsolute, join, normalize, relative, resolve } from 'node:path';
+import { extname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const port = Number(process.env.WEB_PORT || 3000);
@@ -14,12 +14,19 @@ const contentTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  const pathname = new URL(req.url || '/', `http://localhost`).pathname;
+  let pathname;
+  try {
+    pathname = new URL(req.url || '/', 'http://localhost').pathname;
+  } catch {
+    res.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' });
+    res.end('Bad Request');
+    return;
+  }
   const requested = pathname === '/' ? 'index.html' : pathname.slice(1);
   const filePath = resolve(join(baseDir, normalize(requested)));
   const rel = relative(baseDir, filePath);
 
-  if (rel.startsWith('..') || isAbsolute(rel)) {
+  if (rel === '..' || rel.startsWith('..' + sep) || isAbsolute(rel)) {
     res.writeHead(403, { 'content-type': 'text/plain; charset=utf-8' });
     res.end('Forbidden');
     return;

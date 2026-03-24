@@ -27,6 +27,12 @@ for (const p of procs) {
     killAll(code ?? 0);
     if (exitedCount === procs.length) process.exit(exitCode);
   });
+
+  p.on('error', () => {
+    exitedCount += 1;
+    killAll(1);
+    if (exitedCount === procs.length) process.exit(exitCode);
+  });
 }
 
 process.on('SIGINT', () => killAll(0));
