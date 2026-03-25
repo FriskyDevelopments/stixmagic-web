@@ -38,4 +38,4 @@ jobs:
         run: npm run build -w web
 
       - name: Deploy to Vercel (production)
-        run: npx vercel --prod --yes
+        run: npx vercel --prod --yes web/dist
