@@ -33,7 +33,10 @@ The bot is designed for Telegram group admins and community moderators who run r
 
 ## Local development
 
-**Requires Node.js ≥ 18.11.0** (for native `fetch` and `node --watch`).
+### Requirements
+
+- **Node.js ≥ 22** (uses native `fetch`, `node --watch`, and `node:url` built-ins)
+- **npm ≥ 10** (workspace support required)
 
 ### 1. Install dependencies
 
@@ -53,7 +56,6 @@ Required variable:
 
 Optional variables:
 
-- `BOT_USERNAME`
 - `SESSION_ANNOUNCE_TEMPLATE`
 - `WEB_PORT`
 
