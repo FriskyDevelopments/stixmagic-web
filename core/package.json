@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "node src/build.mjs",
-    "typecheck": "node --check src/index.js && node --check src/build.mjs"
+    "typecheck": "node --check src/index.js && node --check src/build.mjs",
+    "prepare": "npm run build"
   }
 }
