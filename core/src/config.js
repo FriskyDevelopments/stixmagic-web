@@ -7,8 +7,6 @@ export function loadConfig() {
   return {
     nodeEnv: process.env.NODE_ENV ?? 'development',
     telegramBotToken,
-    botUsername: process.env.BOT_USERNAME,
     sessionAnnounceTemplate: process.env.SESSION_ANNOUNCE_TEMPLATE ?? '🎙️ {title} is now live in {chatTitle}.',
-    webPort: Number(process.env.WEB_PORT ?? 3000)
   };
 }

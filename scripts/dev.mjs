@@ -1,29 +1,40 @@
 import { spawn } from 'node:child_process';
 
 const isWindows = process.platform === 'win32';
-const npm = isWindows ? 'npm.cmd' : 'npm';
+const npmCmd = isWindows ? 'npm.cmd' : 'npm';
 
-function run(workspace) {
-  const child = spawn(npm, ['run', 'dev', '-w', workspace], {
-    stdio: 'inherit',
-    shell: false
-  });
-  child.on('exit', (code) => {
-    if (code !== 0 && code !== null) {
-      console.error(`[${workspace}] exited with code ${code}`);
-      process.exit(code);
-    }
-  });
-  return child;
-}
+const procs = [
+  spawn(npmCmd, ['run', 'dev:bot'], { stdio: 'inherit' }),
+  spawn(npmCmd, ['run', 'dev:web'], { stdio: 'inherit' }),
+];
 
-const children = [run('bot'), run('web')];
+let exiting = false;
+let exitCode = 0;
+let exitedCount = 0;
 
-function shutdown() {
-  for (const child of children) {
-    child.kill();
+function killAll(code = 0) {
+  if (!exitCode) exitCode = code;
+  if (exiting) return;
+  exiting = true;
+  for (const p of procs) {
+    try { p.kill(); } catch { /* already exited */ }
   }
 }
 
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+for (const p of procs) {
+  p.on('exit', (code) => {
+    exitedCount += 1;
+    killAll(code ?? 0);
+    if (exitedCount === procs.length) process.exit(exitCode);
+  });
+
+  p.on('error', (err) => {
+    console.error(`Failed to start process: ${err.message}`);
+    exitedCount += 1;
+    killAll(1);
+    if (exitedCount === procs.length) process.exit(exitCode);
+  });
+}
+
+process.on('SIGINT', () => killAll(0));
+process.on('SIGTERM', () => killAll(0));

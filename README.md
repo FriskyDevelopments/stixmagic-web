@@ -56,7 +56,6 @@ Required variable:
 
 Optional variables:
 
-- `BOT_USERNAME`
 - `SESSION_ANNOUNCE_TEMPLATE`
 - `WEB_PORT`
 
