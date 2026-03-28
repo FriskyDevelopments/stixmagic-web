@@ -1,12 +1,13 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { z } from 'zod';
 import type { MaskType } from '@stixmagic/types';
-import { store } from '../lib/store.js';
+import { createSticker } from '../lib/repositories.js';
+import { enqueueJob } from '../jobs/queue.js';
 
 const createStickerSchema = z.object({
-  packId: z.string().min(1),
+  packId: z.string().uuid(),
   imageUrl: z.string().url(),
-  triggerId: z.string().min(1),
+  triggerId: z.string().uuid(),
   metadata: z.object({
     width: z.number().int().positive(),
     height: z.number().int().positive(),
@@ -18,13 +19,16 @@ const createStickerSchema = z.object({
 });
 
 export const stickersRoutes: FastifyPluginAsync = async (app) => {
-  app.post('/stickers', async (request, reply) => {
+  app.post('/stickers', { preHandler: [app.authorizeAdmin] }, async (request, reply) => {
     const payload = createStickerSchema.safeParse(request.body);
 
     if (!payload.success) {
       return reply.status(400).send({ ok: false, data: payload.error.flatten() });
     }
 
-    return { ok: true, data: store.createSticker(payload.data) };
+    const sticker = await createSticker(payload.data);
+    await enqueueJob('sticker.process', { stickerId: sticker.id, packId: sticker.packId });
+
+    return { ok: true, data: sticker };
   });
 };

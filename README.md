@@ -157,28 +157,22 @@ pnpm --filter @stixmagic/api dev
 - `sticker-engine` and `trigger-engine` remain service backends for asset processing and trigger execution.
 - PostgreSQL and S3-compatible storage are still required for a real deployment.
 
-## What still blocks full production readiness
+## Backend hardening status
 
-This repo is much closer to a coherent production architecture, but it is **not fully production-ready yet**.
+Recent backend work delivered a production-safe foundation for Telegram-facing trust and processing boundaries:
 
-Remaining gaps:
-
-- No real Telegram Mini App init-data signature verification yet.
-- No persistent database-backed storage for groups/rules; API state is still in-memory scaffold data.
-- No authenticated operator/session model for admin access.
-- No webhook ingress route implemented for Telegram updates in the bot runtime.
-- No queue/job orchestration between API and sticker engine.
-- No Telegram sticker-set publish integration yet.
-- No migrations, observability, or rate limiting yet.
+- Telegram Mini App init-data is now verified server-side before returning bootstrap data.
+- Admin operations now require authenticated Telegram identity and explicit admin authorization.
+- Telegram webhook ingestion now validates secret headers, parses typed updates, and handles duplicates idempotently.
+- Heavy trigger/sticker workflows are now acknowledged quickly and executed via durable queued jobs.
+- Sticker pack publishing now integrates with real Telegram Bot API methods for pack creation and sticker addition.
 
 ## Recommended next steps
 
-1. Implement Telegram webhook ingestion and verification.
-2. Replace in-memory group/rule storage with PostgreSQL-backed models.
-3. Validate Telegram Mini App init data server-side before returning bootstrap data.
-4. Add authenticated admin identity and authorization boundaries.
-5. Move trigger execution and sticker processing onto durable async jobs.
-6. Implement real Telegram sticker publishing and pack lifecycle flows.
+1. Swap the current file-backed persistence layer with PostgreSQL connection pooling in production deployments.
+2. Add per-route rate limiting and structured audit logging for admin actions.
+3. Add dead-letter and metrics around the job worker loop.
+4. Expand Telegram update handling coverage beyond message/sticker payloads.
 
 ## Docs
 
