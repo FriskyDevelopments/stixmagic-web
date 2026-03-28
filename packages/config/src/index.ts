@@ -23,6 +23,8 @@ const telegramSharedSchema = z.object({
   TELEGRAM_MINI_APP_URL: z.string().url(),
   TELEGRAM_BOT_MODE: z.enum(['polling', 'webhook']).default('polling'),
   TELEGRAM_WEBHOOK_URL: z.string().url().optional(),
+  TELEGRAM_WEBHOOK_SECRET: z.string().min(8).optional(),
+  TELEGRAM_INIT_DATA_MAX_AGE_SECONDS: z.coerce.number().int().positive().default(3600),
   STIXMAGIC_API_BASE_URL: z.string().url(),
   STIXMAGIC_PUBLIC_WEB_URL: z.string().url()
 });
