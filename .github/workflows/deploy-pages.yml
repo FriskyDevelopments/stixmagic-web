@@ -1,4 +1,4 @@
-name: Deploy Web to Vercel (Production)
+name: Deploy web/dist to Vercel (Production)
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: vercel-production
+  group: vercel-web-dist-production
   cancel-in-progress: true
 
 jobs:

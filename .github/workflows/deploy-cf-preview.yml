@@ -1,4 +1,4 @@
-name: Deploy Web to Cloudflare Pages (Dev / Preview)
+name: Deploy web/dist to Cloudflare Pages (Dev / Preview)
 
 on:
   push:
@@ -33,34 +33,23 @@ jobs:
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.1
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: pnpm
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build static web app
-        env:
-          NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: ${{ vars.STIXMAGIC_MANIFEST_URL_DEV || vars.STIXMAGIC_MANIFEST_URL || 'https://preview.stixmagic.com/manifest.json' }}
-          NEXT_PUBLIC_STIXMAGIC_API_BASE_URL: ${{ vars.STIXMAGIC_API_BASE_URL_DEV || vars.STIXMAGIC_API_BASE_URL || 'https://preview.stixmagic.com' }}
-          NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: ${{ vars.STIXMAGIC_PUBLIC_WEB_URL_DEV || vars.STIXMAGIC_PUBLIC_WEB_URL || 'https://preview.stixmagic.com' }}
-          NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: ${{ vars.STIXMAGIC_BOT_USERNAME || 'StixMagicBot' }}
-          NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL_DEV || vars.STIXMAGIC_MINI_APP_URL || 'https://preview.stixmagic.com/dashboard' }}
-        run: pnpm --filter @stixmagic/web build
+        run: npm run build -w web
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: web-out
-          path: apps/web/out
+          name: web-dist
+          path: web/dist
           retention-days: 1
 
   deploy:
@@ -77,8 +66,8 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: web-out
-          path: apps/web/out
+          name: web-dist
+          path: web/dist
 
       - name: Deploy to Cloudflare Pages (preview)
         id: deploy
@@ -87,5 +76,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ vars.CF_PAGES_PROJECT_NAME || 'stixmagic-web' }}
-          directory: apps/web/out
+          directory: web/dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

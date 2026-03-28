@@ -1,4 +1,4 @@
-name: Deploy Web to Vercel (Production)
+name: Deploy web/dist to Vercel (Production)
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   deployments: write
 
 concurrency:
-  group: vercel-production
+  group: vercel-apps-web-production
   cancel-in-progress: true
 
 jobs:
@@ -29,34 +29,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.1
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: pnpm
+          node-version: 22
+          cache: npm
 
-      - name: Install Vercel CLI
-        run: pnpm install -g vercel@latest
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Pull Vercel environment
-        run: vercel pull --yes --environment=production
-        working-directory: apps/web
-
-      - name: Build project
-        env:
-          NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: ${{ vars.STIXMAGIC_MANIFEST_URL || 'https://stixmagic.com/manifest.json' }}
-          NEXT_PUBLIC_STIXMAGIC_API_BASE_URL: ${{ vars.STIXMAGIC_API_BASE_URL || 'https://stixmagic.com' }}
-          NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: ${{ vars.STIXMAGIC_PUBLIC_WEB_URL || 'https://stixmagic.com' }}
-          NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: ${{ vars.STIXMAGIC_BOT_USERNAME || 'StixMagicBot' }}
-          NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL || 'https://stixmagic.com/dashboard' }}
-        run: vercel build --prod
-        working-directory: apps/web
+      - name: Build static web app
+        run: npm run build -w web
 
       - name: Deploy to Vercel (production)
-        run: vercel deploy --prebuilt --prod
-        working-directory: apps/web
+        run: npx vercel --prod --yes web/dist

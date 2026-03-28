@@ -1,4 +1,4 @@
-name: Deploy Web to Vercel (Dev / Preview)
+name: Deploy web/dist to Vercel (Dev / Preview)
 
 on:
   push:
@@ -18,7 +18,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: vercel-preview-${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
+  group: vercel-apps-web-preview-${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -32,34 +32,23 @@ jobs:
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.1
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: pnpm
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build static web app
-        env:
-          NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: ${{ vars.STIXMAGIC_MANIFEST_URL_DEV || vars.STIXMAGIC_MANIFEST_URL || 'https://preview.stixmagic.com/manifest.json' }}
-          NEXT_PUBLIC_STIXMAGIC_API_BASE_URL: ${{ vars.STIXMAGIC_API_BASE_URL_DEV || vars.STIXMAGIC_API_BASE_URL || 'https://preview.stixmagic.com' }}
-          NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: ${{ vars.STIXMAGIC_PUBLIC_WEB_URL_DEV || vars.STIXMAGIC_PUBLIC_WEB_URL || 'https://preview.stixmagic.com' }}
-          NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: ${{ vars.STIXMAGIC_BOT_USERNAME || 'StixMagicBot' }}
-          NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL_DEV || vars.STIXMAGIC_MINI_APP_URL || 'https://preview.stixmagic.com/dashboard' }}
-        run: pnpm --filter @stixmagic/web build
+        run: npm run build -w web
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: web-out
-          path: apps/web/out
+          name: web-dist
+          path: web/dist
           retention-days: 1
 
   deploy:
@@ -77,38 +66,14 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.1
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: web-out
-          path: apps/web/out
-
-      - name: Install Vercel CLI
-        run: pnpm install -g vercel@latest
-
-      - name: Pull Vercel environment
-        run: vercel pull --yes --environment=preview
-        working-directory: apps/web
+          name: web-dist
+          path: web/dist
 
       - name: Deploy to Vercel (preview)
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt)
+          url=$(npx vercel --yes web/dist)
           echo "url=$url" >> "$GITHUB_OUTPUT"
-        working-directory: apps/web
