@@ -50,6 +50,8 @@ jobs:
           NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: ${{ vars.STIXMAGIC_PUBLIC_WEB_URL || 'https://stixmagic.com' }}
           NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: ${{ vars.STIXMAGIC_BOT_USERNAME }}
           NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL || 'https://stixmagic.com/dashboard' }}
+          NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: 'false'
+          NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: ${{ vars.STIXMAGIC_ALLOW_API_FALLBACK || 'false' }}
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: apps/web
 

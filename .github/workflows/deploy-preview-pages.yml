@@ -38,12 +38,14 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build static web app
         env:
           GITHUB_PAGES: 'true'
           CUSTOM_DOMAIN: ${{ vars.PAGES_PREVIEW_DOMAIN || 'preview.stixmagic.com' }}
+          NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: ${{ vars.STIXMAGIC_USE_DEMO_DATA_PREVIEW || 'true' }}
+          NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: ${{ vars.STIXMAGIC_ALLOW_API_FALLBACK_PREVIEW || 'true' }}
         run: pnpm --filter @stixmagic/web build
 
       - name: Publish to preview Pages repository

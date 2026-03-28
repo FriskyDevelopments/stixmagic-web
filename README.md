@@ -107,7 +107,12 @@ The mini app no longer quietly depends on missing env vars to decide behavior.
 Demo data is now an explicit build-time choice:
 
 - `NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA=true` → UI uses seeded scaffold data
-- `false` → UI expects the shared API surface and only falls back when needed
+- `false` → UI expects the shared API surface and fails fast if API/bootstrap/auth requests fail
+
+Optional fallback behavior can still be turned on explicitly per environment:
+
+- `NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK=true` → allows fallback to seeded data when live API requests fail
+- Keep `NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK=false` in production so failures are visible and actionable
 
 ## Local development
 

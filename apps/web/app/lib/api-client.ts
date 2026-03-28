@@ -11,14 +11,52 @@ import { MOCK_GROUPS, MOCK_RULES } from './mock-data';
 const clientEnv = loadTelegramClientEnv();
 const API_BASE = clientEnv.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL;
 const DEMO_MODE = clientEnv.NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA === 'true';
+const ALLOW_API_FALLBACK = clientEnv.NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK === 'true';
+
+function buildDemoBootstrap(): TelegramMiniAppBootstrap {
+  return {
+    config: {
+      productName: 'STIX MΛGIC',
+      platform: 'telegram',
+      runtimeMode: 'polling',
+      botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+      miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+      apiBaseUrl: API_BASE,
+      links: {
+        botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+        miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+        botStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}`,
+        miniAppStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}/app`
+      }
+    },
+    context: {
+      launchSource: 'direct',
+      initDataUnsafe: null
+    },
+    groups: MOCK_GROUPS
+  };
+}
+
+function resolveInitDataHeader(): string | null {
+  if (typeof window === 'undefined') return null;
+  const telegram = (window as Window & { Telegram?: { WebApp?: { initData?: string } } }).Telegram;
+  const initData = telegram?.WebApp?.initData;
+  return initData && initData.length > 0 ? initData : null;
+}
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const initDataHeader = resolveInitDataHeader();
+  const headers = new Headers(init?.headers ?? {});
+  if (!headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
+  if (initDataHeader && !headers.has('x-telegram-init-data')) {
+    headers.set('x-telegram-init-data', initDataHeader);
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
     ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {})
-    }
+    headers
   });
 
   if (!res.ok) throw new Error(`API ${res.status} for ${path}`);
@@ -29,53 +67,14 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
 export async function getMiniAppBootstrap(): Promise<TelegramMiniAppBootstrap> {
   if (DEMO_MODE) {
-    return {
-      config: {
-        productName: 'STIX MΛGIC',
-        platform: 'telegram',
-        runtimeMode: 'polling',
-        botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
-        miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
-        apiBaseUrl: API_BASE,
-        links: {
-          botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
-          miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
-          botStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}`,
-          miniAppStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}/app`
-        }
-      },
-      context: {
-        launchSource: 'direct',
-        initDataUnsafe: null
-      },
-      groups: MOCK_GROUPS
-    };
+    return buildDemoBootstrap();
   }
 
   try {
     return await apiFetch<TelegramMiniAppBootstrap>('/telegram/mini-app/bootstrap');
-  } catch {
-    return {
-      config: {
-        productName: 'STIX MΛGIC',
-        platform: 'telegram',
-        runtimeMode: 'polling',
-        botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
-        miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
-        apiBaseUrl: API_BASE,
-        links: {
-          botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
-          miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
-          botStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}`,
-          miniAppStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}/app`
-        }
-      },
-      context: {
-        launchSource: 'direct',
-        initDataUnsafe: null
-      },
-      groups: MOCK_GROUPS
-    };
+  } catch (error) {
+    if (ALLOW_API_FALLBACK) return buildDemoBootstrap();
+    throw error;
   }
 }
 
@@ -83,7 +82,8 @@ export async function getGroups(): Promise<TelegramGroup[]> {
   if (DEMO_MODE) return MOCK_GROUPS;
   try {
     return await apiFetch<TelegramGroup[]>('/groups');
-  } catch {
+  } catch (error) {
+    if (!ALLOW_API_FALLBACK) throw error;
     return MOCK_GROUPS;
   }
 }
@@ -92,7 +92,8 @@ export async function getGroup(id: string): Promise<TelegramGroup | null> {
   if (DEMO_MODE) return MOCK_GROUPS.find((g) => g.id === id) ?? null;
   try {
     return await apiFetch<TelegramGroup>(`/groups/${id}`);
-  } catch {
+  } catch (error) {
+    if (!ALLOW_API_FALLBACK) throw error;
     return MOCK_GROUPS.find((g) => g.id === id) ?? null;
   }
 }
@@ -101,7 +102,8 @@ export async function getRules(groupId: string): Promise<ReactionRule[]> {
   if (DEMO_MODE) return MOCK_RULES[groupId] ?? [];
   try {
     return await apiFetch<ReactionRule[]>(`/groups/${groupId}/rules`);
-  } catch {
+  } catch (error) {
+    if (!ALLOW_API_FALLBACK) throw error;
     return MOCK_RULES[groupId] ?? [];
   }
 }
@@ -142,4 +144,8 @@ export async function deleteRule(groupId: string, ruleId: string): Promise<void>
 
 export function isDemoModeEnabled(): boolean {
   return DEMO_MODE;
+}
+
+export function isApiFallbackEnabled(): boolean {
+  return ALLOW_API_FALLBACK;
 }

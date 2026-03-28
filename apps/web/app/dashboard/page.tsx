@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
-import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled } from '../lib/api-client';
+import { getGroups, getRules, getMiniAppBootstrap, isApiFallbackEnabled, isDemoModeEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
 export default function DashboardPage() {
@@ -12,21 +12,32 @@ export default function DashboardPage() {
   const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(MOCK_RULES);
   const [loading, setLoading] = useState(true);
   const [launchSource, setLaunchSource] = useState('direct');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    getMiniAppBootstrap().then((bootstrap) => setLaunchSource(bootstrap.context.launchSource));
+    async function loadDashboardData() {
+      try {
+        const bootstrap = await getMiniAppBootstrap();
+        setLaunchSource(bootstrap.context.launchSource);
 
-    getGroups().then(async (fetchedGroups) => {
-      setGroups(fetchedGroups);
-      const rulesMap: Record<string, ReactionRule[]> = {};
-      await Promise.all(
-        fetchedGroups.map(async (g) => {
-          rulesMap[g.id] = await getRules(g.id);
-        })
-      );
-      setAllRules(rulesMap);
-      setLoading(false);
-    });
+        const fetchedGroups = await getGroups();
+        setGroups(fetchedGroups);
+        const rulesMap: Record<string, ReactionRule[]> = {};
+        await Promise.all(
+          fetchedGroups.map(async (g) => {
+            rulesMap[g.id] = await getRules(g.id);
+          })
+        );
+        setAllRules(rulesMap);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        setErrorMessage(`Failed to load control center data from API: ${message}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDashboardData();
   }, []);
 
   const totalRules = Object.values(allRules).reduce((sum, rules) => sum + rules.length, 0);
@@ -51,6 +62,12 @@ export default function DashboardPage() {
         <p className="mt-3 text-xs text-muted">
           Launch source: <span className="text-text">{launchSource}</span>. {isDemoModeEnabled() ? 'Demo data is enabled for this build.' : 'Live API mode is enabled for this build.'}
         </p>
+        {!isDemoModeEnabled() && isApiFallbackEnabled() ? (
+          <p className="mt-2 text-xs text-amber-300">
+            API fallback is enabled for this build. Mock data can appear when API requests fail.
+          </p>
+        ) : null}
+        {errorMessage ? <p className="mt-2 text-xs text-red-300">{errorMessage}</p> : null}
       </Panel>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -143,4 +160,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

@@ -33,7 +33,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Configure custom domain (optional)
         env:
@@ -47,6 +47,8 @@ jobs:
         env:
           GITHUB_PAGES: 'true'
           CUSTOM_DOMAIN: ${{ vars.PAGES_CUSTOM_DOMAIN }}
+          NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: ${{ vars.STIXMAGIC_USE_DEMO_DATA_PAGES || 'true' }}
+          NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: ${{ vars.STIXMAGIC_ALLOW_API_FALLBACK_PAGES || 'true' }}
         run: pnpm --filter @stixmagic/web build
 
       - name: Upload pages artifact

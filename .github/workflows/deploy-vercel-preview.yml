@@ -53,6 +53,8 @@ jobs:
           NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: ${{ vars.STIXMAGIC_PUBLIC_WEB_URL_DEV || vars.STIXMAGIC_PUBLIC_WEB_URL || 'https://preview.stixmagic.com' }}
           NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: ${{ vars.STIXMAGIC_BOT_USERNAME }}
           NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL_DEV || vars.STIXMAGIC_MINI_APP_URL || 'https://preview.stixmagic.com/dashboard' }}
+          NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: 'false'
+          NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: ${{ vars.STIXMAGIC_ALLOW_API_FALLBACK_DEV || vars.STIXMAGIC_ALLOW_API_FALLBACK || 'true' }}
         run: pnpm --filter @stixmagic/web build
 
       - name: Upload build artifact
