@@ -1,4 +1,4 @@
-name: Deploy Preview Web to Vercel
+name: Deploy web/dist to Vercel (Preview) — Pages
 
 on:
   push:
