@@ -24,7 +24,9 @@ concurrency:
 jobs:
   build:
     name: Build
+    if: ${{ vars.DEPLOY_PROVIDER == 'vercel' && vars.ENABLE_PREVIEW_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -66,8 +68,9 @@ jobs:
     name: Deploy to Vercel (Preview)
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     # Skip deploy for PRs from forks — secrets are not available there
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
+    if: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false) && vars.DEPLOY_PROVIDER == 'vercel' && vars.ENABLE_PREVIEW_DEPLOY == 'true' }}
     environment:
       name: dev
       url: ${{ steps.deploy.outputs.url }}
@@ -88,6 +91,9 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Download build artifact
         uses: actions/download-artifact@v4
