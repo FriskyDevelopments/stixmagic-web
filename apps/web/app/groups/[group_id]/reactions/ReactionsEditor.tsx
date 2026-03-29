@@ -70,10 +70,20 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    getRules(groupId).then((r) => {
-      setRules(r);
-      setLoading(false);
-    });
+    async function loadRules() {
+      try {
+        const r = await getRules(groupId);
+        setRules(r);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        console.warn('[API_FAIL]', { message });
+        setError(`Failed to load reaction rules: ${message}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadRules();
   }, [groupId]);
 
   // Clear auto-dismiss timers when the component unmounts to avoid

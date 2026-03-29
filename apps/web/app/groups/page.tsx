@@ -1,34 +1,49 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
-import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled } from '../lib/api-client';
+import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled, isApiFallbackEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
 export default function GroupsPage() {
-  const [groups, setGroups] = useState<TelegramGroup[]>(MOCK_GROUPS);
-  const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(MOCK_RULES);
+  const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
+  const [groups, setGroups] = useState<TelegramGroup[]>(allowFallback ? MOCK_GROUPS : []);
+  const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(allowFallback ? MOCK_RULES : {});
   const [loading, setLoading] = useState(true);
   const [botUrl, setBotUrl] = useState('https://t.me/StixMagicBot');
 
   useEffect(() => {
-    getMiniAppBootstrap().then((bootstrap) => setBotUrl(bootstrap.config.links.botStartUrl));
+    async function loadGroupsData() {
+      try {
+        const bootstrap = await getMiniAppBootstrap();
+        setBotUrl(bootstrap.config.links.botStartUrl);
 
-    getGroups().then(async (fetchedGroups) => {
-      const adminGroups = fetchedGroups.filter((g) => g.isAdmin);
-      setGroups(adminGroups);
-      const rulesMap: Record<string, ReactionRule[]> = {};
-      await Promise.all(
-        adminGroups.map(async (g) => {
-          rulesMap[g.id] = await getRules(g.id);
-        })
-      );
-      setAllRules(rulesMap);
-      setLoading(false);
-    });
-  }, []);
+        const fetchedGroups = await getGroups();
+        const adminGroups = fetchedGroups.filter((g) => g.isAdmin);
+        setGroups(adminGroups);
+        const rulesMap: Record<string, ReactionRule[]> = {};
+        await Promise.all(
+          adminGroups.map(async (g) => {
+            rulesMap[g.id] = await getRules(g.id);
+          })
+        );
+        setAllRules(rulesMap);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        console.warn('[API_FAIL]', { allowFallback, message });
+        if (!allowFallback) {
+          setGroups([]);
+          setAllRules({});
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadGroupsData();
+  }, [allowFallback]);
 
   return (
     <div className="space-y-6 pb-10">

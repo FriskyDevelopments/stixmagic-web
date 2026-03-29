@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
@@ -8,8 +8,9 @@ import { getGroups, getRules, getMiniAppBootstrap, isApiFallbackEnabled, isDemoM
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
 export default function DashboardPage() {
-  const [groups, setGroups] = useState<TelegramGroup[]>(MOCK_GROUPS);
-  const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(MOCK_RULES);
+  const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
+  const [groups, setGroups] = useState<TelegramGroup[]>(allowFallback ? MOCK_GROUPS : []);
+  const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(allowFallback ? MOCK_RULES : {});
   const [loading, setLoading] = useState(true);
   const [launchSource, setLaunchSource] = useState('direct');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -31,14 +32,19 @@ export default function DashboardPage() {
         setAllRules(rulesMap);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
+        console.warn('[API_FAIL]', { allowFallback, message });
         setErrorMessage(`Failed to load control center data from API: ${message}`);
+        if (!allowFallback) {
+          setGroups([]);
+          setAllRules({});
+        }
       } finally {
         setLoading(false);
       }
     }
 
     loadDashboardData();
-  }, []);
+  }, [allowFallback]);
 
   const totalRules = Object.values(allRules).reduce((sum, rules) => sum + rules.length, 0);
   const activeRules = Object.values(allRules)
