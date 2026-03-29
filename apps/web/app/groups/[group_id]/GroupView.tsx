@@ -1,29 +1,54 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
-import { getGroup, getRules } from '../../lib/api-client';
+import { getGroup, getRules, isDemoModeEnabled, isApiFallbackEnabled } from '../../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../../lib/mock-data';
 
 interface Props {
   groupId: string;
 }
 
+/**
+ * Render the group details page and its reaction rules.
+ *
+ * Renders header, summary metrics, group settings, and the list of reaction rules for the
+ * Telegram group identified by `groupId`. Fetches group and rules data on mount (and when
+ * `groupId` changes), shows a loading state while fetching, and supports using mock fallback
+ * data when demo or API-fallback mode is enabled.
+ *
+ * @param groupId - Identifier for the Telegram group whose details and reaction rules are displayed
+ * @returns A React element containing the group details UI, including loading, empty, and error-aware states
+ */
 export default function GroupView({ groupId }: Props) {
-  const fallbackGroup = MOCK_GROUPS.find((g) => g.id === groupId) ?? null;
+  const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
+  const fallbackGroup = allowFallback ? (MOCK_GROUPS.find((g) => g.id === groupId) ?? null) : null;
   const [group, setGroup] = useState<TelegramGroup | null>(fallbackGroup);
-  const [rules, setRules] = useState<ReactionRule[]>(MOCK_RULES[groupId] ?? []);
+  const [rules, setRules] = useState<ReactionRule[]>(allowFallback ? (MOCK_RULES[groupId] ?? []) : []);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([getGroup(groupId), getRules(groupId)]).then(([g, r]) => {
-      if (g) setGroup(g);
-      setRules(r);
-      setLoading(false);
-    });
-  }, [groupId]);
+    async function loadGroupData() {
+      try {
+        const [g, r] = await Promise.all([getGroup(groupId), getRules(groupId)]);
+        if (g) setGroup(g);
+        setRules(r);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        console.warn('[API_FAIL]', { allowFallback, message });
+        if (!allowFallback) {
+          setGroup(null);
+          setRules([]);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadGroupData();
+  }, [groupId, allowFallback]);
 
   if (!group) {
     return (

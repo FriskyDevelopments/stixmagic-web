@@ -64,7 +64,8 @@ const telegramClientSchema = z.object({
   NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: z.string().url().default('http://localhost:3000/dashboard'),
   NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: z.string().url().default('http://localhost:3000'),
   NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: z.string().url().optional(),
-  NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: z.enum(['true', 'false']).default('false')
+  NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: z.enum(['true', 'false']).default('false'),
+  NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: z.enum(['true', 'false']).default('false')
 });
 
 export type WebConfig = z.infer<typeof webSchema>;

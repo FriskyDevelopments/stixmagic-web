@@ -59,6 +59,20 @@ const RESPONSE_HINT: Partial<Record<ResponseType, string>> = {
     'To get a GIF file ID: send the animation in a chat with your Stix Magic bot, which will reply with the file ID.'
 };
 
+/**
+ * Render an interactive editor for creating, listing, and managing reaction rules for a group.
+ *
+ * The component loads rules for `groupId`, shows a form to create new rules, and displays existing
+ * rules with controls to simulate, enable/disable, and delete them.
+ *
+ * Notes:
+ * - Toggling and deleting rules update the UI optimistically and persist changes via API calls.
+ * - Simulation is local-only and does not call the backend.
+ *
+ * @param groupId - The identifier of the group whose reaction rules are managed
+ * @param groupName - The display name of the group used in UI labels and messages
+ * @returns The React element that provides the ReactionsEditor UI for the specified group
+ */
 export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [rules, setRules] = useState<ReactionRule[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,10 +84,20 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    getRules(groupId).then((r) => {
-      setRules(r);
-      setLoading(false);
-    });
+    async function loadRules() {
+      try {
+        const r = await getRules(groupId);
+        setRules(r);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        console.warn('[API_FAIL]', { message });
+        setError(`Failed to load reaction rules: ${message}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadRules();
   }, [groupId]);
 
   // Clear auto-dismiss timers when the component unmounts to avoid

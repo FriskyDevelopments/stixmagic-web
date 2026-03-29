@@ -1,33 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
-import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled } from '../lib/api-client';
+import { getGroups, getRules, getMiniAppBootstrap, isApiFallbackEnabled, isDemoModeEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
+/**
+ * Render the Telegram Control Center dashboard showing connected groups, reaction-rule statistics, and quick-start instructions.
+ *
+ * The component loads bootstrap context, groups, and per-group reaction rules from the API, falling back to bundled mock data when demo mode or API fallback is enabled. While fetching it shows loading placeholders; if loading fails it displays an error banner and (when fallback is enabled) mock data.
+ *
+ * @returns The page element containing stats panels, a groups list (with per-group status and rule counts), and a quick-start panel.
+ */
 export default function DashboardPage() {
-  const [groups, setGroups] = useState<TelegramGroup[]>(MOCK_GROUPS);
-  const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(MOCK_RULES);
+  const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
+  const [groups, setGroups] = useState<TelegramGroup[]>(allowFallback ? MOCK_GROUPS : []);
+  const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(allowFallback ? MOCK_RULES : {});
   const [loading, setLoading] = useState(true);
   const [launchSource, setLaunchSource] = useState('direct');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    getMiniAppBootstrap().then((bootstrap) => setLaunchSource(bootstrap.context.launchSource));
+    async function loadDashboardData() {
+      try {
+        const bootstrap = await getMiniAppBootstrap();
+        setLaunchSource(bootstrap.context.launchSource);
 
-    getGroups().then(async (fetchedGroups) => {
-      setGroups(fetchedGroups);
-      const rulesMap: Record<string, ReactionRule[]> = {};
-      await Promise.all(
-        fetchedGroups.map(async (g) => {
-          rulesMap[g.id] = await getRules(g.id);
-        })
-      );
-      setAllRules(rulesMap);
-      setLoading(false);
-    });
-  }, []);
+        const fetchedGroups = await getGroups();
+        setGroups(fetchedGroups);
+        const rulesMap: Record<string, ReactionRule[]> = {};
+        await Promise.all(
+          fetchedGroups.map(async (g) => {
+            rulesMap[g.id] = await getRules(g.id);
+          })
+        );
+        setAllRules(rulesMap);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        console.warn('[API_FAIL]', { allowFallback, message });
+        setErrorMessage(`Failed to load control center data from API: ${message}`);
+        if (!allowFallback) {
+          setGroups([]);
+          setAllRules({});
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDashboardData();
+  }, [allowFallback]);
 
   const totalRules = Object.values(allRules).reduce((sum, rules) => sum + rules.length, 0);
   const activeRules = Object.values(allRules)
@@ -51,6 +75,12 @@ export default function DashboardPage() {
         <p className="mt-3 text-xs text-muted">
           Launch source: <span className="text-text">{launchSource}</span>. {isDemoModeEnabled() ? 'Demo data is enabled for this build.' : 'Live API mode is enabled for this build.'}
         </p>
+        {!isDemoModeEnabled() && isApiFallbackEnabled() ? (
+          <p className="mt-2 text-xs text-amber-300">
+            API fallback is enabled for this build. Mock data can appear when API requests fail.
+          </p>
+        ) : null}
+        {errorMessage ? <p className="mt-2 text-xs text-red-300">{errorMessage}</p> : null}
       </Panel>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -143,4 +173,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
