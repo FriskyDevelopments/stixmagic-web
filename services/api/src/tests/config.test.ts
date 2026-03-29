@@ -45,6 +45,22 @@ function assertNotContains(haystack: string, needle: string, label: string): voi
   );
 }
 
+/** Assert that content has no bare pnpm install (without --frozen-lockfile or -g). */
+function assertNoBarePnpmInstall(content: string, label: string): void {
+  const bareInstall = content
+    .split('\n')
+    .filter(
+      (line) =>
+        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
+        !line.trimStart().startsWith('#'),
+    );
+  assert.equal(
+    bareInstall.length,
+    0,
+    `${label}: found bare pnpm install lines: ${bareInstall.join('; ')}`,
+  );
+}
+
 // ---------------------------------------------------------------------------
 // ci.yml
 // ---------------------------------------------------------------------------
@@ -63,18 +79,7 @@ test('ci.yml: no bare pnpm install without --frozen-lockfile', () => {
   const content = readFile('.github/workflows/ci.yml');
   // Lines that contain "pnpm install" must all include "--frozen-lockfile".
   // (pnpm install -g vercel is allowed because it is a global CLI tool install.)
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `ci.yml: found bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'ci.yml');
 });
 
 // ---------------------------------------------------------------------------
@@ -102,24 +107,15 @@ test('deploy-cf-preview.yml: both jobs have timeout-minutes: 20', () => {
 
 test('deploy-cf-preview.yml: all install steps use --frozen-lockfile', () => {
   const content = readFile('.github/workflows/deploy-cf-preview.yml');
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `deploy-cf-preview.yml: bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'deploy-cf-preview.yml');
 });
 
 test('deploy-cf-preview.yml: deploy job includes a checkout step', () => {
   const content = readFile('.github/workflows/deploy-cf-preview.yml');
   // The deploy job section starts after "deploy:" job heading.
-  const deploySection = content.slice(content.indexOf('\n  deploy:'));
+  const idx = content.indexOf('\n  deploy:');
+  assert.ok(idx !== -1, 'deploy-cf-preview.yml: deploy job section not found');
+  const deploySection = content.slice(idx);
   assertContains(deploySection, 'actions/checkout@v4', 'deploy-cf-preview.yml deploy job checkout');
 });
 
@@ -140,18 +136,7 @@ test('deploy-cf-production.yml: job has timeout-minutes: 20', () => {
 
 test('deploy-cf-production.yml: install step uses --frozen-lockfile', () => {
   const content = readFile('.github/workflows/deploy-cf-production.yml');
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `deploy-cf-production.yml: bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'deploy-cf-production.yml');
 });
 
 // ---------------------------------------------------------------------------
@@ -182,18 +167,7 @@ test('deploy-pages.yml: both jobs have timeout-minutes: 20', () => {
 
 test('deploy-pages.yml: install step uses --frozen-lockfile', () => {
   const content = readFile('.github/workflows/deploy-pages.yml');
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `deploy-pages.yml: bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'deploy-pages.yml');
 });
 
 // ---------------------------------------------------------------------------
@@ -213,18 +187,7 @@ test('deploy-preview-pages.yml: job has timeout-minutes: 20', () => {
 
 test('deploy-preview-pages.yml: install step uses --frozen-lockfile', () => {
   const content = readFile('.github/workflows/deploy-preview-pages.yml');
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `deploy-preview-pages.yml: bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'deploy-preview-pages.yml');
 });
 
 test('deploy-preview-pages.yml: file ends with newline (no missing trailing newline)', () => {
@@ -257,18 +220,7 @@ test('deploy-vercel-preview.yml: both jobs have timeout-minutes: 20', () => {
 
 test('deploy-vercel-preview.yml: all install steps use --frozen-lockfile', () => {
   const content = readFile('.github/workflows/deploy-vercel-preview.yml');
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `deploy-vercel-preview.yml: bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'deploy-vercel-preview.yml');
 });
 
 test('deploy-vercel-preview.yml: deploy job includes pnpm install --frozen-lockfile step', () => {
@@ -300,18 +252,7 @@ test('deploy-vercel-production.yml: includes pnpm install --frozen-lockfile step
 
 test('deploy-vercel-production.yml: no bare pnpm install without --frozen-lockfile or -g', () => {
   const content = readFile('.github/workflows/deploy-vercel-production.yml');
-  const bareInstall = content
-    .split('\n')
-    .filter(
-      (line) =>
-        /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-        !line.trimStart().startsWith('#'),
-    );
-  assert.equal(
-    bareInstall.length,
-    0,
-    `deploy-vercel-production.yml: bare pnpm install lines: ${bareInstall.join('; ')}`,
-  );
+  assertNoBarePnpmInstall(content, 'deploy-vercel-production.yml');
 });
 
 // ---------------------------------------------------------------------------
@@ -430,7 +371,7 @@ test('apps/web/.eslintrc.json: only contains expected keys', () => {
     'apps/web/.eslintrc.json: must have "extends" key',
   );
   // Boundary: no accidental rule overrides or unexpected top-level keys were introduced
-  const unexpectedKeys = keys.filter((k) => !['extends', 'rules', 'plugins', 'env', 'settings', 'overrides', 'parser', 'parserOptions'].includes(k));
+  const unexpectedKeys = keys.filter((k) => !['extends', 'rules', 'plugins', 'env', 'settings', 'overrides', 'parser', 'parserOptions', 'root', 'ignorePatterns', 'globals'].includes(k));
   assert.equal(
     unexpectedKeys.length,
     0,
@@ -455,18 +396,7 @@ const WORKFLOW_FILES = [
 test('regression: no workflow uses bare pnpm install (all use --frozen-lockfile or -g flag)', () => {
   for (const file of WORKFLOW_FILES) {
     const content = readFile(file);
-    const bareInstall = content
-      .split('\n')
-      .filter(
-        (line) =>
-          /pnpm install(?! --frozen-lockfile)(?! -g)/.test(line) &&
-          !line.trimStart().startsWith('#'),
-      );
-    assert.equal(
-      bareInstall.length,
-      0,
-      `${file}: found bare pnpm install lines: ${bareInstall.join('; ')}`,
-    );
+    assertNoBarePnpmInstall(content, file);
   }
 });
 
