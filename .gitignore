@@ -22,3 +22,6 @@ coverage/
 # Env
 .env
 apps/web/tsconfig.tsbuildinfo
+
+# Local API runtime data
+services/api/data/

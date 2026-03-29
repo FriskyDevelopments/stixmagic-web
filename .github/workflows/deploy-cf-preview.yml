@@ -25,7 +25,9 @@ concurrency:
 jobs:
   build:
     name: Build
+    if: ${{ vars.DEPLOY_PROVIDER == 'cloudflare' && vars.ENABLE_PREVIEW_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -45,7 +47,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build static web app
         env:
@@ -67,13 +69,33 @@ jobs:
     name: Deploy to Cloudflare Pages
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     # Skip deploy for PRs from forks — secrets are not available there
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
+    if: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false) && vars.DEPLOY_PROVIDER == 'cloudflare' && vars.ENABLE_PREVIEW_DEPLOY == 'true' }}
     environment:
       name: dev
       url: ${{ steps.deploy.outputs.url }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
@@ -89,4 +111,3 @@ jobs:
           projectName: ${{ vars.CF_PAGES_PROJECT_NAME || 'stixmagic-web' }}
           directory: apps/web/out
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-

@@ -16,7 +16,9 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ vars.DEPLOY_PROVIDER == 'github-pages' && vars.ENABLE_PROD_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,7 +35,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Configure custom domain (optional)
         env:
@@ -55,8 +57,10 @@ jobs:
           path: apps/web/out
 
   deploy:
+    if: ${{ vars.DEPLOY_PROVIDER == 'github-pages' && vars.ENABLE_PROD_DEPLOY == 'true' }}
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

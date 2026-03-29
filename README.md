@@ -174,6 +174,14 @@ Recent backend work delivered a production-safe foundation for Telegram-facing t
 3. Add dead-letter and metrics around the job worker loop.
 4. Expand Telegram update handling coverage beyond message/sticker payloads.
 
+## Deployment and environment docs
+
+For deployment-safe setup and bot ecosystem integration contracts, see:
+
+- [`docs/deployment.md`](docs/deployment.md)
+- [`docs/environment_matrix.md`](docs/environment_matrix.md)
+- [`docs/integration_points.md`](docs/integration_points.md)
+
 ## Docs
 
 - [`infra/deploy/production-architecture.md`](infra/deploy/production-architecture.md)

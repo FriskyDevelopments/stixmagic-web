@@ -19,7 +19,9 @@ concurrency:
 
 jobs:
   deploy-preview:
+    if: ${{ vars.DEPLOY_PROVIDER == 'external-pages' && vars.ENABLE_PREVIEW_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +40,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build static web app
         env:
