@@ -9,11 +9,14 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
+    "test": {
+      "dependsOn": ["^test"]
     }
   }
 }
