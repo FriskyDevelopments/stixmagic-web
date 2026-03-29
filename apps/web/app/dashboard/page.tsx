@@ -7,6 +7,13 @@ import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
 import { getGroups, getRules, getMiniAppBootstrap, isApiFallbackEnabled, isDemoModeEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
+/**
+ * Render the Telegram Control Center dashboard showing connected groups, reaction-rule statistics, and quick-start instructions.
+ *
+ * The component loads bootstrap context, groups, and per-group reaction rules from the API, falling back to bundled mock data when demo mode or API fallback is enabled. While fetching it shows loading placeholders; if loading fails it displays an error banner and (when fallback is enabled) mock data.
+ *
+ * @returns The page element containing stats panels, a groups list (with per-group status and rule counts), and a quick-start panel.
+ */
 export default function DashboardPage() {
   const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
   const [groups, setGroups] = useState<TelegramGroup[]>(allowFallback ? MOCK_GROUPS : []);

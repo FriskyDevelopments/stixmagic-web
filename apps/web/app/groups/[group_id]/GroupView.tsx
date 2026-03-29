@@ -11,6 +11,17 @@ interface Props {
   groupId: string;
 }
 
+/**
+ * Render the group details page and its reaction rules.
+ *
+ * Renders header, summary metrics, group settings, and the list of reaction rules for the
+ * Telegram group identified by `groupId`. Fetches group and rules data on mount (and when
+ * `groupId` changes), shows a loading state while fetching, and supports using mock fallback
+ * data when demo or API-fallback mode is enabled.
+ *
+ * @param groupId - Identifier for the Telegram group whose details and reaction rules are displayed
+ * @returns A React element containing the group details UI, including loading, empty, and error-aware states
+ */
 export default function GroupView({ groupId }: Props) {
   const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
   const fallbackGroup = allowFallback ? (MOCK_GROUPS.find((g) => g.id === groupId) ?? null) : null;

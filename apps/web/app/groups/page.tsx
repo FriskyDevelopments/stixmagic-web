@@ -7,6 +7,13 @@ import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
 import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled, isApiFallbackEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
+/**
+ * Renders the Connected Groups page that lists admin-only Telegram groups, their member counts, and reaction rule summaries.
+ *
+ * Displays a loading state, seeded demo data when demo or API fallback is enabled, and a card grid linking to each group's management view. Also includes instructions for adding the bot and a link to open the Telegram bot.
+ *
+ * @returns A React element for the Connected Groups page.
+ */
 export default function GroupsPage() {
   const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
   const [groups, setGroups] = useState<TelegramGroup[]>(allowFallback ? MOCK_GROUPS : []);
