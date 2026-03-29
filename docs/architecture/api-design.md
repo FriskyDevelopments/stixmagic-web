@@ -1,6 +1,21 @@
-# API Design
+# STIX MAGIC — Mini App & Groups API
 
 Base service: `services/api`
+
+## Scope
+
+This document defines the public-facing API surface used by:
+- Telegram Mini App (LORE / STIX MAGIC UI)
+- Telegram group interactions (bot-triggered flows)
+
+⚠️ This document does **NOT** include internal/admin endpoints implemented in `services/api`,
+such as:
+- `GET/POST /packs`
+- `POST /stickers`
+- `GET/POST /triggers`
+
+These routes remain active and are used by bot/internal flows.
+They should be considered **internal/legacy** and are documented separately.
 
 ## Response contract
 
@@ -85,3 +100,11 @@ Basic service liveness probe.
 ### `POST /internal/jobs/process-once`
 
 Manually process one queued job (operational debug path).
+
+## Internal/Admin API
+
+For pack management, sticker ingestion, and trigger configuration endpoints, see:
+
+→ `/docs/api/admin-api.md` (source of truth)
+
+These endpoints are not part of the Mini App public contract.
