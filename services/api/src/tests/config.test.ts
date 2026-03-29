@@ -226,7 +226,9 @@ test('deploy-vercel-preview.yml: all install steps use --frozen-lockfile', () =>
 test('deploy-vercel-preview.yml: deploy job includes pnpm install --frozen-lockfile step', () => {
   const content = readFile('.github/workflows/deploy-vercel-preview.yml');
   // The deploy job section starts after "  deploy:" heading.
-  const deploySection = content.slice(content.indexOf('\n  deploy:'));
+  const idx = content.indexOf('\n  deploy:');
+  assert.ok(idx !== -1, 'deploy-vercel-preview.yml: could not find "  deploy:" job section in file');
+  const deploySection = content.slice(idx);
   assertContains(deploySection, 'pnpm install --frozen-lockfile', 'deploy-vercel-preview.yml deploy job install');
 });
 
