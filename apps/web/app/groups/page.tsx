@@ -7,11 +7,26 @@ import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
 import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled, isApiFallbackEnabled } from '../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
+function formatApiFailureMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : '';
+  if (message.includes('API 401')) {
+    return 'Authentication failed. Re-open the mini app from Telegram and try again.';
+  }
+  if (message.includes('API 403')) {
+    return 'Your account is not authorized to access groups for this workspace.';
+  }
+  if (message.includes('API 5')) {
+    return 'The API is currently unavailable. Please retry in a moment.';
+  }
+  return 'We could not load groups from the API. Please refresh and try again.';
+}
+
 export default function GroupsPage() {
   const allowFallback = useMemo(() => isDemoModeEnabled() || isApiFallbackEnabled(), []);
   const [groups, setGroups] = useState<TelegramGroup[]>(allowFallback ? MOCK_GROUPS : []);
   const [allRules, setAllRules] = useState<Record<string, ReactionRule[]>>(allowFallback ? MOCK_RULES : {});
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [botUrl, setBotUrl] = useState('https://t.me/StixMagicBot');
 
   useEffect(() => {
@@ -23,6 +38,7 @@ export default function GroupsPage() {
         const fetchedGroups = await getGroups();
         const adminGroups = fetchedGroups.filter((g) => g.isAdmin);
         setGroups(adminGroups);
+        setErrorMessage(null);
         const rulesMap: Record<string, ReactionRule[]> = {};
         await Promise.all(
           adminGroups.map(async (g) => {
@@ -31,9 +47,10 @@ export default function GroupsPage() {
         );
         setAllRules(rulesMap);
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        console.warn('[API_FAIL]', { allowFallback, message });
+        const technicalMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.warn('[API_FAIL]', { allowFallback, message: technicalMessage });
         if (!allowFallback) {
+          setErrorMessage(formatApiFailureMessage(error));
           setGroups([]);
           setAllRules({});
         }
@@ -77,6 +94,14 @@ export default function GroupsPage() {
             </Panel>
           ))}
         </div>
+      ) : errorMessage ? (
+        <Panel variant="secondary">
+          <p className="text-sm font-medium text-text">Couldn&apos;t load groups.</p>
+          <p className="mt-1 text-sm text-muted">{errorMessage}</p>
+          <p className="mt-2 text-xs text-muted">
+            Check your sign-in/session in Telegram and confirm the API service is reachable, then refresh.
+          </p>
+        </Panel>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {groups.map((group) => {
@@ -156,4 +181,3 @@ export default function GroupsPage() {
     </div>
   );
 }
-
