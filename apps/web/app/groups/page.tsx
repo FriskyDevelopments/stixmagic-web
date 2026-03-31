@@ -8,14 +8,17 @@ import { getGroups, getRules, getMiniAppBootstrap, isDemoModeEnabled, isApiFallb
 import { MOCK_GROUPS, MOCK_RULES } from '../lib/mock-data';
 
 function formatApiFailureMessage(error: unknown): string {
-  const message = error instanceof Error ? error.message : '';
-  if (message.includes('API 401')) {
+  const message = error instanceof Error ? error.message : String(error ?? '');
+  const match = message.match(/API\s+(\d{3})/);
+  const statusCode = match ? Number(match[1]) : null;
+
+  if (statusCode === 401) {
     return 'Authentication failed. Re-open the mini app from Telegram and try again.';
   }
-  if (message.includes('API 403')) {
+  if (statusCode === 403) {
     return 'Your account is not authorized to access groups for this workspace.';
   }
-  if (message.includes('API 5')) {
+  if (statusCode !== null && statusCode >= 500 && statusCode < 600) {
     return 'The API is currently unavailable. Please retry in a moment.';
   }
   return 'We could not load groups from the API. Please refresh and try again.';
