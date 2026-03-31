@@ -6,26 +6,10 @@ import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
 import { getGroup, getRules, isDemoModeEnabled, isApiFallbackEnabled } from '../../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../../lib/mock-data';
+import { formatApiFailureMessage } from '../../lib/format-api-error';
 
 interface Props {
   groupId: string;
-}
-
-function formatApiFailureMessage(error: unknown): string {
-  const message = error instanceof Error ? error.message : '';
-  if (message.includes('API 401')) {
-    return 'Authentication failed. Re-open the mini app from Telegram and try again.';
-  }
-  if (message.includes('API 403')) {
-    return 'Your account is not authorized to access this group.';
-  }
-  if (message.includes('API 404')) {
-    return 'This group no longer exists or you no longer have access to it.';
-  }
-  if (message.includes('API 5')) {
-    return 'The API is currently unavailable. Please retry in a moment.';
-  }
-  return 'We could not load this group from the API. Please refresh and try again.';
 }
 
 export default function GroupView({ groupId }: Props) {
@@ -47,7 +31,7 @@ export default function GroupView({ groupId }: Props) {
         const technicalMessage = error instanceof Error ? error.message : 'Unknown error';
         console.warn('[API_FAIL]', { allowFallback, message: technicalMessage });
         if (!allowFallback) {
-          setErrorMessage(formatApiFailureMessage(error));
+          setErrorMessage(formatApiFailureMessage(error, 'this group'));
           setGroup(null);
           setRules([]);
         }
