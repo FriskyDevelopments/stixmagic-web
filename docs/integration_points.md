@@ -30,11 +30,13 @@ Mini app/API client paths in use:
 - `PATCH /groups/:groupId/rules/:ruleId`
 - `DELETE /groups/:groupId/rules/:ruleId`
 
-Bot/API interactions in use:
+Bot/API interactions and operator/debug endpoints:
 
 - `GET /packs`
-- `POST /internal/jobs/process-once` (internal process route)
-- Trigger execution service call via `TRIGGER_ENGINE_URL/execute`
+- Operator/debug job kick endpoint (not called by `apps/bot` at runtime):
+  - `POST /internal/jobs/process-once`
+  - Intended invocation: manual curl/Postman call by an operator, or from ad-hoc scripts, to force a single job-processing tick (primarily in non-production/debug environments).
+- Trigger execution service call via `TRIGGER_ENGINE_URL/execute` (invoked by API/engine services, not directly by the bot).
 
 ## 4) Telegram integration assumptions
 
