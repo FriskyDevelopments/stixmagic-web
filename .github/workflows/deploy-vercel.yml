@@ -1,14 +1,14 @@
-name: Deploy web/dist to Vercel (Dev / Preview)
+name: Deploy to Vercel
 
 on:
   push:
-    branches: [preview, dev]
+    branches: [main, preview, dev]
   pull_request:
     branches: [main]
   workflow_dispatch:
     inputs:
       source_ref:
-        description: 'Branch, tag, or commit SHA to deploy to dev/preview'
+        description: 'Branch, tag, or commit SHA to deploy'
         required: true
         default: 'preview'
 
@@ -18,7 +18,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: vercel-apps-web-preview-${{ github.event_name == 'workflow_dispatch' && inputs.source_ref || github.ref }}
+  group: vercel-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -52,13 +52,13 @@ jobs:
           retention-days: 1
 
   deploy:
-    name: Deploy to Vercel (Preview)
+    name: Deploy to Vercel
     needs: build
     runs-on: ubuntu-latest
     # Skip deploy for PRs from forks — secrets are not available there
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     environment:
-      name: dev
+      name: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'production' || 'dev' }}
       url: ${{ steps.deploy.outputs.url }}
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -72,8 +72,14 @@ jobs:
           name: web-dist
           path: web/dist
 
-      - name: Deploy to Vercel (preview)
+      - name: Deploy to Vercel
         id: deploy
+        env:
+          IS_PRODUCTION: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
         run: |
-          url=$(npx vercel --yes web/dist 2>&1 | grep -E '^https://' | tail -1)
+          flags="--yes"
+          if [ "$IS_PRODUCTION" = "true" ]; then
+            flags="$flags --prod"
+          fi
+          url=$(npx vercel $flags web/dist 2>&1 | grep -E '^https://' | tail -1)
           echo "url=$url" >> "$GITHUB_OUTPUT"
