@@ -51,7 +51,7 @@ This matrix documents development vs production expectations for STIX MΛGIC web
 | `NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL` | Yes | Yes | Public web origin. |
 | `NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME` | Yes | Yes | Bot deep-link UX. |
 | `NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL` | Yes | Yes | Client-visible app URL. |
-| `NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL` | Optional | Optional | Pipeline manifest endpoint; blank uses sample. |
+| `NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL` | Optional | Optional | Pipeline manifest endpoint; leave **unset/omitted** to use sample data (do not set to an empty string). |
 | `NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA` | Optional | Optional | `true` for demo fallback UI mode. |
 
 ## CI/CD repository variables and secrets
