@@ -6,6 +6,7 @@ import { Panel } from '@stixmagic/ui';
 import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
 import { getGroup, getRules, isDemoModeEnabled, isApiFallbackEnabled } from '../../lib/api-client';
 import { MOCK_GROUPS, MOCK_RULES } from '../../lib/mock-data';
+import { formatApiFailureMessage } from '../../lib/format-api-error';
 
 interface Props {
   groupId: string;
@@ -28,6 +29,7 @@ export default function GroupView({ groupId }: Props) {
   const [group, setGroup] = useState<TelegramGroup | null>(fallbackGroup);
   const [rules, setRules] = useState<ReactionRule[]>(allowFallback ? (MOCK_RULES[groupId] ?? []) : []);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadGroupData() {
@@ -35,10 +37,12 @@ export default function GroupView({ groupId }: Props) {
         const [g, r] = await Promise.all([getGroup(groupId), getRules(groupId)]);
         if (g) setGroup(g);
         setRules(r);
+        setErrorMessage(null);
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        console.warn('[API_FAIL]', { allowFallback, message });
+        const technicalMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.warn('[API_FAIL]', { allowFallback, message: technicalMessage });
         if (!allowFallback) {
+          setErrorMessage(formatApiFailureMessage(error, 'this group'));
           setGroup(null);
           setRules([]);
         }
@@ -49,6 +53,18 @@ export default function GroupView({ groupId }: Props) {
 
     loadGroupData();
   }, [groupId, allowFallback]);
+
+  if (!group && errorMessage) {
+    return (
+      <Panel variant="secondary">
+        <p className="text-sm font-medium text-text">Couldn&apos;t load this group.</p>
+        <p className="mt-1 text-sm text-muted">{errorMessage}</p>
+        <p className="mt-2 text-xs text-muted">
+          Check your Telegram login/session and API availability, then refresh this page.
+        </p>
+      </Panel>
+    );
+  }
 
   if (!group) {
     return (
