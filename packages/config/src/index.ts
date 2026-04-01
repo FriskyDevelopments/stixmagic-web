@@ -7,6 +7,9 @@ import type {
   TelegramSurfaceLinks
 } from '@stixmagic/types';
 
+/** Treat empty string as absent so unset GitHub Actions vars don't fail optional URL validation. */
+const optionalUrl = z.preprocess((v) => (v === '' ? undefined : v), z.string().url().optional());
+
 const baseSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   POSTGRES_URL: z.string().url(),
@@ -35,7 +38,7 @@ const webSchema = baseSchema.extend({
   NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: z.string().min(1).optional(),
   NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: z.string().url().optional(),
   NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: z.string().url().optional(),
-  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: z.string().url().optional(),
+  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: optionalUrl,
   NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: z.enum(['true', 'false']).optional()
 });
 
@@ -63,7 +66,7 @@ const telegramClientSchema = z.object({
   NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: z.string().min(1).default('StixMagicBot'),
   NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: z.string().url().default('http://localhost:3000/dashboard'),
   NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: z.string().url().default('http://localhost:3000'),
-  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: z.string().url().optional(),
+  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: optionalUrl,
   NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: z.enum(['true', 'false']).default('false')
 });
 
