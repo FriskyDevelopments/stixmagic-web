@@ -39,7 +39,7 @@ This matrix documents development vs production expectations for STIX MΛGIC web
 | `TELEGRAM_BOT_USERNAME` | bot/web/api | No | Yes | Yes | Without `@` preferred. |
 | `TELEGRAM_MINI_APP_URL` | bot/api | No | Yes | Yes | Full Mini App URL used in bot handoff. |
 | `TELEGRAM_BOT_MODE` | bot/api | No | Yes | Yes | `polling` or `webhook`. |
-| `TELEGRAM_WEBHOOK_URL` | bot/api | No | No* | Yes (webhook mode) | Required when mode is `webhook`. |
+| `TELEGRAM_WEBHOOK_URL` | bot/api | No | No | Yes (webhook mode) | Required when mode is `webhook`; not needed in dev if using polling mode. |
 | `TELEGRAM_WEBHOOK_SECRET` | api webhook | No | Recommended | Yes | Strong random secret for webhook validation. |
 | `TELEGRAM_INIT_DATA_MAX_AGE_SECONDS` | api | No | Recommended | Yes | Replay/freshness control for Mini App init-data. |
 
