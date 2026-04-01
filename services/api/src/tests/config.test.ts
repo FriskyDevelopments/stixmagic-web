@@ -409,3 +409,330 @@ test('regression: every deploy workflow (except ci) has at least one DEPLOY_PROV
     assertContains(content, 'vars.DEPLOY_PROVIDER', file);
   }
 });
+
+// ---------------------------------------------------------------------------
+// apps/web/app/lib/api-client.ts — removed API-fallback surface
+// ---------------------------------------------------------------------------
+
+test('api-client.ts: isApiFallbackEnabled function is NOT exported', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertNotContains(content, 'isApiFallbackEnabled', 'api-client.ts');
+});
+
+test('api-client.ts: ALLOW_API_FALLBACK constant is NOT present', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertNotContains(content, 'ALLOW_API_FALLBACK', 'api-client.ts');
+});
+
+test('api-client.ts: resolveInitDataHeader function is NOT present', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertNotContains(content, 'resolveInitDataHeader', 'api-client.ts');
+});
+
+test('api-client.ts: buildDemoBootstrap helper function is NOT present', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertNotContains(content, 'buildDemoBootstrap', 'api-client.ts');
+});
+
+test('api-client.ts: apiFetch does not use new Headers() — uses plain object', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertNotContains(content, 'new Headers(', 'api-client.ts');
+});
+
+test('api-client.ts: apiFetch sets Content-Type application/json header', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertContains(content, "'Content-Type': 'application/json'", 'api-client.ts');
+});
+
+test('api-client.ts: NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK is NOT referenced', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertNotContains(content, 'NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK', 'api-client.ts');
+});
+
+test('api-client.ts: isDemoModeEnabled is still exported', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  assertContains(content, 'export function isDemoModeEnabled', 'api-client.ts');
+});
+
+test('api-client.ts: catch blocks for getGroups/getGroup/getRules return mock data unconditionally', () => {
+  const content = readFile('apps/web/app/lib/api-client.ts');
+  // Catch blocks should no longer gate on ALLOW_API_FALLBACK — they return mock directly.
+  // Verify the pattern: catch { return MOCK_GROUPS; } and catch { return MOCK_RULES[...]; }
+  assertContains(content, 'return MOCK_GROUPS;', 'api-client.ts getGroups fallback');
+  // getGroup fallback returns find result
+  assertContains(content, 'return MOCK_GROUPS.find', 'api-client.ts getGroup fallback');
+  // getRules fallback
+  assertContains(content, 'return MOCK_RULES[groupId]', 'api-client.ts getRules fallback');
+});
+
+// ---------------------------------------------------------------------------
+// apps/web/app/dashboard/page.tsx — removed fallback/error state
+// ---------------------------------------------------------------------------
+
+test('dashboard/page.tsx: does not import isApiFallbackEnabled', () => {
+  const content = readFile('apps/web/app/dashboard/page.tsx');
+  assertNotContains(content, 'isApiFallbackEnabled', 'apps/web/app/dashboard/page.tsx');
+});
+
+test('dashboard/page.tsx: does not reference ALLOW_API_FALLBACK', () => {
+  const content = readFile('apps/web/app/dashboard/page.tsx');
+  assertNotContains(content, 'ALLOW_API_FALLBACK', 'apps/web/app/dashboard/page.tsx');
+});
+
+test('dashboard/page.tsx: still imports isDemoModeEnabled', () => {
+  const content = readFile('apps/web/app/dashboard/page.tsx');
+  assertContains(content, 'isDemoModeEnabled', 'apps/web/app/dashboard/page.tsx');
+});
+
+test('dashboard/page.tsx: initializes groups state with MOCK_GROUPS', () => {
+  const content = readFile('apps/web/app/dashboard/page.tsx');
+  assertContains(content, 'useState<TelegramGroup[]>(MOCK_GROUPS)', 'apps/web/app/dashboard/page.tsx');
+});
+
+test('dashboard/page.tsx: errorMessage state is removed', () => {
+  const content = readFile('apps/web/app/dashboard/page.tsx');
+  assertNotContains(content, 'errorMessage', 'apps/web/app/dashboard/page.tsx');
+});
+
+// ---------------------------------------------------------------------------
+// apps/web/app/groups/page.tsx — removed fallback/error state
+// ---------------------------------------------------------------------------
+
+test('groups/page.tsx: does not import isApiFallbackEnabled', () => {
+  const content = readFile('apps/web/app/groups/page.tsx');
+  assertNotContains(content, 'isApiFallbackEnabled', 'apps/web/app/groups/page.tsx');
+});
+
+test('groups/page.tsx: does not import useMemo', () => {
+  const content = readFile('apps/web/app/groups/page.tsx');
+  assertNotContains(content, 'useMemo', 'apps/web/app/groups/page.tsx');
+});
+
+test('groups/page.tsx: initializes groups state with MOCK_GROUPS', () => {
+  const content = readFile('apps/web/app/groups/page.tsx');
+  assertContains(content, 'useState<TelegramGroup[]>(MOCK_GROUPS)', 'apps/web/app/groups/page.tsx');
+});
+
+// ---------------------------------------------------------------------------
+// apps/web/app/groups/[group_id]/GroupView.tsx — simplified data loading
+// ---------------------------------------------------------------------------
+
+test('GroupView.tsx: does not import isApiFallbackEnabled', () => {
+  const content = readFile('apps/web/app/groups/[group_id]/GroupView.tsx');
+  assertNotContains(content, 'isApiFallbackEnabled', 'GroupView.tsx');
+});
+
+test('GroupView.tsx: does not import useMemo', () => {
+  const content = readFile('apps/web/app/groups/[group_id]/GroupView.tsx');
+  assertNotContains(content, 'useMemo', 'GroupView.tsx');
+});
+
+test('GroupView.tsx: fallbackGroup resolves directly from MOCK_GROUPS without allowFallback guard', () => {
+  const content = readFile('apps/web/app/groups/[group_id]/GroupView.tsx');
+  // allowFallback variable should not exist
+  assertNotContains(content, 'allowFallback', 'GroupView.tsx');
+});
+
+// ---------------------------------------------------------------------------
+// apps/web/app/groups/[group_id]/reactions/ReactionsEditor.tsx — simplified useEffect
+// ---------------------------------------------------------------------------
+
+test('ReactionsEditor.tsx: does not reference isApiFallbackEnabled', () => {
+  const content = readFile('apps/web/app/groups/[group_id]/reactions/ReactionsEditor.tsx');
+  assertNotContains(content, 'isApiFallbackEnabled', 'ReactionsEditor.tsx');
+});
+
+test('ReactionsEditor.tsx: loads rules using getRules().then() promise chain', () => {
+  const content = readFile('apps/web/app/groups/[group_id]/reactions/ReactionsEditor.tsx');
+  assertContains(content, 'getRules(groupId).then', 'ReactionsEditor.tsx');
+});
+
+test('ReactionsEditor.tsx: error state from catch block (setError) is removed', () => {
+  const content = readFile('apps/web/app/groups/[group_id]/reactions/ReactionsEditor.tsx');
+  // The old loadRules() set an error message via setError in catch block
+  // The simplified version does not use try/catch at all in the useEffect
+  assertNotContains(content, "setError(`Failed to load reaction rules", 'ReactionsEditor.tsx');
+});
+
+// ---------------------------------------------------------------------------
+// packages/config/src/index.ts — schema changes
+// ---------------------------------------------------------------------------
+
+test('packages/config/src/index.ts: NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK is NOT in telegramClientSchema', () => {
+  const content = readFile('packages/config/src/index.ts');
+  assertNotContains(content, 'NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK', 'packages/config/src/index.ts');
+});
+
+test('packages/config/src/index.ts: TELEGRAM_INIT_DATA_MAX_AGE_SECONDS is in telegramSharedSchema with default 3600', () => {
+  const content = readFile('packages/config/src/index.ts');
+  assertContains(content, 'TELEGRAM_INIT_DATA_MAX_AGE_SECONDS', 'packages/config/src/index.ts');
+  assertContains(content, '.default(3600)', 'packages/config/src/index.ts');
+});
+
+test('packages/config/src/index.ts: TELEGRAM_WEBHOOK_SECRET is in telegramSharedSchema', () => {
+  const content = readFile('packages/config/src/index.ts');
+  assertContains(content, 'TELEGRAM_WEBHOOK_SECRET', 'packages/config/src/index.ts');
+});
+
+test('packages/config/src/index.ts: NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA is in telegramClientSchema with default false', () => {
+  const content = readFile('packages/config/src/index.ts');
+  assertContains(content, 'NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA', 'packages/config/src/index.ts');
+  assertContains(content, ".default('false')", 'packages/config/src/index.ts');
+});
+
+test('packages/config/src/index.ts: loadTelegramClientEnv is exported', () => {
+  const content = readFile('packages/config/src/index.ts');
+  assertContains(content, 'export const loadTelegramClientEnv', 'packages/config/src/index.ts');
+});
+
+test('packages/config/src/index.ts: telegramClientSchema has exactly 6 NEXT_PUBLIC fields (no ALLOW_API_FALLBACK)', () => {
+  const content = readFile('packages/config/src/index.ts');
+  // Extract the telegramClientSchema block
+  const schemaStart = content.indexOf('const telegramClientSchema = z.object({');
+  const schemaEnd = content.indexOf('});', schemaStart);
+  assert.ok(schemaStart !== -1, 'packages/config/src/index.ts: telegramClientSchema block not found');
+  const schemaBlock = content.slice(schemaStart, schemaEnd);
+  const fieldMatches = schemaBlock.match(/NEXT_PUBLIC_\w+/g) ?? [];
+  const uniqueFields = [...new Set(fieldMatches)];
+  assert.equal(
+    uniqueFields.length,
+    6,
+    `packages/config/src/index.ts: expected 6 NEXT_PUBLIC fields in telegramClientSchema, found: ${uniqueFields.join(', ')}`,
+  );
+});
+
+// ---------------------------------------------------------------------------
+// apps/web/package.json — lint/typecheck script and eslint dep changes
+// ---------------------------------------------------------------------------
+
+test('apps/web/package.json: is valid JSON', () => {
+  const content = readFile('apps/web/package.json');
+  assert.doesNotThrow(() => JSON.parse(content), 'apps/web/package.json must be valid JSON');
+});
+
+test('apps/web/package.json: lint script uses next lint', () => {
+  const content = readFile('apps/web/package.json');
+  const pkg = JSON.parse(content) as { scripts?: Record<string, string> };
+  assert.equal(pkg.scripts?.lint, 'next lint', 'apps/web/package.json: lint script should be "next lint"');
+});
+
+test('apps/web/package.json: typecheck script uses -p tsconfig.json flag', () => {
+  const content = readFile('apps/web/package.json');
+  const pkg = JSON.parse(content) as { scripts?: Record<string, string> };
+  assert.ok(
+    pkg.scripts?.typecheck?.includes('-p tsconfig.json'),
+    `apps/web/package.json: typecheck should include "-p tsconfig.json", got: ${pkg.scripts?.typecheck}`,
+  );
+});
+
+test('apps/web/package.json: eslint is NOT in devDependencies', () => {
+  const content = readFile('apps/web/package.json');
+  const pkg = JSON.parse(content) as { devDependencies?: Record<string, string> };
+  assert.ok(
+    !Object.prototype.hasOwnProperty.call(pkg.devDependencies ?? {}, 'eslint'),
+    'apps/web/package.json: eslint should not be in devDependencies after migration to next lint',
+  );
+});
+
+test('apps/web/package.json: eslint-config-next is NOT in devDependencies', () => {
+  const content = readFile('apps/web/package.json');
+  const pkg = JSON.parse(content) as { devDependencies?: Record<string, string> };
+  assert.ok(
+    !Object.prototype.hasOwnProperty.call(pkg.devDependencies ?? {}, 'eslint-config-next'),
+    'apps/web/package.json: eslint-config-next should not be in devDependencies',
+  );
+});
+
+// ---------------------------------------------------------------------------
+// turbo.json — test task removed, lint/typecheck remain
+// ---------------------------------------------------------------------------
+
+test('turbo.json: is valid JSON', () => {
+  const content = readFile('turbo.json');
+  assert.doesNotThrow(() => JSON.parse(content), 'turbo.json must be valid JSON');
+});
+
+test('turbo.json: does NOT contain a test task', () => {
+  const content = readFile('turbo.json');
+  const turbo = JSON.parse(content) as { tasks?: Record<string, unknown> };
+  assert.ok(
+    !Object.prototype.hasOwnProperty.call(turbo.tasks ?? {}, 'test'),
+    'turbo.json: "test" task should have been removed from the pipeline',
+  );
+});
+
+test('turbo.json: lint task is present', () => {
+  const content = readFile('turbo.json');
+  const turbo = JSON.parse(content) as { tasks?: Record<string, unknown> };
+  assert.ok(
+    Object.prototype.hasOwnProperty.call(turbo.tasks ?? {}, 'lint'),
+    'turbo.json: "lint" task must be present',
+  );
+});
+
+test('turbo.json: typecheck task is present', () => {
+  const content = readFile('turbo.json');
+  const turbo = JSON.parse(content) as { tasks?: Record<string, unknown> };
+  assert.ok(
+    Object.prototype.hasOwnProperty.call(turbo.tasks ?? {}, 'typecheck'),
+    'turbo.json: "typecheck" task must be present',
+  );
+});
+
+test('turbo.json: build task is present with outputs configuration', () => {
+  const content = readFile('turbo.json');
+  const turbo = JSON.parse(content) as { tasks?: Record<string, { outputs?: string[] }> };
+  assert.ok(
+    Object.prototype.hasOwnProperty.call(turbo.tasks ?? {}, 'build'),
+    'turbo.json: "build" task must be present',
+  );
+  const outputs = turbo.tasks?.build?.outputs ?? [];
+  assert.ok(outputs.length > 0, 'turbo.json: build task must declare outputs');
+});
+
+// ---------------------------------------------------------------------------
+// Regression: .env.example no longer references removed vars
+// ---------------------------------------------------------------------------
+
+test('.env.example: NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK is NOT present', () => {
+  const content = readFile('.env.example');
+  assertNotContains(content, 'NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK', '.env.example');
+});
+
+test('.env.example: STIXMAGIC_ALLOW_API_FALLBACK is NOT present', () => {
+  const content = readFile('.env.example');
+  assertNotContains(content, 'STIXMAGIC_ALLOW_API_FALLBACK', '.env.example');
+});
+
+// ---------------------------------------------------------------------------
+// Regression: cross-file — no changed file re-introduces removed identifiers
+// ---------------------------------------------------------------------------
+
+const CHANGED_WEB_FILES = [
+  'apps/web/app/dashboard/page.tsx',
+  'apps/web/app/groups/page.tsx',
+  'apps/web/app/groups/[group_id]/GroupView.tsx',
+  'apps/web/app/groups/[group_id]/reactions/ReactionsEditor.tsx',
+  'apps/web/app/lib/api-client.ts',
+];
+
+test('regression: no changed web file references isApiFallbackEnabled', () => {
+  for (const file of CHANGED_WEB_FILES) {
+    const content = readFile(file);
+    assertNotContains(content, 'isApiFallbackEnabled', file);
+  }
+});
+
+test('regression: no changed web file references ALLOW_API_FALLBACK', () => {
+  for (const file of CHANGED_WEB_FILES) {
+    const content = readFile(file);
+    assertNotContains(content, 'ALLOW_API_FALLBACK', file);
+  }
+});
+
+test('regression: no changed web file references NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK', () => {
+  for (const file of CHANGED_WEB_FILES) {
+    const content = readFile(file);
+    assertNotContains(content, 'NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK', file);
+  }
+});
