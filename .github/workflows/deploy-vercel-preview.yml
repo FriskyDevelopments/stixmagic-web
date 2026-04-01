@@ -75,5 +75,5 @@ jobs:
       - name: Deploy to Vercel (preview)
         id: deploy
         run: |
-          url=$(npx vercel --yes web/dist)
+          url=$(npx vercel --yes web/dist 2>&1 | grep -E '^https://' | tail -1)
           echo "url=$url" >> "$GITHUB_OUTPUT"
