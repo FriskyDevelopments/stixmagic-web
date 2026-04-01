@@ -17,6 +17,7 @@ This matrix documents development vs production expectations for STIX MΛGIC web
 | `BOT_PORT` | bot | No | Yes | Optional | Local bot process port if needed by host. |
 | `STICKER_ENGINE_PORT` | sticker-engine | No | Yes | Optional | Local service port. |
 | `TRIGGER_ENGINE_PORT` | trigger-engine | No | Yes | Optional | Local service port. |
+| `TRIGGER_ENGINE_URL` | bot | No | Yes | Optional | Base URL the bot uses to call the trigger engine (defaults to `http://localhost:4300`). |
 
 ## Infrastructure variables (private)
 
