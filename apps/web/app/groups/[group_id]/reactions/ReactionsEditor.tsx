@@ -240,10 +240,11 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
           <div className="mt-5 space-y-5">
             {/* Rule Name */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <label htmlFor="ruleName" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Rule Name
               </label>
               <input
+                id="ruleName"
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -278,7 +279,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Trigger Value */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <label htmlFor="triggerValue" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Value
               </label>
 
@@ -302,6 +303,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     ))}
                   </div>
                   <input
+                    id="triggerValue"
                     type="text"
                     value={form.triggerValue}
                     onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
@@ -312,6 +314,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               ) : (
                 <>
                   <input
+                    id="triggerValue"
                     type="text"
                     value={form.triggerValue}
                     onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
@@ -352,11 +355,12 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Response Content */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <label htmlFor="responseContent" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Content
               </label>
               {form.responseType === 'message' ? (
                 <textarea
+                  id="responseContent"
                   value={form.responseContent}
                   onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
                   placeholder={RESPONSE_PLACEHOLDER.message}
@@ -365,6 +369,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 />
               ) : (
                 <input
+                  id="responseContent"
                   type="text"
                   value={form.responseContent}
                   onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
