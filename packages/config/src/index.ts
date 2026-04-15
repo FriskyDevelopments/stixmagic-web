@@ -60,10 +60,10 @@ const triggerEngineSchema = baseSchema.extend({
 
 const telegramClientSchema = z.object({
   NEXT_PUBLIC_STIXMAGIC_API_BASE_URL: z.string().url().default('http://localhost:4000'),
-  NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: z.string().min(1).default('StixMagicBot'),
+  NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: z.string().default('StixMagicBot'),
   NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: z.string().url().default('http://localhost:3000/dashboard'),
   NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: z.string().url().default('http://localhost:3000'),
-  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: z.string().url().optional(),
+  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: z.string().url().optional().or(z.literal('')),
   NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: z.enum(['true', 'false']).default('false'),
   NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: z.enum(['true', 'false']).default('false')
 });
