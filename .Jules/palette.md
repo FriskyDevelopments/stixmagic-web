@@ -1,3 +1,3 @@
-## 2024-05-18 - Improve Form Label Associations
-**Learning:** Found multiple instances of forms where `label` elements were visually grouped with `input`/`textarea` elements but lacked programmatic association via the `htmlFor` and `id` attributes. This is a common accessibility issue that impairs screen reader experiences.
-**Action:** Always ensure that every form input field is explicitly tied to its `label` using `id` and `htmlFor` to enhance accessibility and standard UX.
+## 2024-04-15 - Accessible Tabs Pattern
+**Learning:** The custom `Tabs` component lacked ARIA roles and keyboard focus styles, making it difficult for screen reader users and keyboard navigators to understand its state. Adding `role="tablist"`, `role="tab"`, `role="tabpanel"`, and proper `aria-controls`/`aria-labelledby` linkages is an essential pattern for custom interactive components in this design system.
+**Action:** Always check custom interactive components like tabs or dialogs for proper ARIA roles and relationships, and ensure `focus-visible` styles are present for keyboard accessibility.
