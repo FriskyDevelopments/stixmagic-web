@@ -9,5 +9,16 @@
     "attempts": 0,
     "maxAttempts": 3,
     "runAt": "2026-04-15T01:34:14.429Z"
+  },
+  {
+    "id": "293eb907-a4d7-48da-a206-e608c6a87f3c",
+    "jobType": "trigger.execute",
+    "payload": {
+      "messageId": 1
+    },
+    "status": "completed",
+    "attempts": 0,
+    "maxAttempts": 3,
+    "runAt": "2026-04-15T02:04:21.820Z"
   }
 ]

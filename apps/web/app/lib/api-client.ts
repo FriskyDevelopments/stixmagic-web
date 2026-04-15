@@ -9,7 +9,7 @@ import type {
 import { MOCK_GROUPS, MOCK_RULES } from './mock-data';
 
 const clientEnv = loadTelegramClientEnv();
-const API_BASE = clientEnv.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL;
+const API_BASE = clientEnv.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL || 'http://localhost:4000';
 const DEMO_MODE = clientEnv.NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA === 'true';
 const ALLOW_API_FALLBACK = clientEnv.NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK === 'true';
 
@@ -19,19 +19,22 @@ const ALLOW_API_FALLBACK = clientEnv.NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK ==
  * @returns A TelegramMiniAppBootstrap populated with mock config values, environment-derived bot and mini-app identifiers/URLs (including start URLs), a direct launch context, and MOCK_GROUPS.
  */
 function buildDemoBootstrap(): TelegramMiniAppBootstrap {
+  const botUsername = clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME || 'StixMagicBot';
+  const miniAppUrl = clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL || 'http://localhost:3000/dashboard';
+
   return {
     config: {
       productName: 'STIX MΛGIC',
       platform: 'telegram',
       runtimeMode: 'polling',
-      botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
-      miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+      botUsername,
+      miniAppUrl,
       apiBaseUrl: API_BASE,
       links: {
-        botUsername: clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
-        miniAppUrl: clientEnv.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
-        botStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}`,
-        miniAppStartUrl: `https://t.me/${clientEnv.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME.replace(/^@/, '')}/app`
+        botUsername,
+        miniAppUrl,
+        botStartUrl: `https://t.me/${botUsername.replace(/^@/, '')}`,
+        miniAppStartUrl: `https://t.me/${botUsername.replace(/^@/, '')}/app`
       }
     },
     context: {
