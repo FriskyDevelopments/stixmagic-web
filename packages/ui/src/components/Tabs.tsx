@@ -20,13 +20,17 @@ export const Tabs = ({ items }: TabsProps) => {
 
   return (
     <section className="rounded-2xl border border-white/10 bg-panel p-6">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Content Tabs">
         {items.map((item) => (
           <button
             key={item.id}
+            id={`tab-${item.id}`}
+            role="tab"
+            aria-selected={item.id === active?.id}
+            aria-controls={`tabpanel-${item.id}`}
             onClick={() => setActiveId(item.id)}
             className={cn(
-              'rounded-lg px-4 py-2 text-sm font-medium transition',
+              'rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50',
               item.id === active?.id
                 ? 'bg-accent-primary text-text'
                 : 'bg-panel-secondary text-muted hover:text-text'
@@ -36,7 +40,14 @@ export const Tabs = ({ items }: TabsProps) => {
           </button>
         ))}
       </div>
-      <p className="mt-4 text-sm leading-relaxed text-muted">{active?.content}</p>
+      <div
+        id={`tabpanel-${active?.id}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${active?.id}`}
+        className="mt-4 text-sm leading-relaxed text-muted"
+      >
+        <p>{active?.content}</p>
+      </div>
     </section>
   );
 };
