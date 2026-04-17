@@ -255,15 +255,17 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Trigger Type */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <label id="trigger-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Type
               </label>
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              <div role="radiogroup" aria-labelledby="trigger-type-label" className="mt-2 grid grid-cols-2 gap-3">
                 {TRIGGER_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
+                    role="radio"
+                    aria-checked={form.triggerType === opt.value}
                     onClick={() => setTriggerType(opt.value)}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
@@ -331,15 +333,17 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Response Type */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <label id="response-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Type
               </label>
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              <div role="radiogroup" aria-labelledby="response-type-label" className="mt-2 grid grid-cols-2 gap-3">
                 {RESPONSE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
+                    role="radio"
+                    aria-checked={form.responseType === opt.value}
                     onClick={() => setResponseType(opt.value)}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
@@ -499,14 +503,16 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleSimulate(rule)}
+                    aria-label={`Simulate rule ${rule.name}`}
                     title="Simulates the rule locally — connect a backend to fire it in Telegram"
-                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5"
+                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50 hover:border-accent-cyan/40 hover:bg-accent-cyan/5"
                   >
                     Simulate
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                    aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
+                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal/50 ${
                       rule.enabled
                         ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text'
                         : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5'
@@ -516,7 +522,8 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
-                    className="rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5"
+                    aria-label={`Delete rule ${rule.name}`}
+                    className="rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 hover:border-accent-pink/40 hover:bg-accent-pink/5"
                   >
                     Delete
                   </button>
