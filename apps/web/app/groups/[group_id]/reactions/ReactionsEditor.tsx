@@ -133,6 +133,9 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   };
 
   const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this reaction rule?')) {
+      return;
+    }
     const previousRules = rules;
     setRules((prev) => prev.filter((r) => r.id !== id));
     try {
