@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type KeyboardEvent } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
 import { Panel } from '@stixmagic/ui';
@@ -119,6 +119,44 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
   const setResponseType = (responseType: ResponseType) =>
     setForm((prev) => ({ ...prev, responseType, responseContent: '' }));
+
+  const handleRadioGroupKeyDown = <T extends string>(
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+    options: { value: T }[],
+    setValue: (value: T) => void,
+    idPrefix: string
+  ) => {
+    const { key } = event;
+    const lastIndex = options.length - 1;
+    let nextIndex: number | null = null;
+
+    if (key === 'ArrowRight' || key === 'ArrowDown') {
+      event.preventDefault();
+      nextIndex = index === lastIndex ? 0 : index + 1;
+    } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+      event.preventDefault();
+      nextIndex = index === 0 ? lastIndex : index - 1;
+    } else if (key === 'Home') {
+      event.preventDefault();
+      nextIndex = 0;
+    } else if (key === 'End') {
+      event.preventDefault();
+      nextIndex = lastIndex;
+    } else if (key === ' ' || key === 'Enter') {
+      event.preventDefault();
+      setValue(options[index].value);
+      return;
+    }
+
+    if (nextIndex === null) return;
+
+    const nextOption = options[nextIndex];
+    setValue(nextOption.value);
+    requestAnimationFrame(() => {
+      document.getElementById(`${idPrefix}-${nextOption.value}`)?.focus();
+    });
+  };
 
   const handleToggle = async (id: string, current: boolean) => {
     const previousRules = rules;
@@ -255,16 +293,22 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Trigger Type */}
             <div>
-              <label id="trigger-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <p id="trigger-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Type
-              </label>
+              </p>
               <div role="radiogroup" aria-labelledby="trigger-type-label" className="mt-2 grid grid-cols-2 gap-3">
-                {TRIGGER_OPTIONS.map((opt) => (
+                {TRIGGER_OPTIONS.map((opt, index) => (
                   <button
                     key={opt.value}
+                    id={`trigger-type-${opt.value}`}
+                    type="button"
                     role="radio"
                     aria-checked={form.triggerType === opt.value}
+                    tabIndex={form.triggerType === opt.value ? 0 : -1}
                     onClick={() => setTriggerType(opt.value)}
+                    onKeyDown={(event) =>
+                      handleRadioGroupKeyDown(event, index, TRIGGER_OPTIONS, setTriggerType, 'trigger-type')
+                    }
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
@@ -333,16 +377,22 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Response Type */}
             <div>
-              <label id="response-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <p id="response-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Type
-              </label>
+              </p>
               <div role="radiogroup" aria-labelledby="response-type-label" className="mt-2 grid grid-cols-2 gap-3">
-                {RESPONSE_OPTIONS.map((opt) => (
+                {RESPONSE_OPTIONS.map((opt, index) => (
                   <button
                     key={opt.value}
+                    id={`response-type-${opt.value}`}
+                    type="button"
                     role="radio"
                     aria-checked={form.responseType === opt.value}
+                    tabIndex={form.responseType === opt.value ? 0 : -1}
                     onClick={() => setResponseType(opt.value)}
+                    onKeyDown={(event) =>
+                      handleRadioGroupKeyDown(event, index, RESPONSE_OPTIONS, setResponseType, 'response-type')
+                    }
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
@@ -536,4 +586,3 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
     </div>
   );
 }
-
