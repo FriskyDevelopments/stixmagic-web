@@ -266,6 +266,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <button
                     key={opt.value}
                     onClick={() => setTriggerType(opt.value)}
+                    aria-pressed={form.triggerType === opt.value}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
@@ -296,6 +297,8 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                       <button
                         key={emoji}
                         onClick={() => setForm({ ...form, triggerValue: emoji })}
+                        aria-label={`Select emoji ${emoji}`}
+                        aria-pressed={form.triggerValue === emoji}
                         className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 ${
                           form.triggerValue === emoji ? 'bg-accent-primary/30 ring-1 ring-accent-primary/50' : ''
                         }`}
@@ -342,6 +345,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <button
                     key={opt.value}
                     onClick={() => setResponseType(opt.value)}
+                    aria-pressed={form.responseType === opt.value}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
@@ -502,6 +506,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleSimulate(rule)}
+                    aria-label={`Simulate rule ${rule.name}`}
                     title="Simulates the rule locally — connect a backend to fire it in Telegram"
                     className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5"
                   >
@@ -509,6 +514,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
+                    aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
                     className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
                       rule.enabled
                         ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text'
@@ -519,6 +525,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
+                    aria-label={`Delete rule ${rule.name}`}
                     className="rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5"
                   >
                     Delete
