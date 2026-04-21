@@ -4,6 +4,3 @@
 ## 2026-04-18 - Confirmation Dialog for Destructive Actions
 **Learning:** Destructive actions like deleting resources (e.g., reaction rules) must have a confirmation step to prevent accidental data loss. This improves user experience by giving a chance to recover from an accidental click.
 **Action:** Use native `window.confirm` or custom dialog components to confirm actions before performing API calls to delete data.
-## 2024-04-21 - Custom Selection Buttons Focus Styles
-**Learning:** Custom selection buttons (like those replacing native radio buttons or selects for visual appeal) often lack proper keyboard focus states, making it difficult for keyboard users to know which option is currently focused.
-**Action:** Always add `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color]` to interactive elements like custom cards/buttons to ensure keyboard accessibility.
