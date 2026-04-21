@@ -271,7 +271,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
-                    }`}
+                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50`}
                   >
                     <span className="text-xl">{opt.icon}</span>
                     <span className="text-sm font-medium text-text">{opt.label}</span>
@@ -301,7 +301,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                         aria-pressed={form.triggerValue === emoji}
                         className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 ${
                           form.triggerValue === emoji ? 'bg-accent-primary/30 ring-1 ring-accent-primary/50' : ''
-                        }`}
+                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50`}
                         title={emoji}
                       >
                         {emoji}
@@ -350,7 +350,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
-                    }`}
+                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50`}
                   >
                     <span className="text-xl">{opt.icon}</span>
                     <span className="text-sm font-medium text-text">{opt.label}</span>
