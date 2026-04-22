@@ -12,11 +12,13 @@ interface MaskCardProps {
 
 export const MaskCard = ({ mask, selected, onSelect }: MaskCardProps) => (
   <motion.button
+    role="radio"
     whileHover={{ y: -4 }}
     whileTap={{ scale: 0.99 }}
     onClick={() => onSelect(mask)}
+    aria-checked={selected}
     className={cn(
-      'rounded-2xl border p-4 text-left transition',
+      'rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50',
       selected
         ? 'border-accent-cyan bg-panel shadow-[0_0_32px_rgba(124,242,255,0.18)]'
         : 'border-white/10 bg-panel-secondary hover:border-white/30'
