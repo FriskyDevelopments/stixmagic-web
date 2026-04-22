@@ -4,3 +4,6 @@
 ## 2026-04-18 - Confirmation Dialog for Destructive Actions
 **Learning:** Destructive actions like deleting resources (e.g., reaction rules) must have a confirmation step to prevent accidental data loss. This improves user experience by giving a chance to recover from an accidental click.
 **Action:** Use native `window.confirm` or custom dialog components to confirm actions before performing API calls to delete data.
+## 2024-04-22 - Missing Keyboard Focus Indicators
+**Learning:** Custom interactive components like `MaskCard` and `GeneratorScaffold` step buttons are missing `focus-visible` styles and semantic ARIA states (`aria-pressed`, `aria-disabled`, `aria-current`), which prevents keyboard-only users and screen readers from effectively navigating the UI.
+**Action:** Consistently apply `focus-visible:outline-none focus-visible:ring-2` to custom `<button>` or `<motion.button>` components and ensure proper ARIA attributes map to their visual states.
