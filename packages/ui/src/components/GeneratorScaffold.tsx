@@ -24,8 +24,10 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
           <button
             key={step.id}
             onClick={() => !step.comingSoon && setActiveStep(step.id)}
+            disabled={step.comingSoon}
+            aria-current={step.id === activeStep ? 'step' : undefined}
             className={cn(
-              'flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition',
+              'flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50',
               step.id === activeStep
                 ? 'border-accent-primary bg-accent-primary/10 text-text'
                 : step.comingSoon
