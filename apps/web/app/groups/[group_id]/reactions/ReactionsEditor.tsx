@@ -517,7 +517,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
                     className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 ${
                       rule.enabled
-                        ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text focus-visible:ring-muted/50'
+                        ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text focus-visible:ring-accent-primary/50'
                         : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5 focus-visible:ring-accent-teal/50'
                     }`}
                   >
