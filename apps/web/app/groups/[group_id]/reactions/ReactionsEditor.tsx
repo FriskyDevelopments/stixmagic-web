@@ -60,18 +60,13 @@ const RESPONSE_HINT: Partial<Record<ResponseType, string>> = {
 };
 
 /**
- * Render an interactive editor for creating, listing, and managing reaction rules for a group.
+ * Interactive React component that provides a UI to create, list, simulate, enable/disable, and delete reaction rules for a group.
  *
- * The component loads rules for `groupId`, shows a form to create new rules, and displays existing
- * rules with controls to simulate, enable/disable, and delete them.
+ * Loads rules for the provided `groupId`, performs optimistic UI updates for toggle and delete mutations, and performs local-only simulations (no backend call).
  *
- * Notes:
- * - Toggling and deleting rules update the UI optimistically and persist changes via API calls.
- * - Simulation is local-only and does not call the backend.
- *
- * @param groupId - The identifier of the group whose reaction rules are managed
- * @param groupName - The display name of the group used in UI labels and messages
- * @returns The React element that provides the ReactionsEditor UI for the specified group
+ * @param groupId - Identifier of the group whose reaction rules are managed
+ * @param groupName - Display name of the group used in UI labels and messages
+ * @returns The ReactionsEditor React element for the specified group
  */
 export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [rules, setRules] = useState<ReactionRule[]>([]);
@@ -271,7 +266,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
-                    }`}
+                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50`}
                   >
                     <span className="text-xl">{opt.icon}</span>
                     <span className="text-sm font-medium text-text">{opt.label}</span>
@@ -301,7 +296,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                         aria-pressed={form.triggerValue === emoji}
                         className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                           form.triggerValue === emoji ? 'bg-accent-primary/30 ring-1 ring-accent-primary/50' : ''
-                        }`}
+                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50`}
                         title={emoji}
                       >
                         {emoji}
@@ -350,7 +345,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
-                    }`}
+                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50`}
                   >
                     <span className="text-xl">{opt.icon}</span>
                     <span className="text-sm font-medium text-text">{opt.label}</span>
