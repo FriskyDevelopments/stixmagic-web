@@ -209,7 +209,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               setShowForm(true);
               setForm(EMPTY_FORM);
             }}
-            className="rounded-lg bg-accent-primary/20 px-5 py-2.5 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/35"
+            className="rounded-lg bg-accent-primary/20 px-5 py-2.5 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
           >
             + New Rule
           </button>
@@ -267,7 +267,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     key={opt.value}
                     onClick={() => setTriggerType(opt.value)}
                     aria-pressed={form.triggerType === opt.value}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
@@ -299,7 +299,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                         onClick={() => setForm({ ...form, triggerValue: emoji })}
                         aria-label={`Select emoji ${emoji}`}
                         aria-pressed={form.triggerValue === emoji}
-                        className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 ${
+                        className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                           form.triggerValue === emoji ? 'bg-accent-primary/30 ring-1 ring-accent-primary/50' : ''
                         }`}
                         title={emoji}
@@ -346,7 +346,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     key={opt.value}
                     onClick={() => setResponseType(opt.value)}
                     aria-pressed={form.responseType === opt.value}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
@@ -417,7 +417,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   !form.triggerValue.trim() ||
                   !form.responseContent.trim()
                 }
-                className="rounded-lg bg-accent-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent-indigo disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-lg bg-accent-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {saving ? 'Saving…' : 'Save Rule'}
               </button>
@@ -426,7 +426,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   setShowForm(false);
                   setForm(EMPTY_FORM);
                 }}
-                className="rounded-lg border border-accent-primary/20 px-5 py-2 text-sm font-medium text-muted transition hover:border-accent-primary/40 hover:text-text"
+                className="rounded-lg border border-accent-primary/20 px-5 py-2 text-sm font-medium text-muted transition hover:border-accent-primary/40 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
               >
                 Cancel
               </button>
@@ -459,7 +459,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
             </p>
             <button
               onClick={() => setShowForm(true)}
-              className="mt-4 rounded-lg bg-accent-primary/20 px-5 py-2 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/35"
+              className="mt-4 rounded-lg bg-accent-primary/20 px-5 py-2 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
             >
               + Create First Rule
             </button>
@@ -508,17 +508,17 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     onClick={() => handleSimulate(rule)}
                     aria-label={`Simulate rule ${rule.name}`}
                     title="Simulates the rule locally — connect a backend to fire it in Telegram"
-                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5"
+                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
                   >
                     Simulate
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 ${
                       rule.enabled
-                        ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text'
-                        : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5'
+                        ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text focus-visible:ring-muted/50'
+                        : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5 focus-visible:ring-accent-teal/50'
                     }`}
                   >
                     {rule.enabled ? 'Pause' : 'Enable'}
@@ -526,7 +526,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <button
                     onClick={() => handleDelete(rule.id)}
                     aria-label={`Delete rule ${rule.name}`}
-                    className="rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5"
+                    className="rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50"
                   >
                     Delete
                   </button>

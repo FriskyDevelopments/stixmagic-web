@@ -4,3 +4,6 @@
 ## 2026-04-18 - Confirmation Dialog for Destructive Actions
 **Learning:** Destructive actions like deleting resources (e.g., reaction rules) must have a confirmation step to prevent accidental data loss. This improves user experience by giving a chance to recover from an accidental click.
 **Action:** Use native `window.confirm` or custom dialog components to confirm actions before performing API calls to delete data.
+## 2024-12-07 - Interactive Editor Focus States
+**Learning:** Dynamic, app-like editors with custom-styled buttons often lose visible focus states entirely when using Tailwind defaults (like `focus:outline-none`). This makes keyboard navigation nearly impossible for power users or those relying on accessibility tools, as they can't tell which action is currently selected.
+**Action:** When building interactive editor UIs with multiple action buttons, always explicitly add `focus-visible:outline-none focus-visible:ring-2` to buttons. Use context-aware ring colors (e.g., `focus-visible:ring-accent-[color]/50`) to match the button's intended styling or severity (like cyan for simulate, teal for toggle, pink for delete).
