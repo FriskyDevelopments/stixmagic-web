@@ -346,7 +346,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     key={opt.value}
                     onClick={() => setResponseType(opt.value)}
                     aria-pressed={form.responseType === opt.value}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
@@ -515,10 +515,10 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal/50 ${
+                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 ${
                       rule.enabled
-                        ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text'
-                        : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5'
+                        ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text focus-visible:ring-muted/50'
+                        : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5 focus-visible:ring-accent-teal/50'
                     }`}
                   >
                     {rule.enabled ? 'Pause' : 'Enable'}
