@@ -267,7 +267,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     key={opt.value}
                     onClick={() => setTriggerType(opt.value)}
                     aria-pressed={form.triggerType === opt.value}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
@@ -346,7 +346,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     key={opt.value}
                     onClick={() => setResponseType(opt.value)}
                     aria-pressed={form.responseType === opt.value}
-                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition ${
+                    className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
                         : 'border-accent-primary/10 bg-background/40 hover:border-accent-primary/30'
