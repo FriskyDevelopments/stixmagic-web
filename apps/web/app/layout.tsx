@@ -25,20 +25,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </div>
           <header className="sticky top-0 z-20 border-b border-accent-primary/15 bg-background/70 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
-              <Link href="/" className="inline-flex items-center gap-2">
+              <Link href="/" className="inline-flex items-center gap-2 rounded transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
                 <span className="text-xl drop-shadow-[0_0_10px_rgba(0,212,255,0.6)]">🪄</span>
                 <span className="bg-gradient-to-r from-accent-cyan via-accent-indigo to-accent-violet bg-clip-text text-lg font-extrabold tracking-[0.08em] text-transparent">
                   MagicStix
                 </span>
               </Link>
               <nav className="flex items-center gap-6 text-sm text-muted">
-                <Link href="/" className="transition hover:text-text">Home</Link>
-                <Link href="/ecosystem" className="transition hover:text-text">Ecosystem</Link>
-                <Link href="/packs" className="transition hover:text-text">Packs</Link>
-                <Link href="/gallery" className="transition hover:text-text">Gallery</Link>
-                <Link href="/generator" className="transition hover:text-text">Generator</Link>
-                <Link href="/masks" className="transition hover:text-text">Masks</Link>
-                <Link href="/dashboard" className="transition hover:text-text">Dashboard</Link>
+                <Link href="/" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Home</Link>
+                <Link href="/ecosystem" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Ecosystem</Link>
+                <Link href="/packs" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Packs</Link>
+                <Link href="/gallery" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Gallery</Link>
+                <Link href="/generator" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Generator</Link>
+                <Link href="/masks" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Masks</Link>
+                <Link href="/dashboard" className="rounded transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Dashboard</Link>
               </nav>
             </div>
           </header>
