@@ -26,13 +26,13 @@ export const CTASection = () => (
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link
           href="/masks"
-          className="rounded-xl bg-gradient-to-r from-accent-primary via-accent-indigo to-accent-violet px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_24px_rgba(99,102,241,0.45)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_36px_rgba(168,85,247,0.55)]"
+          className="rounded-xl bg-gradient-to-r from-accent-primary via-accent-indigo to-accent-violet px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_24px_rgba(99,102,241,0.45)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_36px_rgba(168,85,247,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
         >
           Explore Masks
         </Link>
         <a
           href="https://github.com/FriskyDevelopments/stixmagic-web"
-          className="rounded-xl border border-accent-primary/25 bg-panel-secondary px-5 py-3 text-sm font-semibold text-text transition hover:border-accent-cyan/60 hover:text-accent-cyan"
+          className="rounded-xl border border-accent-primary/25 bg-panel-secondary px-5 py-3 text-sm font-semibold text-text transition hover:border-accent-cyan/60 hover:text-accent-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
         >
           Follow the Build
         </a>
