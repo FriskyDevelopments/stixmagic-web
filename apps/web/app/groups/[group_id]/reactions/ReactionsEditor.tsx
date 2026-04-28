@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type KeyboardEvent } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
 import { Panel } from '@stixmagic/ui';
@@ -57,6 +57,33 @@ const RESPONSE_HINT: Partial<Record<ResponseType, string>> = {
     'To get a sticker file ID: forward the sticker to @userinfobot or use the /sticker command with your Stix Magic bot.',
   animation:
     'To get a GIF file ID: send the animation in a chat with your Stix Magic bot, which will reply with the file ID.'
+};
+
+const handleRadioGroupKeyDown = <T extends TriggerType | ResponseType>(
+  event: KeyboardEvent<HTMLDivElement>,
+  options: ReadonlyArray<{ value: T }>,
+  currentValue: T,
+  setValue: (value: T) => void
+) => {
+  const currentIndex = options.findIndex((opt) => opt.value === currentValue);
+  if (currentIndex === -1) return;
+
+  let nextIndex: number | null = null;
+  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+    nextIndex = (currentIndex + 1) % options.length;
+  } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+    nextIndex = (currentIndex - 1 + options.length) % options.length;
+  } else if (event.key === 'Home') {
+    nextIndex = 0;
+  } else if (event.key === 'End') {
+    nextIndex = options.length - 1;
+  }
+
+  if (nextIndex === null) return;
+
+  event.preventDefault();
+  setValue(options[nextIndex].value);
+  event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]')[nextIndex]?.focus();
 };
 
 /**
@@ -258,12 +285,18 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               <label id="trigger-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Type
               </label>
-              <div role="radiogroup" aria-labelledby="trigger-type-label" className="mt-2 grid grid-cols-2 gap-3">
+              <div
+                role="radiogroup"
+                aria-labelledby="trigger-type-label"
+                onKeyDown={(e) => handleRadioGroupKeyDown(e, TRIGGER_OPTIONS, form.triggerType, setTriggerType)}
+                className="mt-2 grid grid-cols-2 gap-3"
+              >
                 {TRIGGER_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     role="radio"
                     aria-checked={form.triggerType === opt.value}
+                    tabIndex={form.triggerType === opt.value ? 0 : -1}
                     onClick={() => setTriggerType(opt.value)}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
@@ -336,12 +369,18 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               <label id="response-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Type
               </label>
-              <div role="radiogroup" aria-labelledby="response-type-label" className="mt-2 grid grid-cols-2 gap-3">
+              <div
+                role="radiogroup"
+                aria-labelledby="response-type-label"
+                onKeyDown={(e) => handleRadioGroupKeyDown(e, RESPONSE_OPTIONS, form.responseType, setResponseType)}
+                className="mt-2 grid grid-cols-2 gap-3"
+              >
                 {RESPONSE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     role="radio"
                     aria-checked={form.responseType === opt.value}
+                    tabIndex={form.responseType === opt.value ? 0 : -1}
                     onClick={() => setResponseType(opt.value)}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
