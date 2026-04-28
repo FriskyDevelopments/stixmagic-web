@@ -64,11 +64,11 @@ export default function GroupView({ groupId }: Props) {
     <div className="space-y-6 pb-10">
       <Panel>
         <p className="text-xs uppercase tracking-wider text-accent-cyan">
-          <Link href="/dashboard" className="transition hover:text-accent-indigo">
+          <Link href="/dashboard" className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
             Dashboard
           </Link>
           {' / '}
-          <Link href="/groups" className="transition hover:text-accent-indigo">
+          <Link href="/groups" className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
             Groups
           </Link>
           {' / '}
@@ -161,7 +161,7 @@ export default function GroupView({ groupId }: Props) {
         <h2 className="text-lg font-semibold text-text">Reaction Rules</h2>
         <Link
           href={`/groups/${group.id}/reactions`}
-          className="rounded-lg bg-accent-primary/20 px-4 py-2 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/30"
+          className="rounded-lg bg-accent-primary/20 px-4 py-2 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
         >
           Manage Reactions →
         </Link>
@@ -187,7 +187,7 @@ export default function GroupView({ groupId }: Props) {
             No reaction rules yet.{' '}
             <Link
               href={`/groups/${group.id}/reactions`}
-              className="text-accent-cyan hover:text-accent-indigo"
+              className="rounded p-0.5 text-accent-cyan hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
             >
               Create your first rule →
             </Link>
@@ -224,7 +224,7 @@ export default function GroupView({ groupId }: Props) {
                 </span>
                 <Link
                   href={`/groups/${group.id}/reactions`}
-                  className="text-xs text-accent-cyan transition hover:text-accent-indigo"
+                  className="rounded p-0.5 text-xs text-accent-cyan transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
                 >
                   Edit
                 </Link>
