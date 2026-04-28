@@ -48,7 +48,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </nav>
             </div>
           </header>
-          <main id="main-content" className="relative z-10 mx-auto w-full max-w-6xl scroll-mt-24 px-6 pb-16 pt-6">{children}</main>
+          <main id="main-content" className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-6">{children}</main>
           <footer className="relative z-10 border-t border-accent-primary/10 py-10 text-center">
             <p className="text-xs text-accent-cyan/50 tracking-widest uppercase">△ ── ◯ ── ✦ ── ◯ ── △</p>
             <p className="mt-4 text-sm text-muted">
