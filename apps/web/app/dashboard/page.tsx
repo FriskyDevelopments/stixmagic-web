@@ -120,7 +120,7 @@ export default function DashboardPage() {
               const activeCount = rules.filter((r) => r.enabled).length;
               return (
                 <Link key={group.id} href={`/groups/${group.id}`} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
-                  <Panel className="cursor-pointer transition-shadow">
+                  <Panel className="cursor-pointer">
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="font-semibold text-text">{group.name}</p>
