@@ -182,15 +182,15 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
     <div className="space-y-6 pb-10">
       <Panel>
         <p className="text-xs uppercase tracking-wider text-accent-cyan">
-          <Link href="/dashboard" className="transition hover:text-accent-indigo">
+          <Link href="/dashboard" className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
             Dashboard
           </Link>
           {' / '}
-          <Link href="/groups" className="transition hover:text-accent-indigo">
+          <Link href="/groups" className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
             Groups
           </Link>
           {' / '}
-          <Link href={`/groups/${groupId}`} className="transition hover:text-accent-indigo">
+          <Link href={`/groups/${groupId}`} className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
             {groupName}
           </Link>
           {' / '}

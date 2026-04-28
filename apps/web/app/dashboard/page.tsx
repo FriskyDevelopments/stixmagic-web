@@ -99,7 +99,7 @@ export default function DashboardPage() {
           <h2 className="text-lg font-semibold text-text">Your Groups</h2>
           <Link
             href="/groups"
-            className="text-sm font-medium text-accent-cyan transition hover:text-accent-indigo"
+            className="rounded-lg p-1 text-sm font-medium text-accent-cyan transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
           >
             View all →
           </Link>
@@ -119,8 +119,8 @@ export default function DashboardPage() {
               const rules = allRules[group.id] ?? [];
               const activeCount = rules.filter((r) => r.enabled).length;
               return (
-                <Link key={group.id} href={`/groups/${group.id}`}>
-                  <Panel className="cursor-pointer">
+                <Link key={group.id} href={`/groups/${group.id}`} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
+                  <Panel className="cursor-pointer transition-shadow">
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="font-semibold text-text">{group.name}</p>

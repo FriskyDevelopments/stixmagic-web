@@ -58,7 +58,7 @@ export default function GroupsPage() {
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs uppercase tracking-wider text-accent-cyan">
-              <Link href="/dashboard" className="transition hover:text-accent-indigo">
+              <Link href="/dashboard" className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
                 Dashboard
               </Link>
               {' / '}
@@ -90,8 +90,8 @@ export default function GroupsPage() {
             const rules = allRules[group.id] ?? [];
             const activeCount = rules.filter((r) => r.enabled).length;
             return (
-              <Link key={group.id} href={`/groups/${group.id}`}>
-                <Panel className="flex h-full cursor-pointer flex-col gap-4">
+              <Link key={group.id} href={`/groups/${group.id}`} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
+                <Panel className="flex h-full cursor-pointer flex-col gap-4 transition-shadow">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="font-semibold text-text">{group.name}</p>
@@ -154,7 +154,7 @@ export default function GroupsPage() {
             href={botUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 rounded-lg bg-accent-cyan/10 px-5 py-2.5 text-center text-sm font-medium text-accent-cyan transition hover:bg-accent-cyan/20"
+            className="shrink-0 rounded-lg bg-accent-cyan/10 px-5 py-2.5 text-center text-sm font-medium text-accent-cyan transition hover:bg-accent-cyan/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
           >
             Open Telegram Bot →
           </a>
