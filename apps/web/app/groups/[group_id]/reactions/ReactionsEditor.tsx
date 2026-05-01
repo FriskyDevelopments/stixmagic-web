@@ -216,14 +216,20 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
         </div>
       </Panel>
 
-      {saved && (
-        <div role="status" aria-live="polite" className="rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-accent-teal">
-          ✅ Rule saved successfully.
-          {isDemoModeEnabled()
-            ? ' Demo mode is enabled, so this rule exists only in local scaffold data.'
-            : ' It will be applied through the shared Telegram API surface.'}
-        </div>
-      )}
+      <div
+        role="status"
+        aria-live="polite"
+        className={saved ? 'rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-accent-teal' : 'sr-only'}
+      >
+        {saved && (
+          <>
+            ✅ Rule saved successfully.
+            {isDemoModeEnabled()
+              ? ' Demo mode is enabled, so this rule exists only in local scaffold data.'
+              : ' It will be applied through the shared Telegram API surface.'}
+          </>
+        )}
+      </div>
 
       {error && (
         <div role="alert" aria-live="assertive" className="rounded-xl border border-accent-pink/30 bg-accent-pink/10 px-4 py-3 text-sm text-accent-pink">
@@ -231,11 +237,13 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
         </div>
       )}
 
-      {testResult && (
-        <div role="status" aria-live="polite" className="rounded-xl border border-accent-indigo/30 bg-accent-indigo/10 px-4 py-3 text-sm text-accent-indigo">
-          {testResult}
-        </div>
-      )}
+      <div
+        role="status"
+        aria-live="polite"
+        className={testResult ? 'rounded-xl border border-accent-indigo/30 bg-accent-indigo/10 px-4 py-3 text-sm text-accent-indigo' : 'sr-only'}
+      >
+        {testResult}
+      </div>
 
       {showForm && (
         <Panel>
