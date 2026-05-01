@@ -13,3 +13,7 @@
 ## 2024-12-10 - Consistent Link Focus States
 **Learning:** In highly stylized, app-like dashboard views (such as the Control Center and connected groups UI), standard HTML links and card wrappers frequently lack prominent keyboard focus outlines, leading to hidden or "ghost" tabbing paths that confuse keyboard-only navigation. While focus states are common on standard buttons, interactive "clickable card" patterns built with wrappers like `<Link><Panel /></Link>` or raw text links without dedicated button semantics are regularly overlooked.
 **Action:** Always check interactive text links, icon-only buttons, and structural card links for explicitly defined focus states. For Next.js/Tailwind components, reliably apply the `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-[color]/50` class combinations specifically when using standard `Link` or anchor wrappers to preserve consistent keyboard-driven discovery across the whole layout.
+
+## 2024-12-14 - ARIA Live Regions for Dynamic Messages
+**Learning:** Dynamic, auto-dismissing toast or inline notification messages (such as "Rule saved successfully" or error messages) must use ARIA live regions to be perceivable by screen reader users. Without `aria-live`, visually appearing text is silent to assistive technologies, leading to missed critical feedback.
+**Action:** Always add `role="status" aria-live="polite"` to dynamically appearing non-critical status messages (like success toasts), and `role="alert" aria-live="assertive"` to critical or error messages.
