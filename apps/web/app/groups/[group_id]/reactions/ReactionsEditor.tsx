@@ -240,7 +240,13 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       {showForm && (
         <Panel>
           <h2 className="font-semibold text-text">Create Reaction Rule</h2>
-          <div className="mt-5 space-y-5">
+          <form
+            className="mt-5 space-y-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+          >
             {/* Rule Name */}
             <div>
               <label htmlFor="rule-name" className="block text-xs font-medium uppercase tracking-wider text-muted">
@@ -265,6 +271,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 {TRIGGER_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
+                    type="button"
                     onClick={() => setTriggerType(opt.value)}
                     aria-pressed={form.triggerType === opt.value}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
@@ -296,6 +303,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                     {COMMON_EMOJIS.map((emoji) => (
                       <button
                         key={emoji}
+                        type="button"
                         onClick={() => setForm({ ...form, triggerValue: emoji })}
                         aria-label={`Select emoji ${emoji}`}
                         aria-pressed={form.triggerValue === emoji}
@@ -344,6 +352,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 {RESPONSE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
+                    type="button"
                     onClick={() => setResponseType(opt.value)}
                     aria-pressed={form.responseType === opt.value}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
@@ -410,7 +419,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             <div className="flex gap-3 pt-2">
               <button
-                onClick={handleSave}
+                type="submit"
                 disabled={
                   saving ||
                   !form.name.trim() ||
@@ -422,6 +431,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 {saving ? 'Saving…' : 'Save Rule'}
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setShowForm(false);
                   setForm(EMPTY_FORM);
@@ -431,7 +441,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 Cancel
               </button>
             </div>
-          </div>
+          </form>
         </Panel>
       )}
 
