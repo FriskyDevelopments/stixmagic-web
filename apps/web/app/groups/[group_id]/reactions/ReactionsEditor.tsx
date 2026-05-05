@@ -270,6 +270,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               <div className="mt-2 grid grid-cols-2 gap-3">
                 {TRIGGER_OPTIONS.map((opt) => (
                   <button
+                    type="button"
                     key={opt.value}
                     type="button"
                     onClick={() => setTriggerType(opt.value)}
@@ -302,6 +303,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <div className="mt-2 flex flex-wrap gap-2 rounded-xl border border-accent-primary/10 bg-background/40 p-3">
                     {COMMON_EMOJIS.map((emoji) => (
                       <button
+                        type="button"
                         key={emoji}
                         type="button"
                         onClick={() => setForm({ ...form, triggerValue: emoji })}
@@ -351,6 +353,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               <div className="mt-2 grid grid-cols-2 gap-3">
                 {RESPONSE_OPTIONS.map((opt) => (
                   <button
+                    type="button"
                     key={opt.value}
                     type="button"
                     onClick={() => setResponseType(opt.value)}
