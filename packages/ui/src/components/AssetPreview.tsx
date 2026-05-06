@@ -37,6 +37,8 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
       <div
         className="flex h-full w-full flex-col items-center justify-center gap-1"
         aria-label="Preview unavailable"
+        role="alert"
+        aria-live="polite"
       >
         <span className="text-base text-muted/40" aria-hidden="true">—</span>
         <span className="text-[10px] uppercase tracking-wide text-muted/40">Unavailable</span>
@@ -48,7 +50,11 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
     <div className="relative flex h-full w-full items-center justify-center">
       {state === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-accent-primary/20 border-t-accent-primary" />
+          <div
+            role="status"
+            aria-label="Loading preview"
+            className="h-5 w-5 animate-spin rounded-full border-2 border-accent-primary/20 border-t-accent-primary"
+          />
         </div>
       )}
       <img
