@@ -17,3 +17,7 @@
 ## 2024-12-14 - ARIA Live Regions for Dynamic Messages
 **Learning:** Dynamic, auto-dismissing toast or inline notification messages (such as "Rule saved successfully" or error messages) must use ARIA live regions to be perceivable by screen reader users. Without `aria-live`, visually appearing text is silent to assistive technologies, leading to missed critical feedback.
 **Action:** Always add `role="status" aria-live="polite"` to dynamically appearing non-critical status messages (like success toasts), and `role="alert" aria-live="assertive"` to critical or error messages.
+
+## 2024-05-07 - Accessible Custom Radio Groups
+**Learning:** When building custom radio button selections with `<button>`, using `aria-pressed` incorrectly treats them as individual toggles rather than mutually exclusive options. Wrapping them in a container with `role="radiogroup"` and applying `role="radio"` and `aria-checked` provides the correct semantic grouping for screen readers.
+**Action:** Always use `radiogroup` / `radio` for mutually exclusive options instead of independent toggles to ensure standard keyboard and screen reader accessibility patterns.

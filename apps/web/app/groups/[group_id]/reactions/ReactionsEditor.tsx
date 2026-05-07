@@ -264,16 +264,17 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Trigger Type */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <div id="trigger-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Type
-              </label>
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-3" role="radiogroup" aria-labelledby="trigger-type-label">
                 {TRIGGER_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
+                    role="radio"
                     onClick={() => setTriggerType(opt.value)}
-                    aria-pressed={form.triggerType === opt.value}
+                    aria-checked={form.triggerType === opt.value}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
@@ -345,16 +346,17 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
             {/* Response Type */}
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-muted">
+              <div id="response-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Type
-              </label>
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-3" role="radiogroup" aria-labelledby="response-type-label">
                 {RESPONSE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
+                    role="radio"
                     onClick={() => setResponseType(opt.value)}
-                    aria-pressed={form.responseType === opt.value}
+                    aria-checked={form.responseType === opt.value}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
