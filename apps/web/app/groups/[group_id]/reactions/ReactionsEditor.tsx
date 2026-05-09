@@ -250,11 +250,13 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
             {/* Rule Name */}
             <div>
               <label htmlFor="rule-name" className="block text-xs font-medium uppercase tracking-wider text-muted">
-                Rule Name
+                Rule Name <span className="text-accent-pink ml-1" aria-hidden="true">*</span>
               </label>
               <input
                 id="rule-name"
                 type="text"
+                required
+                aria-required="true"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="e.g. Magic Activation"
@@ -292,7 +294,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
             {/* Trigger Value */}
             <div>
               <label htmlFor="trigger-value" className="block text-xs font-medium uppercase tracking-wider text-muted">
-                Trigger Value
+                Trigger Value <span className="text-accent-pink ml-1" aria-hidden="true">*</span>
               </label>
 
               {form.triggerType === 'emoji' ? (
@@ -320,6 +322,8 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <input
                     id="trigger-value"
                     type="text"
+                    required
+                    aria-required="true"
                     value={form.triggerValue}
                     onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
                     placeholder="Selected emoji will appear here, or type your own"
@@ -331,6 +335,8 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   <input
                     id="trigger-value"
                     type="text"
+                    required
+                    aria-required="true"
                     value={form.triggerValue}
                     onChange={(e) => setForm({ ...form, triggerValue: e.target.value })}
                     placeholder="Paste the sticker file ID from Telegram"
@@ -374,11 +380,13 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
             {/* Response Content */}
             <div>
               <label htmlFor="response-content" className="block text-xs font-medium uppercase tracking-wider text-muted">
-                Response Content
+                Response Content <span className="text-accent-pink ml-1" aria-hidden="true">*</span>
               </label>
               {form.responseType === 'message' ? (
                 <textarea
                   id="response-content"
+                  required
+                  aria-required="true"
                   value={form.responseContent}
                   onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
                   placeholder={RESPONSE_PLACEHOLDER.message}
@@ -389,6 +397,8 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 <input
                   id="response-content"
                   type="text"
+                  required
+                  aria-required="true"
                   value={form.responseContent}
                   onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
                   placeholder={RESPONSE_PLACEHOLDER[form.responseType]}
@@ -427,6 +437,13 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   !form.name.trim() ||
                   !form.triggerValue.trim() ||
                   !form.responseContent.trim()
+                }
+                title={
+                  saving
+                    ? 'Saving…'
+                    : (!form.name.trim() || !form.triggerValue.trim() || !form.responseContent.trim())
+                      ? 'Please fill out all required fields'
+                      : undefined
                 }
                 className="rounded-lg bg-accent-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
               >

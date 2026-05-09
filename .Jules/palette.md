@@ -21,3 +21,7 @@
 ## 2024-05-07 - Accessible Custom Radio Groups
 **Learning:** When building custom radio button selections with `<button>`, using `aria-pressed` incorrectly treats them as individual toggles rather than mutually exclusive options. Wrapping them in a container with `role="radiogroup"` and applying `role="radio"` and `aria-checked` provides the correct semantic grouping for screen readers.
 **Action:** Always use `radiogroup` / `radio` for mutually exclusive options instead of independent toggles to ensure standard keyboard and screen reader accessibility patterns.
+
+## 2024-12-15 - Required Field Indicators and Submit Button Titles
+**Learning:** When creating forms with multiple required fields, relying solely on a disabled submit button can be frustrating for users who don't know what is missing. A common pattern in this app is to disable the submit button based on form state (`!form.name.trim() || ...`).
+**Action:** Always pair a disabled submit button with a helpful `title` attribute explaining the disabled state (e.g., `title={saving ? 'Saving...' : !isValid ? 'Please fill out all required fields' : undefined}`). In addition, ensure standard required visual indicators (a red `*` hidden from screen readers `aria-hidden="true"`) and semantic properties (`required`, `aria-required="true"`) are explicitly set on the inputs and labels to make expectations clear.
