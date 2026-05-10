@@ -299,17 +299,18 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
               {form.triggerType === 'emoji' ? (
                 <>
-                  <p className="mt-1 text-xs text-muted">
+                  <p className="mt-1 text-xs text-muted" id="common-emojis-label">
                     Click an emoji to select it, or type your own below.
                   </p>
-                  <div className="mt-2 flex flex-wrap gap-2 rounded-xl border border-accent-primary/10 bg-background/40 p-3">
+                  <div className="mt-2 flex flex-wrap gap-2 rounded-xl border border-accent-primary/10 bg-background/40 p-3" role="radiogroup" aria-labelledby="common-emojis-label">
                     {COMMON_EMOJIS.map((emoji) => (
                       <button
                         key={emoji}
                         type="button"
+                        role="radio"
                         onClick={() => setForm({ ...form, triggerValue: emoji })}
                         aria-label={`Select emoji ${emoji}`}
-                        aria-pressed={form.triggerValue === emoji}
+                        aria-checked={form.triggerValue === emoji}
                         className={`rounded-lg px-2 py-1 text-lg transition hover:bg-accent-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                           form.triggerValue === emoji ? 'bg-accent-primary/30 ring-1 ring-accent-primary/50' : ''
                         }`}
