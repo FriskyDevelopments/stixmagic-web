@@ -25,3 +25,7 @@
 ## 2024-12-15 - Required Field Indicators and Submit Button Titles
 **Learning:** When creating forms with multiple required fields, relying solely on a disabled submit button can be frustrating for users who don't know what is missing. A common pattern in this app is to disable the submit button based on form state (`!form.name.trim() || ...`).
 **Action:** Always pair a disabled submit button with a helpful `title` attribute explaining the disabled state (e.g., `title={saving ? 'Saving...' : !isValid ? 'Please fill out all required fields' : undefined}`). In addition, ensure standard required visual indicators (a red `*` hidden from screen readers `aria-hidden="true"`) and semantic properties (`required`, `aria-required="true"`) are explicitly set on the inputs and labels to make expectations clear.
+
+## 2024-12-16 - Accessible Card Grid Links
+**Learning:** In grids of components (like `PackGrid`), wrapping interactive cards (`PackCard`) inside standard Next.js `<Link>` components is critical for making grid items accessible and navigable via keyboard. Without an interactive wrapping element like `<Link>` or `<button>`, users relying on keyboard navigation cannot access or focus these elements.
+**Action:** When constructing interactive grids mapping to distinct routes (such as a detail page), ensure you wrap the card content in an explicit `<Link>` element, and reliably apply standard focus styling to the wrapper (`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50`) so its focused state is clearly visible.
