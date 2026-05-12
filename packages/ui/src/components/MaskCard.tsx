@@ -1,5 +1,6 @@
 'use client';
 
+import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import type { MaskDefinition } from '@stixmagic/types';
 import { cn } from '../lib/cn';
@@ -10,13 +11,15 @@ interface MaskCardProps {
   onSelect: (mask: MaskDefinition) => void;
 }
 
-export const MaskCard = ({ mask, selected, onSelect }: MaskCardProps) => (
+export const MaskCard = forwardRef<HTMLButtonElement, MaskCardProps>(({ mask, selected, onSelect }, ref) => (
   <motion.button
+    ref={ref}
     role="radio"
     whileHover={{ y: -4 }}
     whileTap={{ scale: 0.99 }}
     onClick={() => onSelect(mask)}
     aria-checked={selected}
+    tabIndex={selected ? 0 : -1}
     className={cn(
       'rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50',
       selected
@@ -30,4 +33,5 @@ export const MaskCard = ({ mask, selected, onSelect }: MaskCardProps) => (
       {mask.category}
     </span>
   </motion.button>
-);
+));
+MaskCard.displayName = 'MaskCard';
