@@ -25,7 +25,11 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
   return (
     <section className="space-y-6">
       <MaskHeroPreview selectedMask={selectedMask} />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        role="radiogroup"
+        aria-label="Select a mask shape"
+      >
         {masks.map((mask) => (
           <MaskCard key={mask.id} mask={mask} selected={mask.id === selectedMask.id} onSelect={() => setSelectedId(mask.id)} />
         ))}
