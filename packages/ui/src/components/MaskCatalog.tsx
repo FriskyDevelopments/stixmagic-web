@@ -25,9 +25,32 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
   return (
     <section className="space-y-6">
       <MaskHeroPreview selectedMask={selectedMask} />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {masks.map((mask) => (
-          <MaskCard key={mask.id} mask={mask} selected={mask.id === selectedMask.id} onSelect={() => setSelectedId(mask.id)} />
+      <div
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        role="radiogroup"
+        aria-label="Select a mask shape"
+      >
+        {masks.map((mask, index) => (
+          <MaskCard
+            key={mask.id}
+            id={`mask-radio-${index}`}
+            mask={mask}
+            selected={mask.id === selectedMask.id}
+            onSelect={() => setSelectedId(mask.id)}
+            onKeyDown={(e) => {
+              let nextIndex = index;
+              if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextIndex = (index + 1) % masks.length;
+              } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                nextIndex = (index - 1 + masks.length) % masks.length;
+              }
+              if (nextIndex !== index) {
+                e.preventDefault();
+                setSelectedId(masks[nextIndex]?.id ?? '');
+                document.getElementById(`mask-radio-${nextIndex}`)?.focus();
+              }
+            }}
+          />
         ))}
       </div>
       <Panel>
