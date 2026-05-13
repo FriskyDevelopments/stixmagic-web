@@ -5,23 +5,17 @@ import type { MaskDefinition } from '@stixmagic/types';
 import { cn } from '../lib/cn';
 
 interface MaskCardProps {
-  id?: string;
   mask: MaskDefinition;
   selected: boolean;
   onSelect: (mask: MaskDefinition) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
 }
 
-export const MaskCard = ({ id, mask, selected, onSelect, onKeyDown }: MaskCardProps) => (
+export const MaskCard = ({ mask, selected, onSelect }: MaskCardProps) => (
   <motion.button
-    id={id}
     whileHover={{ y: -4 }}
     whileTap={{ scale: 0.99 }}
     onClick={() => onSelect(mask)}
-    onKeyDown={onKeyDown}
-    role="radio"
-    aria-checked={selected}
-    tabIndex={selected ? 0 : -1}
+    aria-pressed={selected}
     className={cn(
       'rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50',
       selected
