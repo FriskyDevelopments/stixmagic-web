@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import type { MaskDefinition } from '@stixmagic/types';
 import { MaskCard } from './MaskCard';
 import { MaskHeroPreview } from './MaskHeroPreview';
@@ -11,6 +11,7 @@ interface MaskCatalogProps {
 }
 
 export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
+  const radioIdPrefix = useId();
   const [selectedId, setSelectedId] = useState<MaskDefinition['id']>(masks[0]?.id ?? 'default');
 
   const selectedMask = useMemo(
@@ -33,7 +34,7 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
         {masks.map((mask, index) => (
           <MaskCard
             key={mask.id}
-            id={`mask-radio-${index}`}
+            id={`${radioIdPrefix}-mask-radio-${index}`}
             mask={mask}
             selected={mask.id === selectedMask.id}
             onSelect={() => setSelectedId(mask.id)}
@@ -47,7 +48,7 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
               if (nextIndex !== index) {
                 e.preventDefault();
                 setSelectedId(masks[nextIndex]?.id ?? '');
-                document.getElementById(`mask-radio-${nextIndex}`)?.focus();
+                document.getElementById(`${radioIdPrefix}-mask-radio-${nextIndex}`)?.focus();
               }
             }}
           />
