@@ -17,7 +17,6 @@ export const MaskCard = forwardRef<HTMLButtonElement, MaskCardProps>(
       ref={ref}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.99 }}
-      {...props}
       onClick={() => onSelect(mask)}
       role="radio"
       aria-checked={selected}
@@ -28,6 +27,7 @@ export const MaskCard = forwardRef<HTMLButtonElement, MaskCardProps>(
           : 'border-white/10 bg-panel-secondary hover:border-white/30',
         className
       )}
+      {...props}
     >
       <p className="text-sm font-semibold text-text">{mask.name}</p>
     <p className="mt-2 text-xs leading-relaxed text-muted">{mask.description}</p>
