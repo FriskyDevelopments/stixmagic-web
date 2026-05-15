@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
-import { Panel } from '@stixmagic/ui';
+import { getRovingRadioGroupNextIndex, Panel } from '@stixmagic/ui';
 import { getRules, createRule, toggleRule, deleteRule, isDemoModeEnabled } from '../../../lib/api-client';
 
 interface Props {
@@ -120,21 +120,17 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const setResponseType = (responseType: ResponseType) =>
     setForm((prev) => ({ ...prev, responseType, responseContent: '' }));
 
-  const handleRadioGroupKeyDown = (
+  const handleRadioGroupKeyDown = <TValue extends string>(
     e: React.KeyboardEvent<HTMLDivElement>,
-    options: { value: string }[],
-    currentValue: string,
-    setValue: (val: any) => void
+    options: { value: TValue }[],
+    currentValue: TValue,
+    setValue: (val: TValue) => void
   ) => {
-    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
-    e.preventDefault();
     const currentIndex = options.findIndex((opt) => opt.value === currentValue);
-    let nextIndex = currentIndex;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      nextIndex = (currentIndex + 1) % options.length;
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      nextIndex = (currentIndex - 1 + options.length) % options.length;
-    }
+    const nextIndex = getRovingRadioGroupNextIndex(e.key, currentIndex, options.length);
+    if (nextIndex === null) return;
+
+    e.preventDefault();
     const nextValue = options[nextIndex].value;
     setValue(nextValue);
 

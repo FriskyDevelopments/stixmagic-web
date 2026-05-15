@@ -16,3 +16,4 @@ export * from './components/PackGrid';
 export * from './components/Panel';
 export * from './components/Roadmap';
 export * from './components/Tabs';
+export * from './lib/rovingRadioGroup';

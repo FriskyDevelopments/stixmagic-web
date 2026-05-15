@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useRef } from 'react';
 import type { MaskDefinition } from '@stixmagic/types';
+import { getRovingRadioGroupNextIndex } from '../lib/rovingRadioGroup';
 import { MaskCard } from './MaskCard';
 import { MaskHeroPreview } from './MaskHeroPreview';
 import { Panel } from './Panel';
@@ -20,19 +21,14 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
   );
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    let nextIndex = index;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      nextIndex = (index + 1) % masks.length;
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      nextIndex = (index - 1 + masks.length) % masks.length;
-    }
+    const nextIndex = getRovingRadioGroupNextIndex(e.key, index, masks.length);
+    if (nextIndex === null) return;
 
-    if (nextIndex !== index) {
-      setSelectedId(masks[nextIndex].id);
-      cardRefs.current[nextIndex]?.focus();
-    }
+    e.preventDefault();
+    if (nextIndex === index) return;
+
+    setSelectedId(masks[nextIndex].id);
+    cardRefs.current[nextIndex]?.focus();
   };
 
   if (!selectedMask) {
