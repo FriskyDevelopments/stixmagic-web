@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
-import { Panel } from '@stixmagic/ui';
+import { getRovingRadioGroupNextIndex, Panel } from '@stixmagic/ui';
 import { getRules, createRule, toggleRule, deleteRule, isDemoModeEnabled } from '../../../lib/api-client';
 
 interface Props {
@@ -119,6 +119,28 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
 
   const setResponseType = (responseType: ResponseType) =>
     setForm((prev) => ({ ...prev, responseType, responseContent: '' }));
+
+  const handleRadioGroupKeyDown = <TValue extends string>(
+    e: React.KeyboardEvent<HTMLDivElement>,
+    options: { value: TValue }[],
+    currentValue: TValue,
+    setValue: (val: TValue) => void
+  ) => {
+    const currentIndex = options.findIndex((opt) => opt.value === currentValue);
+    const nextIndex = getRovingRadioGroupNextIndex(e.key, currentIndex, options.length);
+    if (nextIndex === null) return;
+
+    e.preventDefault();
+    const nextValue = options[nextIndex].value;
+    setValue(nextValue);
+
+    // Cache currentTarget synchronously
+    const group = e.currentTarget;
+    setTimeout(() => {
+      const radios = Array.from(group.querySelectorAll('[role="radio"]')) as HTMLElement[];
+      radios[nextIndex]?.focus();
+    }, 0);
+  };
 
   const handleToggle = async (id: string, current: boolean) => {
     const previousRules = rules;
@@ -269,14 +291,20 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               <div id="trigger-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Trigger Type
               </div>
-              <div className="mt-2 grid grid-cols-2 gap-3" role="radiogroup" aria-labelledby="trigger-type-label">
-                {TRIGGER_OPTIONS.map((opt) => (
+              <div
+                className="mt-2 grid grid-cols-2 gap-3"
+                role="radiogroup"
+                aria-labelledby="trigger-type-label"
+                onKeyDown={(e) => handleRadioGroupKeyDown(e, TRIGGER_OPTIONS, form.triggerType, setTriggerType)}
+              >
+                {TRIGGER_OPTIONS.map((opt, i) => (
                   <button
                     key={opt.value}
                     type="button"
                     role="radio"
                     onClick={() => setTriggerType(opt.value)}
                     aria-checked={form.triggerType === opt.value}
+                    tabIndex={form.triggerType === opt.value || (!form.triggerType && i === 0) ? 0 : -1}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${
                       form.triggerType === opt.value
                         ? 'border-accent-primary/50 bg-accent-primary/15'
@@ -355,14 +383,20 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
               <div id="response-type-label" className="block text-xs font-medium uppercase tracking-wider text-muted">
                 Response Type
               </div>
-              <div className="mt-2 grid grid-cols-2 gap-3" role="radiogroup" aria-labelledby="response-type-label">
-                {RESPONSE_OPTIONS.map((opt) => (
+              <div
+                className="mt-2 grid grid-cols-2 gap-3"
+                role="radiogroup"
+                aria-labelledby="response-type-label"
+                onKeyDown={(e) => handleRadioGroupKeyDown(e, RESPONSE_OPTIONS, form.responseType, setResponseType)}
+              >
+                {RESPONSE_OPTIONS.map((opt, i) => (
                   <button
                     key={opt.value}
                     type="button"
                     role="radio"
                     onClick={() => setResponseType(opt.value)}
                     aria-checked={form.responseType === opt.value}
+                    tabIndex={form.responseType === opt.value || (!form.responseType && i === 0) ? 0 : -1}
                     className={`flex flex-col gap-1 rounded-xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-violet/50 ${
                       form.responseType === opt.value
                         ? 'border-accent-violet/50 bg-accent-violet/15'
