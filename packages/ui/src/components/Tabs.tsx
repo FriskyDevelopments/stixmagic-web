@@ -21,6 +21,8 @@ export const Tabs = ({ items }: TabsProps) => {
   const active = useMemo(() => items.find((item) => item.id === activeId) ?? items[0], [activeId, items]);
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+
     const nextIndex = getRovingRadioGroupNextIndex(e.key, index, items.length);
     if (nextIndex === null) return;
 
