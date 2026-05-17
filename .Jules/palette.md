@@ -29,3 +29,7 @@
 ## 2024-12-16 - Accessible Radiogroup Navigation
 **Learning:** For custom mutually exclusive selection UI components built with buttons (like the `MaskCatalog`), simple `aria-pressed` toggles are insufficient for screen readers. Using `role="radiogroup"` with `role="radio"` and `aria-checked` accurately communicates semantic grouping. More importantly, keyboard accessibility for these groups must strictly follow W3C ARIA specs: implementing a roving `tabIndex` (`selected ? 0 : -1`) combined with arrow-key navigation logic, ensuring the entire group acts as a single tab stop rather than forcing users to tab through every individual option.
 **Action:** When creating mutually exclusive options out of non-native inputs, always apply the complete `radiogroup` pattern, including arrow-key-based focus management and roving tab indexes.
+
+## 2024-05-16 - Roving TabIndex for ARIA Tabs
+**Learning:** Standard ARIA Tab components built manually require more than just `role="tab"` and `role="tabpanel"`. They must implement a roving tabindex (`tabIndex={isSelected ? 0 : -1}` on the tabs) and arrow-key navigation so the entire tablist acts as a single tab stop. Additionally, the active `tabpanel` itself should have `tabIndex={0}` and a visible focus style so users can tab directly into the active pane from the tablist.
+**Action:** When implementing custom tab components, always verify that the roving tabindex pattern is implemented with arrow key navigation, and ensure the content pane is focusable.
