@@ -16,7 +16,7 @@ export default function PackNotFound() {
         <div className="mt-6">
           <Link
             href="/packs"
-            className="inline-flex rounded-xl bg-accent-primary px-5 py-2.5 text-sm font-semibold text-text transition hover:opacity-90"
+            className="inline-flex rounded-xl bg-accent-primary px-5 py-2.5 text-sm font-semibold text-text transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
           >
             Browse all packs
           </Link>
