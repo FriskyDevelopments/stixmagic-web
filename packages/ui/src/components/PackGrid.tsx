@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import type { Route } from 'next';
 import type { ProductPack } from '@stixmagic/types';
 import { PackCard } from './PackCard';
 
@@ -20,7 +21,7 @@ export const PackGrid = ({ packs }: PackGridProps) => (
         transition={{ duration: 0.3, delay: index * 0.05 }}
       >
         <Link
-          href={`/packs/${pack.id}`}
+          href={`/packs/${pack.id}` as Route}
           className="block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
         >
           <PackCard pack={pack} className="h-full" />
