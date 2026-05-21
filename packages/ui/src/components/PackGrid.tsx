@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import type { ProductPack } from '@stixmagic/types';
 import { PackCard } from './PackCard';
 
@@ -18,7 +19,12 @@ export const PackGrid = ({ packs }: PackGridProps) => (
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.3, delay: index * 0.05 }}
       >
-        <PackCard pack={pack} className="h-full" />
+        <Link
+          href={{ pathname: '/packs/[id]', query: { id: pack.id } }}
+          className="block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
+        >
+          <PackCard pack={pack} className="h-full" />
+        </Link>
       </motion.div>
     ))}
   </section>

@@ -33,3 +33,7 @@
 ## 2024-05-16 - Roving TabIndex for ARIA Tabs
 **Learning:** Standard ARIA Tab components built manually require more than just `role="tab"` and `role="tabpanel"`. They must implement a roving tabindex (`tabIndex={isSelected ? 0 : -1}` on the tabs) and arrow-key navigation so the entire tablist acts as a single tab stop. Additionally, the active `tabpanel` itself should have `tabIndex={0}` and a visible focus style so users can tab directly into the active pane from the tablist.
 **Action:** When implementing custom tab components, always verify that the roving tabindex pattern is implemented with arrow key navigation, and ensure the content pane is focusable.
+
+## 2024-12-16 - Make Cards Fully Clickable with Links
+**Learning:** Grids of content cards (like the packs grid) that are intended to navigate users to detail pages often miss actual semantic links if the card is built mostly for display (e.g. wrapped in an animation div instead of an anchor). This hurts accessibility (no tab focus, screen readers can't activate them) and general usability (can't right-click or middle-click to open in a new tab).
+**Action:** When a visual card represents a destination, always wrap the card component (or its interactive area) in a standard semantic `<Link>` component with `focus-visible` ring styling to maintain accessibility and expected browser behaviors.
