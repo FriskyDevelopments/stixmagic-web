@@ -20,7 +20,7 @@ export const PackGrid = ({ packs }: PackGridProps) => (
         transition={{ duration: 0.3, delay: index * 0.05 }}
       >
         <Link
-          href={{ pathname: '/packs/[id]', query: { id: pack.id } }}
+          href={`/packs/${pack.id}`}
           className="block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
         >
           <PackCard pack={pack} className="h-full" />
