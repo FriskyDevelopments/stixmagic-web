@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { PreviewState } from '@stixmagic/types';
 import { cn } from '../lib/cn';
 
@@ -20,11 +20,6 @@ interface AssetPreviewProps {
  */
 export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) => {
   const [state, setState] = useState<PreviewState>(url === '' ? 'pending' : 'loading');
-  const [statusMessage, setStatusMessage] = useState('');
-
-  useEffect(() => {
-    setStatusMessage(state === 'loading' ? 'Loading preview' : '');
-  }, [state]);
 
   if (state === 'pending') {
     return (
@@ -51,14 +46,12 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
-      <div className="sr-only" role="status" aria-atomic="true">
-        {statusMessage}
-      </div>
       {state === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div
             className="h-5 w-5 animate-spin rounded-full border-2 border-accent-primary/20 border-t-accent-primary"
-            aria-hidden="true"
+            role="status"
+            aria-label="Loading preview"
           />
         </div>
       )}
