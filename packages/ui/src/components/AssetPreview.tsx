@@ -29,14 +29,10 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
         break;
       case 'ready':
         setStatusMessage('Preview loaded');
-        // Clear message after a short timeout
-        const readyTimeout = setTimeout(() => setStatusMessage(''), 1500);
-        return () => clearTimeout(readyTimeout);
+        break;
       case 'failed':
         setStatusMessage('Failed to load preview');
-        // Clear message after a short timeout
-        const failedTimeout = setTimeout(() => setStatusMessage(''), 1500);
-        return () => clearTimeout(failedTimeout);
+        break;
       default:
         setStatusMessage('');
     }
@@ -67,11 +63,6 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
-      {statusMessage && (
-        <div className="sr-only" role="status" aria-live="polite">
-          {statusMessage}
-        </div>
-      )}
       {state === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div
