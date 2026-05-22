@@ -48,7 +48,11 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
     <div className="relative flex h-full w-full items-center justify-center">
       {state === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-accent-primary/20 border-t-accent-primary" />
+          <div
+            className="h-5 w-5 animate-spin rounded-full border-2 border-accent-primary/20 border-t-accent-primary"
+            role="status"
+            aria-label="Loading preview"
+          />
         </div>
       )}
       <img
