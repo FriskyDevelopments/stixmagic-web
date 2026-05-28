@@ -37,3 +37,7 @@
 ## 2024-12-16 - Make Cards Fully Clickable with Links
 **Learning:** Grids of content cards (like the packs grid) that are intended to navigate users to detail pages often miss actual semantic links if the card is built mostly for display (e.g. wrapped in an animation div instead of an anchor). This hurts accessibility (no tab focus, screen readers can't activate them) and general usability (can't right-click or middle-click to open in a new tab).
 **Action:** When a visual card represents a destination, always wrap the card component (or its interactive area) in a standard semantic `<Link>` component with `focus-visible` ring styling to maintain accessibility and expected browser behaviors.
+
+## 2024-12-16 - Explicit Empty States for Dynamic Grids
+**Learning:** When using map functions to render dynamic data grids (e.g., connected groups or active rules), simply checking `loading` is not enough. If the loaded data array is empty (`length === 0`), it leaves a blank void in the UI. This is bad for user experience and accessibility, as users are unsure if it's broken, still loading invisibly, or truly empty.
+**Action:** Always provide explicit, visually distinct empty states (e.g., using a disabled or secondary `<Panel>`) containing helpful text and a clear call-to-action when dynamic lists or grids return zero results.
