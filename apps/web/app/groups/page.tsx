@@ -87,8 +87,8 @@ export default function GroupsPage() {
       ) : groups.length === 0 ? (
         <Panel variant="secondary">
           <div className="py-6 text-center">
-            <p className="text-2xl">🪄</p>
-            <p className="mt-3 text-sm font-medium text-text">No groups connected yet</p>
+            <p className="text-2xl" aria-hidden="true">🪄</p>
+            <h2 className="mt-3 text-sm font-medium text-text">No groups connected yet</h2>
             <p className="mt-1 text-sm text-muted">
               Follow the instructions below to add the bot to your group and grant admin rights.
             </p>
