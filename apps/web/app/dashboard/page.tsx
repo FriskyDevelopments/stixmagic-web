@@ -113,6 +113,16 @@ export default function DashboardPage() {
               </Panel>
             ))}
           </div>
+        ) : groups.length === 0 ? (
+          <Panel variant="secondary">
+            <div className="py-6 text-center">
+              <p className="text-2xl">🪄</p>
+              <p className="mt-3 text-sm font-medium text-text">No groups connected yet</p>
+              <p className="mt-1 text-sm text-muted">
+                Add the Stix Magic bot to your Telegram group and give it admin rights to see it here.
+              </p>
+            </div>
+          </Panel>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {groups.map((group) => {
