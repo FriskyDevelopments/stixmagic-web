@@ -13,6 +13,7 @@ __pycache__/
 node_modules/
 .pnpm-store/
 .turbo/
+.vercel/
 dist/
 .next/
 out/
