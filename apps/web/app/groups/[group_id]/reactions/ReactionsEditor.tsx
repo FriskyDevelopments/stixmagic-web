@@ -479,8 +479,14 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                       ? 'Please fill out all required fields'
                       : undefined
                 }
-                className="rounded-lg bg-accent-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
               >
+                {saving && (
+                  <svg className="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                )}
                 {saving ? 'Saving…' : 'Save Rule'}
               </button>
               <button
@@ -499,7 +505,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       )}
 
       {loading ? (
-        <div className="space-y-3">
+        <div className="space-y-3" role="status" aria-label="Loading rules">
           {[1, 2, 3].map((i) => (
             <Panel key={i} variant="secondary" className="animate-pulse">
               <div className="flex items-center gap-4">
