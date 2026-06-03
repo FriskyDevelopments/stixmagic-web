@@ -41,3 +41,7 @@
 ## 2024-12-16 - Explicit Empty States for Dynamic Grids
 **Learning:** When using map functions to render dynamic data grids (e.g., connected groups or active rules), simply checking `loading` is not enough. If the loaded data array is empty (`length === 0`), it leaves a blank void in the UI. This is bad for user experience and accessibility, as users are unsure if it's broken, still loading invisibly, or truly empty.
 **Action:** Always provide explicit, visually distinct empty states (e.g., using a disabled or secondary `<Panel>`) containing helpful text and a clear call-to-action when dynamic lists or grids return zero results.
+
+## 2024-06-03 - Added SVG Loading Spinner to Async Button
+**Learning:** Adding an inline SVG loading spinner to an async submit button gives much better immediate visual feedback that a process is running compared to just updating the button text (e.g. from "Save" to "Saving...").
+**Action:** Always include an `aria-hidden="true"` SVG spinner next to the text on asynchronous primary action buttons to convey loading state, and use `inline-flex items-center justify-center gap-2` on the button itself.
