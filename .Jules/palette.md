@@ -45,3 +45,6 @@
 ## 2024-06-03 - Added SVG Loading Spinner to Async Button
 **Learning:** Adding an inline SVG loading spinner to an async submit button gives much better immediate visual feedback that a process is running compared to just updating the button text (e.g. from "Save" to "Saving...").
 **Action:** Always include an `aria-hidden="true"` SVG spinner next to the text on asynchronous primary action buttons to convey loading state, and use `inline-flex items-center justify-center gap-2` on the button itself.
+## 2024-12-16 - Add type="button" to custom buttons
+**Learning:** React buttons inside components default to `type="submit"`. This causes unintended form submissions and page reloads if the component is used inside a `<form>`.
+**Action:** Always specify `type="button"` explicitly on `<button>` elements that are meant for generic interactions (like tabs or step indicators).

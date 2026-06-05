@@ -39,6 +39,7 @@ export const Tabs = ({ items }: TabsProps) => {
           return (
             <button
               key={item.id}
+              type="button"
               ref={(el) => {
                 tabRefs.current[index] = el;
               }}
