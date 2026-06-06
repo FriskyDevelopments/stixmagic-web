@@ -7,8 +7,12 @@ const hasCustomDomain = customDomain.length > 0;
 const useBasePath = isGitHubPagesBuild && repoName.length > 0 && !isUserOrOrgSite && !hasCustomDomain;
 const basePath = useBasePath ? `/${repoName}` : '';
 
+// Cloudflare Pages native build uses @cloudflare/next-on-pages which requires standard Next.js output
+// Github Actions uses static export and uploads the out/ directory
+const isCloudflarePages = process.env.CF_PAGES === '1';
+
 const nextConfig = {
-  output: 'export',
+  output: isCloudflarePages ? undefined : 'export',
   trailingSlash: true,
   images: {
     unoptimized: true
