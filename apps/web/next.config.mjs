@@ -7,8 +7,13 @@ const hasCustomDomain = customDomain.length > 0;
 const useBasePath = isGitHubPagesBuild && repoName.length > 0 && !isUserOrOrgSite && !hasCustomDomain;
 const basePath = useBasePath ? `/${repoName}` : '';
 
+// Cloudflare Pages native build uses @cloudflare/next-on-pages which requires standard Next.js output
+// Github Actions uses static export and uploads the out/ directory
+// Vercel CLI strips some CF_ env vars during build, so we rely on GITHUB_ACTIONS instead
+const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
+
 const nextConfig = {
-  output: 'export',
+  output: isGitHubActions ? 'export' : undefined,
   trailingSlash: true,
   images: {
     unoptimized: true

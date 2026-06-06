@@ -1,6 +1,5 @@
 {
   "framework": "nextjs",
   "buildCommand": "cd ../.. && pnpm --filter @stixmagic/web build",
-  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
-  "outputDirectory": "out"
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile"
 }
