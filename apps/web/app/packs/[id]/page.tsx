@@ -74,9 +74,13 @@ export default async function PackDetailPage({ params }: PackDetailPageProps) {
         </div>
       ) : (
         <Panel variant="secondary">
-          <p className="text-sm text-muted">
-            Asset previews for this pack will appear here once the pipeline manifest is populated.
-          </p>
+          <div className="py-6 text-center">
+            <p className="text-2xl">🖼️</p>
+            <p className="mt-3 text-sm font-medium text-text">No previews available</p>
+            <p className="mt-1 text-sm text-muted">
+              Asset previews for this pack will appear here once the pipeline manifest is populated.
+            </p>
+          </div>
         </Panel>
       )}
 
