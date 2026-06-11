@@ -45,3 +45,6 @@
 ## 2024-06-03 - Added SVG Loading Spinner to Async Button
 **Learning:** Adding an inline SVG loading spinner to an async submit button gives much better immediate visual feedback that a process is running compared to just updating the button text (e.g. from "Save" to "Saving...").
 **Action:** Always include an `aria-hidden="true"` SVG spinner next to the text on asynchronous primary action buttons to convey loading state, and use `inline-flex items-center justify-center gap-2` on the button itself.
+## 2026-06-11 - [Grid Components Accessibility and UX Polish]
+**Learning:** When building dynamic grid or list components (like `PackGrid`, `GalleryGrid`), it's crucial for accessibility to use semantic list wrappers (`<ul>` and `<li>`) so assistive technologies can announce the number of items. Additionally, explicitly handling the empty state (e.g., providing a visually distinct `<Panel>` with guidance) avoids rendering a confusing blank space when no items match.
+**Action:** Always verify that mapped list/grid components in `@stixmagic/ui` default to semantic `<ul>` and `<li>` structures, and explicitly render an empty state UI when array lengths are zero.
