@@ -22,3 +22,5 @@ coverage/
 # Env
 .env
 apps/web/tsconfig.tsbuildinfo
+.vercel/
+apps/web/.vercel/
