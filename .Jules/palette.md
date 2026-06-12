@@ -45,3 +45,7 @@
 ## 2024-06-03 - Added SVG Loading Spinner to Async Button
 **Learning:** Adding an inline SVG loading spinner to an async submit button gives much better immediate visual feedback that a process is running compared to just updating the button text (e.g. from "Save" to "Saving...").
 **Action:** Always include an `aria-hidden="true"` SVG spinner next to the text on asynchronous primary action buttons to convey loading state, and use `inline-flex items-center justify-center gap-2` on the button itself.
+
+## 2025-02-12 - Announcing Dynamic Preview Updates
+**Learning:** Components like `MaskHeroPreview` that update their entire content purely based on user selection in a separate control (e.g., a radio group or list) are not announced by screen readers automatically. Without `aria-live`, users won't know the preview area changed.
+**Action:** Always add `role="status"`, `aria-live="polite"`, and `aria-atomic="true"` to the root container of dynamic preview areas so assistive technologies will read out the entire updated context when the selected item changes.
