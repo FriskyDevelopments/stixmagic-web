@@ -48,3 +48,11 @@
 ## 2026-06-11 - [Grid Components Accessibility and UX Polish]
 **Learning:** When building dynamic grid or list components (like `PackGrid`, `GalleryGrid`), it's crucial for accessibility to use semantic list wrappers (`<ul>` and `<li>`) so assistive technologies can announce the number of items. Additionally, explicitly handling the empty state (e.g., providing a visually distinct `<Panel>` with guidance) avoids rendering a confusing blank space when no items match.
 **Action:** Always verify that mapped list/grid components in `@stixmagic/ui` default to semantic `<ul>` and `<li>` structures, and explicitly render an empty state UI when array lengths are zero.
+
+## 2024-06-13 - Accessible Coming Soon Steps
+**Learning:** Using the native `disabled` attribute on "Coming Soon" steps makes them invisible to screen readers and unavailable via keyboard navigation. This prevents users from knowing the feature exists and is planned.
+**Action:** Use `aria-disabled="true"` instead of `disabled` to ensure the steps remain in the DOM and are discoverable via keyboard navigation while correctly conveying their inactive state to assistive technologies.
+
+## 2024-06-13 - ARIA Tablist Orientation
+**Learning:** Screen readers need to know the navigation direction of a `tablist` to correctly announce expected keyboard interactions (like "use left and right arrows to move between tabs"). Without an explicit `aria-orientation`, the default or assumed behavior might not align with the visual layout.
+**Action:** Always provide explicit navigation direction context to screen readers by setting `aria-orientation="horizontal"` (or `"vertical"`) on the `role="tablist"` container.
