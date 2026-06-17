@@ -79,6 +79,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const [toggling, setToggling] = useState(false);
   const [testResult, setTestResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -145,12 +146,15 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const handleToggle = async (id: string, current: boolean) => {
     const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
+    setToggling(true);
     try {
       await toggleRule(groupId, id, !current);
     } catch (err) {
       setRules(previousRules);
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(`Failed to toggle rule: ${message}`);
+    } finally {
+      setToggling(false);
     }
   };
 
@@ -589,14 +593,15 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
+                    disabled={toggling}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 ${
+                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${
                       rule.enabled
                         ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text focus-visible:ring-muted/50'
                         : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5 focus-visible:ring-accent-teal/50'
                     }`}
                   >
-                    {rule.enabled ? 'Pause' : 'Enable'}
+                    {toggling ? 'Loading…' : rule.enabled ? 'Pause' : 'Enable'}
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
