@@ -48,3 +48,7 @@
 ## 2026-06-11 - [Grid Components Accessibility and UX Polish]
 **Learning:** When building dynamic grid or list components (like `PackGrid`, `GalleryGrid`), it's crucial for accessibility to use semantic list wrappers (`<ul>` and `<li>`) so assistive technologies can announce the number of items. Additionally, explicitly handling the empty state (e.g., providing a visually distinct `<Panel>` with guidance) avoids rendering a confusing blank space when no items match.
 **Action:** Always verify that mapped list/grid components in `@stixmagic/ui` default to semantic `<ul>` and `<li>` structures, and explicitly render an empty state UI when array lengths are zero.
+
+## 2024-05-24 - Accessible "Coming Soon" Tabs
+**Learning:** Using the native `disabled` attribute on "Coming Soon" tabs completely removes them from the tab order. This causes keyboard and screen reader users to skip over them entirely, making them miss the context that future steps exist.
+**Action:** When implementing "Coming Soon" or unclickable preview tabs, use `aria-disabled="true"` instead of `disabled`. This ensures the elements remain focusable in the navigation sequence so their presence is announced, while the click handler (`onClick={() => !comingSoon && doAction()}`) correctly prevents interaction.
