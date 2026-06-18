@@ -445,23 +445,25 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
             </div>
 
             {/* Rule Preview */}
-            {form.name && form.triggerValue && form.responseContent && (
-              <div className="rounded-xl border border-accent-teal/20 bg-accent-teal/5 p-4">
-                <p className="text-xs font-medium uppercase tracking-wider text-accent-teal">
-                  Rule Preview
-                </p>
-                <p className="mt-2 text-sm text-muted">
-                  When{' '}
-                  <span className="text-text">
-                    {form.triggerType} &ldquo;{form.triggerValue}&rdquo;
-                  </span>{' '}
-                  is detected, respond with{' '}
-                  <span className="text-text">
-                    {form.responseType}: &ldquo;{form.responseContent}&rdquo;
-                  </span>
-                </p>
-              </div>
-            )}
+            <div aria-live="polite" aria-atomic="true">
+              {form.name && form.triggerValue && form.responseContent && (
+                <div className="rounded-xl border border-accent-teal/20 bg-accent-teal/5 p-4">
+                  <p className="text-xs font-medium uppercase tracking-wider text-accent-teal">
+                    Rule Preview
+                  </p>
+                  <p className="mt-2 text-sm text-muted">
+                    When{' '}
+                    <span className="text-text">
+                      {form.triggerType} &ldquo;{form.triggerValue}&rdquo;
+                    </span>{' '}
+                    is detected, respond with{' '}
+                    <span className="text-text">
+                      {form.responseType}: &ldquo;{form.responseContent}&rdquo;
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div className="flex gap-3 pt-2">
               <button

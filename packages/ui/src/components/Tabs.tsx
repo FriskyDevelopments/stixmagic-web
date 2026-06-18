@@ -33,7 +33,7 @@ export const Tabs = ({ items }: TabsProps) => {
 
   return (
     <section className="rounded-2xl border border-white/10 bg-panel p-6">
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Content Tabs">
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Content Tabs" aria-orientation="horizontal">
         {items.map((item, index) => {
           const isSelected = item.id === active?.id;
           return (

@@ -23,7 +23,7 @@ export const MaskHeroPreview = ({ selectedMask }: MaskHeroPreviewProps) => (
       <svg viewBox="0 0 128 128" className="mx-auto h-44 w-44 text-accent-primary" fill="currentColor" aria-hidden>
         <path d={maskPaths[selectedMask.id]} />
       </svg>
-      <div>
+      <div role="status" aria-live="polite" aria-atomic="true">
         <p className="text-xs uppercase tracking-wider text-accent-cyan">Selected Mask</p>
         <h3 className="mt-2 text-2xl font-semibold text-text">{selectedMask.name}</h3>
         <p className="mt-3 text-sm leading-relaxed text-muted">{selectedMask.description}</p>
