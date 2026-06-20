@@ -2,7 +2,7 @@ import { MOCK_GROUPS, getGroup } from '../../../lib/mock-data';
 import { notFound } from 'next/navigation';
 import ReactionsEditor from './ReactionsEditor';
 
-export function generateStaticParams() {
+export function generateStaticParams(): { group_id: string }[] {
   return MOCK_GROUPS.map((group) => ({ group_id: group.id }));
 }
 
