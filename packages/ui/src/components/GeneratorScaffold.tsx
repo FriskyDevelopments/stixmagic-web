@@ -24,14 +24,14 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
           <button
             key={step.id}
             onClick={() => !step.comingSoon && setActiveStep(step.id)}
-            disabled={step.comingSoon}
+            aria-disabled={step.comingSoon ? true : undefined}
             aria-current={step.id === activeStep ? 'step' : undefined}
             className={cn(
               'flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50',
               step.id === activeStep
                 ? 'border-accent-primary bg-accent-primary/10 text-text'
                 : step.comingSoon
-                  ? 'cursor-not-allowed border-white/5 bg-panel-secondary text-muted/50'
+                  ? 'cursor-not-allowed opacity-50 border-white/5 bg-panel-secondary text-muted/50 hover:text-muted/50'
                   : 'border-white/10 bg-panel-secondary text-muted hover:border-white/30 hover:text-text'
             )}
           >

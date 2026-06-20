@@ -7,7 +7,7 @@ interface PackDetailPageProps {
   params: { id: string };
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ id: string }[]> {
   const manifest = await loadPipelineManifest();
   return manifest.packs.map((pack) => ({ id: pack.id }));
 }
