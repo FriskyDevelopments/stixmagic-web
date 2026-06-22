@@ -44,8 +44,11 @@ export const HowItWorks = () => (
           transition={{ duration: 0.3, delay: i * 0.08 }}
           className="relative rounded-2xl border border-white/10 bg-panel p-5"
         >
-          <p className="text-3xl text-accent-primary/40">{step.number}</p>
-          <h3 className="mt-2 text-base font-semibold text-text">{step.title}</h3>
+          <p className="text-3xl text-accent-primary/40" aria-hidden="true">{step.number}</p>
+          <h3 className="mt-2 text-base font-semibold text-text">
+            <span className="sr-only">Step {i + 1}: </span>
+            {step.title}
+          </h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">{step.description}</p>
         </motion.div>
       ))}

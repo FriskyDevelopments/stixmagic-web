@@ -69,7 +69,7 @@ export const Roadmap = () => (
           <ul className="mt-3 space-y-1">
             {phase.items.map((item) => (
               <li key={item} className="flex items-start gap-2 text-xs text-muted">
-                <span className="mt-px text-accent-cyan">·</span>
+                <span className="mt-px text-accent-cyan" aria-hidden="true">·</span>
                 {item}
               </li>
             ))}
