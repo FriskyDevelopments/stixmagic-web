@@ -6,34 +6,35 @@ import {
   HeroAssetShowcase,
   HowItWorks,
   Panel,
-  Roadmap
-} from '@stixmagic/ui';
-import { loadPipelineManifest } from './integrations/manifest';
+  Roadmap,
+} from "@stixmagic/ui";
+import { loadPipelineManifest } from "./integrations/manifest";
 
 const features = [
   {
-    tag: 'Motion Alphabet',
-    title: 'Animated letter packs',
-    description: 'A–Z letters rendered as looping GIFs, WebMs, and overlay-ready assets for any production workflow.'
+    tag: "Motion Alphabet",
+    title: "Animated letter packs",
+    description:
+      "A–Z letters rendered as looping GIFs, WebMs, and overlay-ready assets for any production workflow.",
   },
   {
-    tag: 'Sticker Engine',
-    title: 'Visual asset pipeline',
+    tag: "Sticker Engine",
+    title: "Visual asset pipeline",
     description:
-      'The MagicStix bot pipeline generates stickers, animated emojis, signals, and overlays as production-ready exports.'
+      "The MagicStix bot pipeline generates stickers, animated emojis, signals, and overlays as production-ready exports.",
   },
   {
-    tag: 'Pack Catalog',
-    title: 'Modular asset packs',
+    tag: "Pack Catalog",
+    title: "Modular asset packs",
     description:
-      'Browse curated packs — DJ sets, neon signals, cloud motifs, emoji reactions, and more — ready to drop into any stream or chat.'
+      "Browse curated packs — DJ sets, neon signals, cloud motifs, emoji reactions, and more — ready to drop into any stream or chat.",
   },
   {
-    tag: 'Generator UI',
-    title: 'Custom text preview',
+    tag: "Generator UI",
+    title: "Custom text preview",
     description:
-      'Choose a style, type your text, and preview animated output before exporting. Generator frontend coming soon.'
-  }
+      "Choose a style, type your text, and preview animated output before exporting. Generator frontend coming soon.",
+  },
 ];
 
 export default async function HomePage() {
@@ -55,20 +56,30 @@ export default async function HomePage() {
 
       <section className="grid gap-4 lg:grid-cols-2">
         <Panel>
-          <p className="text-xs uppercase tracking-wider text-accent-cyan">What is MagicStix?</p>
-          <h2 className="mt-3 text-xl font-semibold text-text">A visual asset ecosystem.</h2>
+          <p className="text-xs uppercase tracking-wider text-accent-cyan">
+            What is MagicStix?
+          </p>
+          <h2 className="mt-3 text-xl font-semibold text-text">
+            A visual asset ecosystem.
+          </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            MagicStix is a modular visual asset system. The bot pipeline generates stickers, animated letters, neon
-            signals, and overlay packs. This site is the public face of that ecosystem — preview, catalog, and future
-            generator frontend.
+            MagicStix is a modular visual asset system. The bot pipeline
+            generates stickers, animated letters, neon signals, and overlay
+            packs. This site is the public face of that ecosystem — preview,
+            catalog, and future generator frontend.
           </p>
         </Panel>
         <Panel variant="secondary">
-          <p className="text-xs uppercase tracking-wider text-accent-violet">Built for creators</p>
-          <h2 className="mt-3 text-xl font-semibold text-text">Ready for streams and chat.</h2>
+          <p className="text-xs uppercase tracking-wider text-accent-violet">
+            Built for creators
+          </p>
+          <h2 className="mt-3 text-xl font-semibold text-text">
+            Ready for streams and chat.
+          </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Stream overlays, chat stickers, animated name packs, DJ visuals, and emoji sets — all generated at quality
-            from a single pipeline and downloadable in GIF, WebM, WebP, and more.
+            Stream overlays, chat stickers, animated name packs, DJ visuals, and
+            emoji sets — all generated at quality from a single pipeline and
+            downloadable in GIF, WebM, WebP, and more.
           </p>
         </Panel>
       </section>
