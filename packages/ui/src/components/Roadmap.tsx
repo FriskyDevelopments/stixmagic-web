@@ -48,9 +48,9 @@ export const Roadmap = () => (
         STIX MΛGIC is evolving in clear stages so creators get value early and often.
       </p>
     </div>
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {phases.map((phase, i) => (
-        <motion.div
+        <motion.li
           key={phase.phase}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,13 +69,13 @@ export const Roadmap = () => (
           <ul className="mt-3 space-y-1">
             {phase.items.map((item) => (
               <li key={item} className="flex items-start gap-2 text-xs text-muted">
-                <span className="mt-px text-accent-cyan">·</span>
+                <span className="mt-px text-accent-cyan" aria-hidden="true">·</span>
                 {item}
               </li>
             ))}
           </ul>
-        </motion.div>
+        </motion.li>
       ))}
-    </div>
+    </ul>
   </section>
 );

@@ -34,9 +34,9 @@ export const HowItWorks = () => (
         Four steps from raw image to living magic in chat.
       </p>
     </div>
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((step, i) => (
-        <motion.div
+        <motion.li
           key={step.number}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -44,11 +44,11 @@ export const HowItWorks = () => (
           transition={{ duration: 0.3, delay: i * 0.08 }}
           className="relative rounded-2xl border border-white/10 bg-panel p-5"
         >
-          <p className="text-3xl text-accent-primary/40">{step.number}</p>
+          <p className="text-3xl text-accent-primary/40" aria-hidden="true">{step.number}</p>
           <h3 className="mt-2 text-base font-semibold text-text">{step.title}</h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">{step.description}</p>
-        </motion.div>
+        </motion.li>
       ))}
-    </div>
+    </ol>
   </section>
 );

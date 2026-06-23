@@ -42,9 +42,9 @@ export const ArchitectureOverview = () => (
         sticker experiences that feel alive.
       </p>
     </div>
-    <div className="grid gap-4 lg:grid-cols-3">
+    <ul className="grid gap-4 lg:grid-cols-3">
       {groups.map((group, gi) => (
-        <motion.div
+        <motion.li
           key={group.label}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,17 +53,17 @@ export const ArchitectureOverview = () => (
         >
           <Panel variant="secondary" className="h-full">
             <p className={`text-xs uppercase tracking-wider ${group.accent}`}>{group.label}</p>
-            <div className="mt-3 space-y-2">
+            <ul className="mt-3 space-y-2">
               {group.items.map((item) => (
-                <div key={item.name} className="rounded-lg border border-white/5 bg-background p-3">
+                <li key={item.name} className="rounded-lg border border-white/5 bg-background p-3">
                   <p className="text-xs font-medium text-accent-cyan">{item.name}</p>
                   <p className="mt-1 text-xs text-muted">{item.description}</p>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </Panel>
-        </motion.div>
+        </motion.li>
       ))}
-    </div>
+    </ul>
   </section>
 );
