@@ -52,3 +52,6 @@
 ## 2026-06-19 - Accessible "Coming Soon" Tabs/Buttons
 **Learning:** When implementing 'Coming Soon' tabs or similar inactive buttons, using the native `disabled` attribute completely removes them from the keyboard navigation sequence. This prevents screen reader users and keyboard navigators from discovering what features are upcoming.
 **Action:** Always use `aria-disabled="true"` instead of the native `disabled` attribute for these types of elements. Ensure they remain focusable and continue to use CSS utility classes (e.g., `opacity-50 cursor-not-allowed hover:text-muted/50`) to visually simulate the disabled state.
+## 2026-06-23 - Screen Reader Noise from Decorative Text
+**Learning:** Found that ASCII/emoji art like '△ ── ◯ ── ✦ ── ◯ ── △' is read aloud character-by-character by screen readers, creating extreme noise.
+**Action:** Always add aria-hidden='true' to text elements that function purely as visual separators or decorative borders.
