@@ -66,24 +66,29 @@ function resolveInitDataHeader(): string | null {
  * @throws Error when the HTTP response status is not OK or when the API response has `ok: false`.
  */
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const initDataHeader = resolveInitDataHeader();
-  const headers = new Headers(init?.headers ?? {});
-  if (!headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json');
-  }
-  if (initDataHeader && !headers.has('x-telegram-init-data')) {
-    headers.set('x-telegram-init-data', initDataHeader);
-  }
+  try {
+    const initDataHeader = resolveInitDataHeader();
+    const headers = new Headers(init?.headers ?? {});
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+    if (initDataHeader && !headers.has('x-telegram-init-data')) {
+      headers.set('x-telegram-init-data', initDataHeader);
+    }
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    headers
-  });
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...init,
+      headers
+    });
 
-  if (!res.ok) throw new Error(`API ${res.status} for ${path}`);
-  const json = (await res.json()) as ApiResponse<T>;
-  if (!json.ok) throw new Error(`API responded with ok=false for ${path}`);
-  return json.data;
+    if (!res.ok) throw new Error(`API ${res.status} for ${path}`);
+    const json = (await res.json()) as ApiResponse<T>;
+    if (!json.ok) throw new Error(`API responded with ok=false for ${path}`);
+    return json.data;
+  } catch (err) {
+    console.error('[stixmagic-web]', err);
+    throw err;
+  }
 }
 
 /**
