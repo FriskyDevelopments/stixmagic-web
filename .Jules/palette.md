@@ -45,7 +45,10 @@
 ## 2024-06-03 - Added SVG Loading Spinner to Async Button
 **Learning:** Adding an inline SVG loading spinner to an async submit button gives much better immediate visual feedback that a process is running compared to just updating the button text (e.g. from "Save" to "Saving...").
 **Action:** Always include an `aria-hidden="true"` SVG spinner next to the text on asynchronous primary action buttons to convey loading state, and use `inline-flex items-center justify-center gap-2` on the button itself.
+## 2026-06-11 - [Grid Components Accessibility and UX Polish]
+**Learning:** When building dynamic grid or list components (like `PackGrid`, `GalleryGrid`), it's crucial for accessibility to use semantic list wrappers (`<ul>` and `<li>`) so assistive technologies can announce the number of items. Additionally, explicitly handling the empty state (e.g., providing a visually distinct `<Panel>` with guidance) avoids rendering a confusing blank space when no items match.
+**Action:** Always verify that mapped list/grid components in `@stixmagic/ui` default to semantic `<ul>` and `<li>` structures, and explicitly render an empty state UI when array lengths are zero.
 
-## 2025-02-12 - Announcing Dynamic Preview Updates
-**Learning:** Components like `MaskHeroPreview` that update their entire content purely based on user selection in a separate control (e.g., a radio group or list) are not announced by screen readers automatically. Without `aria-live`, users won't know the preview area changed.
-**Action:** Always add `role="status"`, `aria-live="polite"`, and `aria-atomic="true"` to the root container of dynamic preview areas so assistive technologies will read out the entire updated context when the selected item changes.
+## 2026-06-19 - Accessible "Coming Soon" Tabs/Buttons
+**Learning:** When implementing 'Coming Soon' tabs or similar inactive buttons, using the native `disabled` attribute completely removes them from the keyboard navigation sequence. This prevents screen reader users and keyboard navigators from discovering what features are upcoming.
+**Action:** Always use `aria-disabled="true"` instead of the native `disabled` attribute for these types of elements. Ensure they remain focusable and continue to use CSS utility classes (e.g., `opacity-50 cursor-not-allowed hover:text-muted/50`) to visually simulate the disabled state.
