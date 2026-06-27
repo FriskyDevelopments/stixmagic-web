@@ -23,6 +23,7 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
         {steps.map((step, index) => (
           <button
             key={step.id}
+            type="button"
             onClick={() => !step.comingSoon && setActiveStep(step.id)}
             aria-disabled={step.comingSoon}
             aria-current={step.id === activeStep ? 'step' : undefined}
