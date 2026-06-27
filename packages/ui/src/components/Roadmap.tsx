@@ -107,6 +107,6 @@ export const Roadmap = () => (
           </ul>
         </motion.li>
       ))}
-    </ul>
+    </ol>
   </section>
 );
