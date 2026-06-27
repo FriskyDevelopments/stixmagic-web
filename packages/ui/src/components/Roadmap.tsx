@@ -74,7 +74,7 @@ export const Roadmap = () => (
         often.
       </p>
     </div>
-    <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {phases.map((phase, i) => (
         <motion.li
           key={phase.phase}
