@@ -14,9 +14,9 @@ interface FeatureGridProps {
 }
 
 export const FeatureGrid = ({ items }: FeatureGridProps) => (
-  <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
     {items.map((item, index) => (
-      <motion.div
+      <motion.li
         key={item.title}
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -30,7 +30,7 @@ export const FeatureGrid = ({ items }: FeatureGridProps) => (
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
         </Panel>
-      </motion.div>
+      </motion.li>
     ))}
-  </section>
+  </ul>
 );
