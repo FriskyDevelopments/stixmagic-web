@@ -29,12 +29,14 @@ export const Hero = ({
 }: HeroProps) => (
   <section className="relative overflow-hidden rounded-3xl border border-accent-primary/20 bg-panel px-8 py-14">
     <motion.div
+      aria-hidden="true"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
       className="absolute -left-16 -top-16 h-52 w-52 rounded-full bg-accent-cyan/20 blur-3xl"
     />
     <motion.div
+      aria-hidden="true"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: 0.05 }}
