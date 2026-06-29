@@ -55,3 +55,7 @@
 ## 2026-06-23 - Screen Reader Noise from Decorative Text
 **Learning:** Found that ASCII/emoji art like '△ ── ◯ ── ✦ ── ◯ ── △' is read aloud character-by-character by screen readers, creating extreme noise.
 **Action:** Always add aria-hidden='true' to text elements that function purely as visual separators or decorative borders.
+
+## 2024-12-16 - Decorative Elements Accessibility
+**Learning:** Decorative background elements, such as glows, blurs, and ASCII visual separators (e.g., '✦ ───────── ✦'), that serve no semantic or structural purpose can create significant noise for screen reader users if left exposed in the accessibility tree. They are often announced generically (like 'span') or read out as literal punctuation, causing confusion.
+**Action:** Always ensure that purely visual, non-informative elements (like decorative spans, background gradients, SVG shapes without meaning, and ASCII art) are explicitly hidden from assistive technologies by applying `aria-hidden="true"`.

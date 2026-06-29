@@ -11,7 +11,7 @@ export const CTASection = () => (
     transition={{ duration: 0.45 }}
     className="relative overflow-hidden rounded-3xl border border-accent-primary/20 bg-panel p-10 text-center"
   >
-    <div className="pointer-events-none absolute inset-0">
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
       <div className="absolute left-1/2 top-0 h-48 w-64 -translate-x-1/2 rounded-full bg-accent-primary/15 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-40 w-56 rounded-full bg-accent-violet/15 blur-3xl" />
     </div>
