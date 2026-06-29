@@ -18,7 +18,7 @@ interface MaskHeroPreviewProps {
 
 export const MaskHeroPreview = ({ selectedMask }: MaskHeroPreviewProps) => (
   <div className="relative rounded-2xl border border-white/10 bg-panel p-8">
-    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent-cyan/10 via-transparent to-accent-violet/15" />
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent-cyan/10 via-transparent to-accent-violet/15" aria-hidden="true" />
     <div className="relative grid gap-5 md:grid-cols-[1fr_1.2fr] md:items-center">
       <svg viewBox="0 0 128 128" className="mx-auto h-44 w-44 text-accent-primary" fill="currentColor" aria-hidden>
         <path d={maskPaths[selectedMask.id]} />

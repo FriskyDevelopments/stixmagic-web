@@ -11,12 +11,12 @@ export const CTASection = () => (
     transition={{ duration: 0.45 }}
     className="relative overflow-hidden rounded-3xl border border-accent-primary/20 bg-panel p-10 text-center"
   >
-    <div className="pointer-events-none absolute inset-0">
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
       <div className="absolute left-1/2 top-0 h-48 w-64 -translate-x-1/2 rounded-full bg-accent-primary/15 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-40 w-56 rounded-full bg-accent-violet/15 blur-3xl" />
     </div>
     <div className="relative z-10">
-      <p className="text-xs uppercase tracking-widest text-accent-cyan/70">✦ ───────── ✦</p>
+      <p className="text-xs uppercase tracking-widest text-accent-cyan/70" aria-hidden="true">✦ ───────── ✦</p>
       <p className="mt-4 text-xs uppercase tracking-wider text-accent-cyan">Enter the PØRTAL</p>
       <h2 className="mt-4 text-3xl font-semibold text-text">Ready to begin your sticker alchemy?</h2>
       <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted">
@@ -37,7 +37,7 @@ export const CTASection = () => (
           Follow the Build
         </a>
       </div>
-      <p className="mt-10 text-xs text-accent-cyan/50 tracking-widest">△ ── ◯ ── ✦ ── ◯ ── △</p>
+      <p className="mt-10 text-xs text-accent-cyan/50 tracking-widest" aria-hidden="true">△ ── ◯ ── ✦ ── ◯ ── △</p>
     </div>
   </motion.section>
 );
