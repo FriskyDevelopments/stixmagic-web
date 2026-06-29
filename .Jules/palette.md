@@ -56,3 +56,7 @@
 ## 2024-06-27 - Decorative ASCII Art Accessibility
 **Learning:** Decorative ASCII art (e.g., `✦ ───────── ✦` and `△ ── ◯ ── ✦ ── ◯ ── △`) is used throughout the `@stixmagic/ui` components to create visual separation and "magical" flavor. However, without proper attributes, screen readers will read out these symbols literally (e.g., "Black star, horizontal line, horizontal line..."), which severely degrades the experience.
 **Action:** When working on `@stixmagic/ui` components, always ensure that text elements containing purely decorative ASCII art or emojis include the `aria-hidden="true"` attribute.
+
+## 2024-12-16 - Decorative Elements Accessibility
+**Learning:** Decorative background elements, such as glows, blurs, and ASCII visual separators (e.g., '✦ ───────── ✦'), that serve no semantic or structural purpose can create significant noise for screen reader users if left exposed in the accessibility tree. They are often announced generically (like 'span') or read out as literal punctuation, causing confusion.
+**Action:** Always ensure that purely visual, non-informative elements (like decorative spans, background gradients, SVG shapes without meaning, and ASCII art) are explicitly hidden from assistive technologies by applying `aria-hidden="true"`.
