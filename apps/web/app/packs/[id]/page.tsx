@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { notFound } from 'next/navigation';
 import { GalleryGrid, Panel } from '@stixmagic/ui';
 import { PACK_CATEGORY_LABELS } from '@stixmagic/types';
