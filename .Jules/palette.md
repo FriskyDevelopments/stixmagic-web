@@ -56,3 +56,11 @@
 ## 2024-12-16 - Decorative Elements Accessibility
 **Learning:** Decorative background elements, such as glows, blurs, and ASCII visual separators (e.g., '✦ ───────── ✦'), that serve no semantic or structural purpose can create significant noise for screen reader users if left exposed in the accessibility tree. They are often announced generically (like 'span') or read out as literal punctuation, causing confusion.
 **Action:** Always ensure that purely visual, non-informative elements (like decorative spans, background gradients, SVG shapes without meaning, and ASCII art) are explicitly hidden from assistive technologies by applying `aria-hidden="true"`.
+
+## 2024-12-16 - Proper Roles for Fallback Image Containers
+**Learning:** When using structural elements like `div` or `span` as visual fallbacks or placeholders for images (e.g., when an image is loading or failed to load), simply adding an `aria-label` is often ignored by screen readers because the element lacks a semantic role.
+**Action:** Always add `role="img"` to generic container elements used as visual image fallbacks to ensure their `aria-label` is correctly announced by assistive technologies as an image alternative.
+
+## 2024-12-16 - Accessible External Links
+**Learning:** Links that open in a new tab (`target="_blank"`) can be disorienting for screen reader users or users with cognitive disabilities if they are not warned beforehand. They might not realize context has changed, and the "Back" button won't work as expected.
+**Action:** When creating external links that open in a new tab, always include visually hidden text (e.g., `<span className="sr-only"> (opens in a new tab)</span>`) to provide advance warning to users relying on assistive technology.
