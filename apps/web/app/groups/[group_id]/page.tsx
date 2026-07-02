@@ -1,4 +1,5 @@
 export const runtime = 'edge';
+
 import { MOCK_GROUPS } from '../../lib/mock-data';
 import GroupView from './GroupView';
 

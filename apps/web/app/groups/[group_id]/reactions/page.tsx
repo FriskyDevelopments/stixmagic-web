@@ -1,4 +1,5 @@
 export const runtime = 'edge';
+
 import { getGroup } from '../../../lib/mock-data';
 import { notFound } from 'next/navigation';
 import ReactionsEditor from './ReactionsEditor';
