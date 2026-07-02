@@ -1,11 +1,7 @@
 export const runtime = 'edge';
-import { MOCK_GROUPS, getGroup } from '../../../lib/mock-data';
+import { getGroup } from '../../../lib/mock-data';
 import { notFound } from 'next/navigation';
 import ReactionsEditor from './ReactionsEditor';
-
-export function generateStaticParams() {
-  return MOCK_GROUPS.map((group) => ({ group_id: group.id }));
-}
 
 interface Props {
   params: { group_id: string };
@@ -17,4 +13,3 @@ export default function ReactionsPage({ params }: Props) {
 
   return <ReactionsEditor groupId={group.id} groupName={group.name} />;
 }
-
