@@ -1,8 +1,6 @@
 import { MOCK_GROUPS } from '../../lib/mock-data';
 import GroupView from './GroupView';
 
-export const runtime = 'edge';
-
 export function generateStaticParams() {
   return MOCK_GROUPS.map((group) => ({ group_id: group.id }));
 }
