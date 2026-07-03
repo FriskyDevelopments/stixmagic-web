@@ -167,6 +167,7 @@ export default function GroupsPage() {
             className="shrink-0 rounded-lg bg-accent-cyan/10 px-5 py-2.5 text-center text-sm font-medium text-accent-cyan transition hover:bg-accent-cyan/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
           >
             Open Telegram Bot →
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
       </Panel>
