@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const dynamicParams = false;
 
 import { MOCK_GROUPS } from '../../lib/mock-data';
 import GroupView from './GroupView';

@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const dynamicParams = false;
 
 import { notFound } from 'next/navigation';
 import { GalleryGrid, Panel } from '@stixmagic/ui';
