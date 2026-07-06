@@ -32,9 +32,11 @@ export const CTASection = () => (
         </Link>
         <a
           href="https://github.com/FriskyDevelopments/stixmagic-web"
+          target="_blank"
+          rel="noopener noreferrer"
           className="rounded-xl border border-accent-primary/25 bg-panel-secondary px-5 py-3 text-sm font-semibold text-text transition hover:border-accent-cyan/60 hover:text-accent-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
         >
-          Follow the Build
+          Follow the Build<span className="sr-only"> (opens in a new tab)</span>
         </a>
       </div>
       <p className="mt-10 text-xs text-accent-cyan/50 tracking-widest" aria-hidden="true">△ ── ◯ ── ✦ ── ◯ ── △</p>
