@@ -48,6 +48,7 @@ jobs:
           NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL || 'https://stixmagic.com/dashboard' }}
           NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: 'false'
           NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: ${{ vars.STIXMAGIC_ALLOW_API_FALLBACK || 'false' }}
+        CF_PAGES: '1'
         run: pnpm --filter @stixmagic/web build
 
       - name: Deploy to Cloudflare Pages
