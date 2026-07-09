@@ -8,7 +8,7 @@ const useBasePath = isGitHubPagesBuild && repoName.length > 0 && !isUserOrOrgSit
 const basePath = useBasePath ? `/${repoName}` : '';
 
 const nextConfig = {
-  output: process.env.GITHUB_ACTIONS === 'true' ? 'export' : undefined,
+  output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true

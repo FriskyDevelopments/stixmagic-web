@@ -100,3 +100,4 @@ export default async function PackDetailPage({ params }: PackDetailPageProps) {
     </div>
   );
 }
+export const dynamicParams = false;
