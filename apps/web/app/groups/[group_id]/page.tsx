@@ -13,3 +13,4 @@ export default function GroupPage({ params }: Props) {
   return <GroupView groupId={params.group_id} />;
 }
 
+export const dynamicParams = false;
