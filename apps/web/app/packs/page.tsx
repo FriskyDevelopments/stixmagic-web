@@ -54,7 +54,7 @@ export default async function PacksPage() {
         {packs.length === 0 ? (
           <Panel variant="secondary">
             <div className="py-6 text-center">
-              <p className="text-2xl">📦</p>
+              <p className="text-2xl" aria-hidden="true">📦</p>
               <p className="mt-3 text-sm font-medium text-text">No packs available</p>
               <p className="mt-1 text-sm text-muted">
                 Asset packs will appear here once the pipeline manifest is populated.
