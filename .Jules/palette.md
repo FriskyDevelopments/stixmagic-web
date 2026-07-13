@@ -56,3 +56,7 @@
 ## 2024-12-16 - Decorative Elements Accessibility
 **Learning:** Decorative background elements, such as glows, blurs, and ASCII visual separators (e.g., '✦ ───────── ✦'), that serve no semantic or structural purpose can create significant noise for screen reader users if left exposed in the accessibility tree. They are often announced generically (like 'span') or read out as literal punctuation, causing confusion.
 **Action:** Always ensure that purely visual, non-informative elements (like decorative spans, background gradients, SVG shapes without meaning, and ASCII art) are explicitly hidden from assistive technologies by applying `aria-hidden="true"`.
+
+## 2024-12-16 - Accessible External Links
+**Learning:** When adding external links that open in a new tab (`target="_blank"`), failing to provide a warning causes disorientation for users of assistive technologies, as the focus abruptly changes to a new browser context. Additionally, omitting `rel="noopener noreferrer"` introduces security risks.
+**Action:** Always include `rel="noopener noreferrer"` alongside visually hidden screen reader text (e.g., `<span className="sr-only"> (opens in a new tab)</span>`) when using `target="_blank"` to ensure both security and accessibility.
