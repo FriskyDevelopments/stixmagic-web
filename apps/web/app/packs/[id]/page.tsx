@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { notFound } from 'next/navigation';
 import { GalleryGrid, Panel } from '@stixmagic/ui';
 import { PACK_CATEGORY_LABELS } from '@stixmagic/types';
@@ -5,11 +7,6 @@ import { loadPipelineManifest } from '../../integrations/manifest';
 
 interface PackDetailPageProps {
   params: { id: string };
-}
-
-export async function generateStaticParams() {
-  const manifest = await loadPipelineManifest();
-  return manifest.packs.map((pack) => ({ id: pack.id }));
 }
 
 export default async function PackDetailPage({ params }: PackDetailPageProps) {
