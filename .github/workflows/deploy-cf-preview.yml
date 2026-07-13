@@ -56,6 +56,7 @@ jobs:
           NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: ${{ vars.STIXMAGIC_MINI_APP_URL_DEV || vars.STIXMAGIC_MINI_APP_URL || 'https://preview.stixmagic.com/dashboard' }}
           NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: 'false'
           NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: ${{ vars.STIXMAGIC_ALLOW_API_FALLBACK_DEV || vars.STIXMAGIC_ALLOW_API_FALLBACK || 'true' }}
+        CF_PAGES: '1'
         run: pnpm --filter @stixmagic/web build
 
       - name: Upload build artifact
