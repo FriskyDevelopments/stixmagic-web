@@ -20,27 +20,5 @@
     "attempts": 0,
     "maxAttempts": 3,
     "runAt": "2026-04-15T02:04:21.820Z"
-  },
-  {
-    "id": "7262549c-0c5b-4836-9bbd-74bc450f33f5",
-    "jobType": "trigger.execute",
-    "payload": {
-      "messageId": 1
-    },
-    "status": "completed",
-    "attempts": 0,
-    "maxAttempts": 3,
-    "runAt": "2026-07-14T01:36:39.547Z"
-  },
-  {
-    "id": "db67a13e-5064-4a18-889f-6a0b87b4f890",
-    "jobType": "trigger.execute",
-    "payload": {
-      "messageId": 1
-    },
-    "status": "completed",
-    "attempts": 0,
-    "maxAttempts": 3,
-    "runAt": "2026-07-14T01:37:30.284Z"
   }
 ]
