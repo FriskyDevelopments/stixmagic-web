@@ -7,7 +7,7 @@ interface PackDetailPageProps {
   params: { id: string };
 }
 
-export const runtime = 'edge';
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const manifest = await loadPipelineManifest();
