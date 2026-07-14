@@ -56,3 +56,6 @@
 ## 2024-12-16 - Decorative Elements Accessibility
 **Learning:** Decorative background elements, such as glows, blurs, and ASCII visual separators (e.g., '✦ ───────── ✦'), that serve no semantic or structural purpose can create significant noise for screen reader users if left exposed in the accessibility tree. They are often announced generically (like 'span') or read out as literal punctuation, causing confusion.
 **Action:** Always ensure that purely visual, non-informative elements (like decorative spans, background gradients, SVG shapes without meaning, and ASCII art) are explicitly hidden from assistive technologies by applying `aria-hidden="true"`.
+## 2024-07-14 - Visible Focus for Invisible Native Selects
+**Learning:** Using an invisible native `<select>` (opacity-0) over a custom visual UI is great for mobile native wheels, but breaks keyboard accessibility because the focus ring is invisible.
+**Action:** Always add the `peer` class to the invisible `<select>` and apply `peer-focus:ring-*` to the custom visual wrapper behind it to ensure keyboard users can see when the dropdown is focused.
