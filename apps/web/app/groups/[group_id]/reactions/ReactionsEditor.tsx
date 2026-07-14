@@ -425,6 +425,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   id="response-content"
                   required
                   aria-required="true"
+                  aria-describedby={RESPONSE_HINT[form.responseType] ? "response-hint" : undefined}
                   value={form.responseContent}
                   onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
                   placeholder={RESPONSE_PLACEHOLDER.message}
@@ -437,6 +438,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   type="text"
                   required
                   aria-required="true"
+                  aria-describedby={RESPONSE_HINT[form.responseType] ? "response-hint" : undefined}
                   value={form.responseContent}
                   onChange={(e) => setForm({ ...form, responseContent: e.target.value })}
                   placeholder={RESPONSE_PLACEHOLDER[form.responseType]}
@@ -444,7 +446,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                 />
               )}
               {RESPONSE_HINT[form.responseType] && (
-                <p className="mt-1.5 text-xs text-muted">💡 {RESPONSE_HINT[form.responseType]}</p>
+                <p id="response-hint" className="mt-1.5 text-xs text-muted">💡 {RESPONSE_HINT[form.responseType]}</p>
               )}
             </div>
 
