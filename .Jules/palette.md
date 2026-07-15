@@ -56,3 +56,7 @@
 ## 2024-12-16 - Decorative Elements Accessibility
 **Learning:** Decorative background elements, such as glows, blurs, and ASCII visual separators (e.g., '✦ ───────── ✦'), that serve no semantic or structural purpose can create significant noise for screen reader users if left exposed in the accessibility tree. They are often announced generically (like 'span') or read out as literal punctuation, causing confusion.
 **Action:** Always ensure that purely visual, non-informative elements (like decorative spans, background gradients, SVG shapes without meaning, and ASCII art) are explicitly hidden from assistive technologies by applying `aria-hidden="true"`.
+
+## 2024-12-16 - Screen Reader Context for Floating Badges and Tags
+**Learning:** Beautiful floating badges (like "Premium", "GIF", or categories) and visual tag clouds often lack context for screen readers. A badge that just reads "GIF" or "Premium" can be confusing without knowing what it applies to. Additionally, tags laid out in generic `<div>` containers are not announced as a list of items, making them hard to parse sequentially.
+**Action:** Always add visually hidden context to standalone badges (e.g., `<span className="sr-only">Format: </span>GIF`). Convert tag clouds and format lists to semantic `<ul>` structures with `aria-label` (e.g., `<ul aria-label="Tags">`) and `<li>` items to ensure screen readers announce them properly as lists.

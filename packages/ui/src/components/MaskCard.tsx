@@ -32,6 +32,7 @@ export const MaskCard = forwardRef<HTMLButtonElement, MaskCardProps>(
       <p className="text-sm font-semibold text-text">{mask.name}</p>
     <p className="mt-2 text-xs leading-relaxed text-muted">{mask.description}</p>
     <span className="mt-3 inline-flex rounded-full bg-background px-2.5 py-1 text-[10px] uppercase tracking-wide text-accent-violet">
+        <span className="sr-only">Category: </span>
         {mask.category}
       </span>
     </motion.button>
