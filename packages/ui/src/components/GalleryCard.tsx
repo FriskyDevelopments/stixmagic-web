@@ -22,11 +22,13 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
       <AssetPreview url={asset.previewUrl} alt={asset.name} imageClassName="h-full w-full object-contain p-3" />
       {asset.formats.includes('gif') && (
         <span className="absolute left-2 top-2 rounded bg-accent-primary/80 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-text">
+          <span className="sr-only">Format: </span>
           GIF
         </span>
       )}
       {asset.formats.includes('webm') && (
         <span className="absolute bottom-2 left-2 rounded bg-accent-cyan/80 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-background">
+          <span className="sr-only">Format: </span>
           WebM
         </span>
       )}
@@ -34,16 +36,16 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
     <div className="p-4">
       <p className="text-sm font-semibold text-text">{asset.name}</p>
       <p className="mt-1 text-xs leading-relaxed text-muted">{asset.description}</p>
-      <div className="mt-2 flex flex-wrap gap-1">
+      <ul aria-label="Tags" className="mt-2 flex flex-wrap gap-1">
         {asset.tags.map((tag) => (
-          <span
+          <li
             key={tag}
             className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-muted"
           >
             {tag}
-          </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </motion.div>
 );

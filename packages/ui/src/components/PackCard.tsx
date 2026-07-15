@@ -39,6 +39,7 @@ export const PackCard = ({ pack, className }: PackCardProps) => (
             planBadgeClasses[pack.plan]
           )}
         >
+          <span className="sr-only">Plan: </span>
           {pack.plan}
         </span>
       )}
@@ -47,29 +48,30 @@ export const PackCard = ({ pack, className }: PackCardProps) => (
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-base font-semibold text-text">{pack.name}</h3>
         <span className="shrink-0 rounded-full bg-background px-2.5 py-1 text-[10px] uppercase tracking-wide text-accent-violet">
+          <span className="sr-only">Category: </span>
           {PACK_CATEGORY_LABELS[pack.category]}
         </span>
       </div>
       <p className="mt-2 text-xs leading-relaxed text-muted">{pack.description}</p>
-      <div className="mt-3 flex flex-wrap gap-1.5">
+      <ul aria-label="Tags" className="mt-3 flex flex-wrap gap-1.5">
         {pack.tags.map((tag) => (
-          <span
+          <li
             key={tag}
             className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-muted"
           >
             {tag}
-          </span>
+          </li>
         ))}
-      </div>
+      </ul>
       <div className="mt-4 flex items-center justify-between">
         <span className="text-xs text-muted">{pack.assetCount} assets</span>
-        <div className="flex gap-1">
+        <ul aria-label="Available formats" className="flex gap-1">
           {pack.formats.map((fmt) => (
-            <span key={fmt} className="rounded bg-panel-secondary px-1.5 py-0.5 text-[10px] font-mono text-accent-cyan">
+            <li key={fmt} className="rounded bg-panel-secondary px-1.5 py-0.5 text-[10px] font-mono text-accent-cyan">
               {fmt}
-            </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   </motion.div>
