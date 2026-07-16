@@ -89,6 +89,7 @@ export const Roadmap = () => (
             <span
               className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] uppercase tracking-wide ${statusStyles[phase.status]}`}
             >
+              <span className="sr-only">Status: </span>
               {statusLabels[phase.status]}
             </span>
           </div>

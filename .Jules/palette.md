@@ -60,3 +60,7 @@
 ## 2024-12-16 - Screen Reader Context for Floating Badges and Tags
 **Learning:** Beautiful floating badges (like "Premium", "GIF", or categories) and visual tag clouds often lack context for screen readers. A badge that just reads "GIF" or "Premium" can be confusing without knowing what it applies to. Additionally, tags laid out in generic `<div>` containers are not announced as a list of items, making them hard to parse sequentially.
 **Action:** Always add visually hidden context to standalone badges (e.g., `<span className="sr-only">Format: </span>GIF`). Convert tag clouds and format lists to semantic `<ul>` structures with `aria-label` (e.g., `<ul aria-label="Tags">`) and `<li>` items to ensure screen readers announce them properly as lists.
+
+## 2024-07-16 - Screen Reader Context for Status Badges
+**Learning:** Floating status badges (e.g., "soon", "Featured", "In progress") can be confusing to screen reader users without context. For instance, just hearing "soon" or "Featured" without knowing it represents a status can be disorienting.
+**Action:** When creating status badges or similar indicators, always prefix the text with a visually hidden context string using `<span className="sr-only">Status: </span>` to ensure screen readers provide the correct meaning.
