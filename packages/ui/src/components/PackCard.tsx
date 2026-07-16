@@ -29,6 +29,7 @@ export const PackCard = ({ pack, className }: PackCardProps) => (
       <AssetPreview url={pack.previewUrl} alt={pack.name} imageClassName="h-full w-full object-cover" />
       {pack.featured && (
         <span className="absolute right-3 top-3 rounded-full bg-accent-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-text">
+          <span className="sr-only">Status: </span>
           Featured
         </span>
       )}

@@ -41,6 +41,7 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
             {step.label}
             {step.comingSoon && (
               <span className="rounded-full bg-accent-violet/20 px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-accent-violet">
+                <span className="sr-only">Status: </span>
                 soon
               </span>
             )}
