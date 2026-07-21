@@ -86,6 +86,7 @@ export default function GroupView({ groupId }: Props) {
                 : 'bg-muted/10 text-muted'
             }`}
           >
+            <span className="sr-only">Status: </span>
             {group.settings.reactionsEnabled ? 'Reactions Active' : 'Reactions Paused'}
           </span>
         </div>
@@ -220,6 +221,7 @@ export default function GroupView({ groupId }: Props) {
                     rule.enabled ? 'bg-accent-teal/15 text-accent-teal' : 'bg-muted/10 text-muted'
                   }`}
                 >
+                  <span className="sr-only">Status: </span>
                   {rule.enabled ? 'Active' : 'Paused'}
                 </span>
                 <Link

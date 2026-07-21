@@ -116,7 +116,7 @@ export default function DashboardPage() {
         ) : groups.length === 0 ? (
           <Panel variant="secondary">
             <div className="py-6 text-center">
-              <p className="text-2xl">🪄</p>
+              <p className="text-2xl" aria-hidden="true">🪄</p>
               <p className="mt-3 text-sm font-medium text-text">No groups connected yet</p>
               <p className="mt-1 text-sm text-muted">
                 Add the Stix Magic bot to your Telegram group and give it admin rights to see it here.
@@ -145,6 +145,7 @@ export default function DashboardPage() {
                             : 'bg-muted/10 text-muted'
                         }`}
                       >
+                        <span className="sr-only">Status: </span>
                         {group.settings.reactionsEnabled ? 'Active' : 'Paused'}
                       </span>
                     </div>
