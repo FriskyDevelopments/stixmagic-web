@@ -531,7 +531,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       ) : rules.length === 0 && !showForm ? (
         <Panel variant="secondary">
           <div className="py-6 text-center">
-            <p className="text-2xl">✨</p>
+            <p className="text-2xl" aria-hidden="true">✨</p>
             <p className="mt-3 text-sm font-medium text-text">No reaction rules yet</p>
             <p className="mt-1 text-sm text-muted">
               Create your first rule to start automating responses in {groupName}.
@@ -569,6 +569,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                             : 'bg-muted/10 text-muted'
                         }`}
                       >
+                        <span className="sr-only">Status: </span>
                         {rule.enabled ? 'Active' : 'Paused'}
                       </span>
                     </div>
