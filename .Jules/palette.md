@@ -64,3 +64,7 @@
 ## 2024-07-16 - Screen Reader Context for Status Badges
 **Learning:** Floating status badges (e.g., "soon", "Featured", "In progress") can be confusing to screen reader users without context. For instance, just hearing "soon" or "Featured" without knowing it represents a status can be disorienting.
 **Action:** When creating status badges or similar indicators, always prefix the text with a visually hidden context string using `<span className="sr-only">Status: </span>` to ensure screen readers provide the correct meaning.
+
+## 2024-12-16 - Item-Specific Loading States in Dynamic Lists
+**Learning:** When displaying dynamic lists where items can be individually toggled or acted upon (like activating a reaction rule), using a single global `loading` or `toggling` boolean state forces all items in the list to visually disable and show loading indicators when any single item is clicked. This creates a confusing "locked up" feel for the entire UI, even though only one item is actually processing.
+**Action:** For item-specific actions in mapped lists, always use an ID-based loading state (e.g., `togglingId: string | null`) rather than a global boolean to ensure only the active item is disabled and displays a loading spinner, leaving the rest of the list interactive and visually distinct.

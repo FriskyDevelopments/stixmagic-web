@@ -79,7 +79,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
-  const [toggling, setToggling] = useState(false);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [testResult, setTestResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -146,7 +146,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const handleToggle = async (id: string, current: boolean) => {
     const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
-    setToggling(true);
+    setTogglingId(id);
     try {
       await toggleRule(groupId, id, !current);
     } catch (err) {
@@ -154,7 +154,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(`Failed to toggle rule: ${message}`);
     } finally {
-      setToggling(false);
+      setTogglingId(null);
     }
   };
 
@@ -594,15 +594,27 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
-                    disabled={toggling}
+                    disabled={togglingId === rule.id}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${
+                    className={`inline-flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${
                       rule.enabled
                         ? 'border-muted/20 text-muted hover:border-muted/40 hover:text-text focus-visible:ring-muted/50'
                         : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5 focus-visible:ring-accent-teal/50'
                     }`}
                   >
-                    {toggling ? 'Loading…' : rule.enabled ? 'Pause' : 'Enable'}
+                    {togglingId === rule.id && (
+                      <svg
+                        className="h-3 w-3 animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    )}
+                    {togglingId === rule.id ? 'Loading…' : rule.enabled ? 'Pause' : 'Enable'}
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
