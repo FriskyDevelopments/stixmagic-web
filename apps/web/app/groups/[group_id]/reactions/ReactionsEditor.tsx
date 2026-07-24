@@ -79,7 +79,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
-  const [toggling, setToggling] = useState(false);
+  const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
   const [testResult, setTestResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -146,7 +146,11 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   const handleToggle = async (id: string, current: boolean) => {
     const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
-    setToggling(true);
+    setTogglingIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
     try {
       await toggleRule(groupId, id, !current);
     } catch (err) {
@@ -154,7 +158,11 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(`Failed to toggle rule: ${message}`);
     } finally {
-      setToggling(false);
+      setTogglingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   };
 
@@ -594,7 +602,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
-                    disabled={toggling}
+                    disabled={togglingIds.has(rule.id)}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
                     className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${
                       rule.enabled
@@ -602,7 +610,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
                         : 'border-accent-teal/20 text-accent-teal hover:border-accent-teal/40 hover:bg-accent-teal/5 focus-visible:ring-accent-teal/50'
                     }`}
                   >
-                    {toggling ? 'Loading…' : rule.enabled ? 'Pause' : 'Enable'}
+                    {togglingIds.has(rule.id) ? 'Loading…' : rule.enabled ? 'Pause' : 'Enable'}
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
