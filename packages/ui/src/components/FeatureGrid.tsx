@@ -13,24 +13,35 @@ interface FeatureGridProps {
   items: FeatureItem[];
 }
 
-export const FeatureGrid = ({ items }: FeatureGridProps) => (
-  <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-    {items.map((item, index) => (
-      <motion.li
-        key={item.title}
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.3, delay: index * 0.05 }}
-      >
-        <Panel className="h-full">
-          <p className="text-xs uppercase tracking-wider text-accent-cyan">{item.tag}</p>
-          <h3 className="mt-3 bg-gradient-to-r from-accent-cyan to-accent-indigo bg-clip-text text-lg font-semibold text-transparent">
-            {item.title}
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
-        </Panel>
-      </motion.li>
-    ))}
-  </ul>
-);
+export const FeatureGrid = ({ items }: FeatureGridProps) => {
+  if (items.length === 0) {
+    return (
+      <Panel variant="secondary" className="flex flex-col items-center justify-center py-12 text-center">
+        <p className="text-lg font-semibold text-text">No features available</p>
+        <p className="mt-2 text-sm text-muted">Check back later for new updates.</p>
+      </Panel>
+    );
+  }
+
+  return (
+    <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {items.map((item, index) => (
+        <motion.li
+          key={item.title}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.3, delay: index * 0.05 }}
+        >
+          <Panel className="h-full">
+            <p className="text-xs uppercase tracking-wider text-accent-cyan">{item.tag}</p>
+            <h3 className="mt-3 bg-gradient-to-r from-accent-cyan to-accent-indigo bg-clip-text text-lg font-semibold text-transparent">
+              {item.title}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
+          </Panel>
+        </motion.li>
+      ))}
+    </ul>
+  );
+};
