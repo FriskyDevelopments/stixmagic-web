@@ -64,3 +64,6 @@
 ## 2024-07-16 - Screen Reader Context for Status Badges
 **Learning:** Floating status badges (e.g., "soon", "Featured", "In progress") can be confusing to screen reader users without context. For instance, just hearing "soon" or "Featured" without knowing it represents a status can be disorienting.
 **Action:** When creating status badges or similar indicators, always prefix the text with a visually hidden context string using `<span className="sr-only">Status: </span>` to ensure screen readers provide the correct meaning.
+## 2024-07-25 - Redundant Announcements for Visual Placeholders
+**Learning:** When using `div` elements with visible inner text (like "Preview pending" or "Unavailable") as fallbacks for images, assigning an `aria-label` to the parent `div` without hiding the inner text causes screen readers to redundantly announce both the label and the text. Furthermore, without `role="img"`, the element is just a generic container to screen readers.
+**Action:** When implementing non-image HTML elements (like `div`) as visual placeholders or fallbacks for images, add `role="img"` alongside a descriptive `aria-label` to ensure proper screen reader interpretation, and apply `aria-hidden="true"` to any internal visible text spans to prevent redundant announcements.
