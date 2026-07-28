@@ -64,3 +64,8 @@
 ## 2024-07-16 - Screen Reader Context for Status Badges
 **Learning:** Floating status badges (e.g., "soon", "Featured", "In progress") can be confusing to screen reader users without context. For instance, just hearing "soon" or "Featured" without knowing it represents a status can be disorienting.
 **Action:** When creating status badges or similar indicators, always prefix the text with a visually hidden context string using `<span className="sr-only">Status: </span>` to ensure screen readers provide the correct meaning.
+## 2024-11-20 - AssetPreview Component Role Assignment
+
+**Learning:** When using custom \`div\` elements as visual fallbacks for images (like the pending and unavailable states in \`AssetPreview\`), simply adding \`aria-label\` is insufficient. Screen readers may announce the label but fail to convey the structural meaning (that it acts as an image). Furthermore, visible text nodes inside these placeholders cause redundant announcements.
+
+**Action:** Always add \`role="img"\` to custom \`div\` wrappers acting as images, and apply \`aria-hidden="true"\` to any internal decorative text spans to ensure a concise and accurate screen reader experience.
