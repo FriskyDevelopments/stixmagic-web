@@ -31,7 +31,7 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
               step.id === activeStep
                 ? 'border-accent-primary bg-accent-primary/10 text-text'
                 : step.comingSoon
-                  ? 'cursor-not-allowed border-white/5 bg-panel-secondary text-muted/50'
+                  ? 'cursor-not-allowed border-white/5 bg-panel-secondary text-muted/50 aria-disabled:opacity-50'
                   : 'border-white/10 bg-panel-secondary text-muted hover:border-white/30 hover:text-text'
             )}
           >
