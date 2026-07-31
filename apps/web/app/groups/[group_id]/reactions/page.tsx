@@ -4,7 +4,7 @@ import ReactionsEditor from './ReactionsEditor';
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return MOCK_GROUPS.map((group) => ({ group_id: group.id }));
 }
 
