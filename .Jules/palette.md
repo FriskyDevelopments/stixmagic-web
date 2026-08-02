@@ -67,3 +67,7 @@
 ## 2024-07-29 - Improve Accessibility for Visual Placeholders
 **Learning:** When using non-image HTML elements (like `div`) as visual placeholders or fallbacks for images, they need explicit ARIA roles to be correctly interpreted by screen readers. Furthermore, any internal visible text used for styling or supplementary visual info can create redundant announcements if the container already has an `aria-label`.
 **Action:** Always add `role="img"` to the container element alongside a descriptive `aria-label`. Apply `aria-hidden="true"` to any internal visible text spans to prevent redundant announcements and ensure a clean screen reader experience.
+
+## 2024-08-01 - Semantic Steppers and Accessible Step Numbering
+**Learning:** When building a stepper component, using generic `<div>` elements for the container and numbers can confuse screen reader users about the sequence and context of the steps. The step number must be explicitly hidden from the accessibility tree, while an alternative visually hidden text (like "Step 1: ") is provided for clarity.
+**Action:** Always wrap stepper buttons in a semantic `<ol>` container with `<li>` items. Hide the visual step number using `aria-hidden="true"` and pair it with a visually hidden `<span className="sr-only">Step {index}: </span>`.
