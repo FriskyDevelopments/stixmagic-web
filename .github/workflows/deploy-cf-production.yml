@@ -41,6 +41,7 @@ jobs:
 
       - name: Build static web app
         env:
+          CF_PAGES: "1"
           NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: ${{ vars.STIXMAGIC_MANIFEST_URL }}
           NEXT_PUBLIC_STIXMAGIC_API_BASE_URL: ${{ vars.STIXMAGIC_API_BASE_URL || 'https://stixmagic.com' }}
           NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: ${{ vars.STIXMAGIC_PUBLIC_WEB_URL || 'https://stixmagic.com' }}
