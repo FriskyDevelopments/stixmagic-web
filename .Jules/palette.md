@@ -64,6 +64,12 @@
 ## 2024-07-16 - Screen Reader Context for Status Badges
 **Learning:** Floating status badges (e.g., "soon", "Featured", "In progress") can be confusing to screen reader users without context. For instance, just hearing "soon" or "Featured" without knowing it represents a status can be disorienting.
 **Action:** When creating status badges or similar indicators, always prefix the text with a visually hidden context string using `<span className="sr-only">Status: </span>` to ensure screen readers provide the correct meaning.
+## 2024-11-20 - AssetPreview Component Role Assignment
+
+**Learning:** When using custom \`div\` elements as visual fallbacks for images (like the pending and unavailable states in \`AssetPreview\`), simply adding \`aria-label\` is insufficient. Screen readers may announce the label but fail to convey the structural meaning (that it acts as an image). Furthermore, visible text nodes inside these placeholders cause redundant announcements.
+
+**Action:** Always add \`role="img"\` to custom \`div\` wrappers acting as images, and apply \`aria-hidden="true"\` to any internal decorative text spans to ensure a concise and accurate screen reader experience.
+
 ## 2024-07-29 - Improve Accessibility for Visual Placeholders
 **Learning:** When using non-image HTML elements (like `div`) as visual placeholders or fallbacks for images, they need explicit ARIA roles to be correctly interpreted by screen readers. Furthermore, any internal visible text used for styling or supplementary visual info can create redundant announcements if the container already has an `aria-label`.
 **Action:** Always add `role="img"` to the container element alongside a descriptive `aria-label`. Apply `aria-hidden="true"` to any internal visible text spans to prevent redundant announcements and ensure a clean screen reader experience.
