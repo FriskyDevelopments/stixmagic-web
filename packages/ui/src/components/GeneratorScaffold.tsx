@@ -19,10 +19,10 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
 
   return (
     <div className="rounded-2xl border border-white/10 bg-panel p-6">
-      <ol aria-label="Steps" className="flex flex-wrap gap-2 list-none m-0 p-0">
+      <div className="flex flex-wrap gap-2">
         {steps.map((step, index) => (
-          <li key={step.id}>
-            <button
+          <button
+            key={step.id}
             onClick={() => !step.comingSoon && setActiveStep(step.id)}
             aria-disabled={step.comingSoon}
             aria-current={step.id === activeStep ? 'step' : undefined}
@@ -35,10 +35,9 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
                   : 'border-white/10 bg-panel-secondary text-muted hover:border-white/30 hover:text-text'
             )}
           >
-            <span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background text-xs text-accent-cyan">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background text-xs text-accent-cyan">
               {index + 1}
             </span>
-            <span className="sr-only">Step {index + 1}: </span>
             {step.label}
             {step.comingSoon && (
               <span className="rounded-full bg-accent-violet/20 px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-accent-violet">
@@ -46,10 +45,9 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
                 soon
               </span>
             )}
-            </button>
-          </li>
+          </button>
         ))}
-      </ol>
+      </div>
       <div className="mt-6">
         {steps.map((step) =>
           step.id === activeStep ? (
