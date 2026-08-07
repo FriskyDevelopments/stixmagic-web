@@ -71,3 +71,7 @@
 ## 2024-12-16 - Accessible Stepper Navigation
 **Learning:** When building visual stepper components (like the GeneratorScaffold), placing independent `<button>` elements in a `<div>` causes screen readers to lose the sequential relationship and structural context of the steps. Furthermore, purely visual numbers (like '1', '2') lack context when read out without an explicit 'Step ' prefix.
 **Action:** Always structure stepper components using semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items). Explicitly hide the visual numbers from screen readers using `aria-hidden="true"` and provide visually hidden but semantically complete context text (e.g., `<span className="sr-only">Step X: </span>`) inside the interactive element.
+
+## 2024-12-16 - Stepper Components Accessibility
+**Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
+**Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.

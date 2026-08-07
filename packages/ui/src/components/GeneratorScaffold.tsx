@@ -36,10 +36,7 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
               )}
             >
               <span className="sr-only">Step {index + 1}: </span>
-              <span
-                aria-hidden="true"
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background text-xs text-accent-cyan"
-              >
+              <span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background text-xs text-accent-cyan">
                 {index + 1}
               </span>
               {step.label}
