@@ -19,3 +19,4 @@ export default function ReactionsPage({ params }: Props) {
   return <ReactionsEditor groupId={group.id} groupName={group.name} />;
 }
 
+export const dynamicParams = false;
