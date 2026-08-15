@@ -10,6 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'STIKMΛGIC — Telegram Reaction Engine',
+  icons: { icon: '/favicon.svg' },
   description: 'Turn Telegram stickers and emojis into programmable group reactions from one magical control center.'
 };
 
