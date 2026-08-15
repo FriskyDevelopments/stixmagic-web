@@ -24,7 +24,18 @@ export const PACK_CATEGORY_LABELS: Record<PackCategory, string> = {
 /** Sentinel value for pack/asset preview URLs that are pending pipeline integration. */
 export const PENDING_PREVIEW_URL = '' as const;
 
-export type AssetTag = 'animated' | 'looping' | 'overlay' | 'sticker' | 'letter' | 'symbol' | 'neon' | 'music';
+export type AssetTag =
+  | 'animated'
+  | 'looping'
+  | 'overlay'
+  | 'sticker'
+  | 'letter'
+  | 'symbol'
+  | 'neon'
+  | 'music'
+  | 'telegram-ready'
+  | 'transparent'
+  | 'obs-ready';
 
 /** Preview display state for asset thumbnails. */
 export type PreviewState = 'pending' | 'loading' | 'ready' | 'failed';
@@ -96,7 +107,10 @@ const VALID_ASSET_TAGS: ReadonlyArray<AssetTag> = [
   'letter',
   'symbol',
   'neon',
-  'music'
+  'music',
+  'telegram-ready',
+  'transparent',
+  'obs-ready'
 ];
 const VALID_PLAN_TIERS: ReadonlyArray<PlanTier> = ['free', 'premium', 'pro'];
 

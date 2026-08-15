@@ -1,28 +1,6 @@
-import { GalleryGrid, Panel, Tabs } from '@stixmagic/ui';
+import { Panel } from '@stixmagic/ui';
 import { loadPipelineManifest } from '../integrations/manifest';
-
-const filterTabs = [
-  {
-    id: 'all',
-    label: 'All Assets',
-    content: 'All STIXMΛGIC preview assets across packs and categories. GIF and WebM previews where available.'
-  },
-  {
-    id: 'animated',
-    label: 'Animated',
-    content: 'Assets with looping animation — GIF and WebM exports ready for sticker packs and streaming overlays.'
-  },
-  {
-    id: 'overlay',
-    label: 'Overlays',
-    content: 'Transparent WebM overlay assets optimized for OBS and Streamlabs live production scenes.'
-  },
-  {
-    id: 'letters',
-    label: 'Letters',
-    content: 'Motion Alphabet assets — animated A–Z character renders with neon and motion style variants.'
-  }
-];
+import { AssetGalleryExplorer } from './AssetGalleryExplorer';
 
 export default async function GalleryPage() {
   const manifest = await loadPipelineManifest();
@@ -41,13 +19,7 @@ export default async function GalleryPage() {
         </p>
       </Panel>
 
-      <Tabs items={filterTabs} />
-
       <div>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-text">All previews</h2>
-          <span className="text-sm text-muted">{assets.length} assets</span>
-        </div>
         {assets.length === 0 ? (
           <Panel variant="secondary">
             <div className="py-6 text-center">
@@ -59,7 +31,7 @@ export default async function GalleryPage() {
             </div>
           </Panel>
         ) : (
-          <GalleryGrid assets={assets} />
+          <AssetGalleryExplorer assets={assets} />
         )}
       </div>
 

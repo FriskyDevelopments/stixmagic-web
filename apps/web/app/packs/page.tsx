@@ -1,29 +1,6 @@
-import { PackGrid, Panel, Tabs } from '@stixmagic/ui';
+import { Panel } from '@stixmagic/ui';
 import { loadPipelineManifest } from '../integrations/manifest';
-
-const categoryTabs = [
-  {
-    id: 'all',
-    label: 'All Packs',
-    content:
-      'Browse all available STIXMΛGIC packs across categories. Each pack includes multiple assets in supported export formats.'
-  },
-  {
-    id: 'motion',
-    label: 'Motion',
-    content: 'Animated letter sets, looping motion presets, and kinetic character packs for streams and overlays.'
-  },
-  {
-    id: 'signals',
-    label: 'Signals & Neon',
-    content: 'Glowing neon symbols, arrow signals, and indicator assets built for live production screens.'
-  },
-  {
-    id: 'overlays',
-    label: 'Overlays',
-    content: 'Transparent WebM overlay assets ready for OBS, Streamlabs, and production scene layers.'
-  }
-];
+import { PackCatalogExplorer } from './PackCatalogExplorer';
 
 export default async function PacksPage() {
   const manifest = await loadPipelineManifest();
@@ -44,13 +21,7 @@ export default async function PacksPage() {
         </p>
       </Panel>
 
-      <Tabs items={categoryTabs} />
-
       <div>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-text">All packs</h2>
-          <span className="text-sm text-muted">{packs.length} packs</span>
-        </div>
         {packs.length === 0 ? (
           <Panel variant="secondary">
             <div className="py-6 text-center">
@@ -62,7 +33,7 @@ export default async function PacksPage() {
             </div>
           </Panel>
         ) : (
-          <PackGrid packs={packs} />
+          <PackCatalogExplorer packs={packs} />
         )}
       </div>
 

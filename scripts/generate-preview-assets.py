@@ -16,6 +16,19 @@ SIZE, FRAMES, FPS = 512, 36, 18
 FONT = "/System/Library/Fonts/Supplemental/Arial Black.ttf"
 
 
+def build_backdrop() -> Image.Image:
+    im = Image.new("RGBA", (SIZE, SIZE), "#060711")
+    px = im.load()
+    for y in range(SIZE):
+        for x in range(SIZE):
+            r = math.hypot(x - 256, y - 238) / 365
+            px[x, y] = (int(10 + 17 * (1-r)), int(8 + 8 * (1-r)), int(24 + 30 * (1-r)), 255)
+    return im
+
+
+BACKDROP = build_backdrop()
+
+
 def glow(base: Image.Image, layer: Image.Image, radius: int = 22) -> None:
     base.alpha_composite(layer.filter(ImageFilter.GaussianBlur(radius)))
     base.alpha_composite(layer.filter(ImageFilter.GaussianBlur(max(4, radius // 3))))
@@ -25,13 +38,7 @@ def glow(base: Image.Image, layer: Image.Image, radius: int = 22) -> None:
 def canvas(alpha: bool = False) -> Image.Image:
     if alpha:
         return Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
-    im = Image.new("RGBA", (SIZE, SIZE), "#060711")
-    px = im.load()
-    for y in range(SIZE):
-        for x in range(SIZE):
-            r = math.hypot(x - 256, y - 238) / 365
-            px[x, y] = (int(10 + 17 * (1-r)), int(8 + 8 * (1-r)), int(24 + 30 * (1-r)), 255)
-    return im
+    return BACKDROP.copy()
 
 
 def particles(im: Image.Image, t: float, seed: int = 0) -> None:
@@ -93,12 +100,41 @@ def cloud_frame(t: float) -> Image.Image:
 
 def corner_frame(t: float) -> Image.Image:
     im=canvas(True); layer=Image.new("RGBA",im.size); d=ImageDraw.Draw(layer)
-    phase=(t*1.4)%1
-    for i in range(7):
-        p=(phase-i*.07)%1; x=512-410*p; y=512-220*math.sin(p*math.pi)-50*p
-        a=int(255*(1-p)); d.line((512,512,x,y),fill=(101,247,255,a),width=max(2,9-i))
-        d.ellipse((x-4,y-4,x+4,y+4),fill=(255,255,255,a))
-    glow(im,layer,16); return im
+    phase=t*math.tau
+    # Architectural corner arcs create a premium broadcast frame without filling the scene.
+    for inset, color, width, sweep in [
+        (24,(105,246,255,210),5,1.0),
+        (54,(229,72,255,175),3,.82),
+        (88,(255,255,255,100),2,.64),
+    ]:
+        box=(SIZE-390-inset,SIZE-390-inset,SIZE+150-inset,SIZE+150-inset)
+        start=190+18*math.sin(phase+sweep)
+        d.arc(box,start=start,end=292,fill=color,width=width)
+    # A comet travels into the corner, blooms, then disappears for a seamless loop.
+    p=(t*1.18)%1
+    angle=math.radians(205+72*p)
+    radius=340*(1-p)+34
+    hx=SIZE-26+math.cos(angle)*radius; hy=SIZE-26+math.sin(angle)*radius
+    for trail in range(16,0,-1):
+        q=max(0,p-trail*.012)
+        a=math.radians(205+72*q); rr=340*(1-q)+34
+        x=SIZE-26+math.cos(a)*rr; y=SIZE-26+math.sin(a)*rr
+        alpha=int(210*(1-trail/17)); size=max(1,8-trail//2)
+        d.ellipse((x-size,y-size,x+size,y+size),fill=(108,245,255,alpha))
+    d.ellipse((hx-8,hy-8,hx+8,hy+8),fill=(255,255,255,245))
+    # Starburst and orbiting dust around the anchor point.
+    bloom=max(0,1-abs(p-.92)/.12)
+    for i in range(18):
+        a=i*math.tau/18+phase*.12; length=15+(i%4)*10+48*bloom
+        x0=SIZE-27+math.cos(a)*13; y0=SIZE-27+math.sin(a)*13
+        x1=SIZE-27+math.cos(a)*length; y1=SIZE-27+math.sin(a)*length
+        col=(230,74,255,int(70+170*bloom)) if i%3==0 else (104,245,255,int(80+160*bloom))
+        d.line((x0,y0,x1,y1),fill=col,width=2+(i%3==0))
+    for i in range(12):
+        a=i*2.19+phase*(.35+i%2*.12); r=70+(i%5)*28
+        x=SIZE-28+math.cos(a)*r; y=SIZE-28+math.sin(a)*r
+        q=2+i%3; d.ellipse((x-q,y-q,x+q,y+q),fill=(255,255,255,90+i*10))
+    glow(im,layer,20); return im
 
 
 def fire_frame(t: float) -> Image.Image:
@@ -122,9 +158,13 @@ def arrow_frame(t: float) -> Image.Image:
     glow(im,layer,int(18+20*pulse)); return im
 
 
+ALPHABET_ASSETS = {
+    f"letter-{letter.lower()}-neon": (lambda t, glyph=letter, index=index: letter_frame(glyph, t, index % 2 == 1))
+    for index, letter in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+}
+
 ASSETS = {
-    "letter-a-neon": lambda t: letter_frame("A", t),
-    "letter-b-neon": lambda t: letter_frame("B", t, True),
+    **ALPHABET_ASSETS,
     "signal-flash-01": signal_frame,
     "waveform-loop-01": waveform_frame,
     "cloud-drift-01": cloud_frame,

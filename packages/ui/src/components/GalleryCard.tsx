@@ -48,6 +48,18 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
           </li>
         ))}
       </ul>
+      <div className="mt-4 flex gap-2 border-t border-white/10 pt-4">
+        {asset.formats.map((format) => (
+          <a
+            key={format}
+            href={`/previews/${asset.id}.${format}`}
+            download
+            className="rounded-lg border border-white/10 bg-panel-secondary px-3 py-2 text-[10px] font-semibold uppercase tracking-[.14em] text-accent-cyan transition hover:border-accent-cyan/40 hover:text-white"
+          >
+            {format === 'webm' && asset.packId === 'motion-alphabet-v1' ? 'Telegram WebM' : format}
+          </a>
+        ))}
+      </div>
     </div>
   </motion.div>
 );

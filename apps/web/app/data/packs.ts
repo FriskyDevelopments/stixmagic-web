@@ -1,15 +1,14 @@
 import type { ProductPack } from '@stixmagic/types';
-import { PENDING_PREVIEW_URL } from '@stixmagic/types';
 
 export const SAMPLE_PACKS: ProductPack[] = [
   {
     id: 'motion-alphabet-v1',
     name: 'Motion Alphabet v1',
     category: 'motion-alphabet',
-    description: 'Animated A–Z letters with looping motion sequences. Drop into any stream, overlay, or banner.',
-    previewUrl: PENDING_PREVIEW_URL,
+    description: 'Complete animated A–Z neon alphabet, exported as seamless Telegram-ready WebM loops and GIF previews.',
+    previewUrl: '/previews/letter-a-neon.gif',
     assetCount: 26,
-    tags: ['animated', 'looping', 'letter'],
+    tags: ['telegram-ready', 'animated', 'looping', 'letter'],
     formats: ['gif', 'webm'],
     featured: true
   },
@@ -18,10 +17,10 @@ export const SAMPLE_PACKS: ProductPack[] = [
     name: 'Neon Signals',
     category: 'neon-signals',
     description: 'Glowing neon symbols and signal indicators. Built for alerts, overlays, and live production screens.',
-    previewUrl: PENDING_PREVIEW_URL,
-    assetCount: 18,
+    previewUrl: '/previews/signal-arrow-01.gif',
+    assetCount: 2,
     tags: ['neon', 'symbol', 'animated'],
-    formats: ['gif', 'webm', 'webp'],
+    formats: ['gif', 'webm'],
     featured: true
   },
   {
@@ -29,8 +28,8 @@ export const SAMPLE_PACKS: ProductPack[] = [
     name: 'DJ Pack',
     category: 'dj-pack',
     description: 'Motion stickers for DJ sets: waveforms, equalizers, decks, and crowd energy visuals.',
-    previewUrl: PENDING_PREVIEW_URL,
-    assetCount: 24,
+    previewUrl: '/previews/waveform-loop-01.gif',
+    assetCount: 1,
     tags: ['music', 'animated', 'sticker'],
     formats: ['gif', 'webm'],
     featured: false
@@ -40,10 +39,10 @@ export const SAMPLE_PACKS: ProductPack[] = [
     name: 'Cloud Pack',
     category: 'cloud-pack',
     description: 'Animated cloud and weather motifs. Soft looping assets for chill streams and backgrounds.',
-    previewUrl: PENDING_PREVIEW_URL,
-    assetCount: 12,
+    previewUrl: '/previews/cloud-drift-01.gif',
+    assetCount: 1,
     tags: ['animated', 'looping', 'sticker'],
-    formats: ['gif', 'webp'],
+    formats: ['gif', 'webm'],
     featured: false
   },
   {
@@ -51,8 +50,8 @@ export const SAMPLE_PACKS: ProductPack[] = [
     name: 'Overlay Starter',
     category: 'overlay-starter',
     description: 'Transparent WebM overlays ready for OBS, Streamlabs, and live production workflows.',
-    previewUrl: PENDING_PREVIEW_URL,
-    assetCount: 10,
+    previewUrl: '/previews/overlay-corner-spark.webm',
+    assetCount: 1,
     tags: ['overlay', 'animated'],
     formats: ['webm'],
     featured: false
@@ -62,10 +61,10 @@ export const SAMPLE_PACKS: ProductPack[] = [
     name: 'Emoji Set',
     category: 'emoji-set',
     description: 'Animated emoji-style expressions and reactions with looping energy for sticker packs and chat.',
-    previewUrl: PENDING_PREVIEW_URL,
-    assetCount: 30,
+    previewUrl: '/previews/emoji-fire-reaction.gif',
+    assetCount: 1,
     tags: ['animated', 'sticker', 'symbol'],
-    formats: ['gif', 'webp'],
+    formats: ['gif', 'webm'],
     featured: false
   }
 ];
