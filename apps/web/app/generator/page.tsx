@@ -12,7 +12,7 @@ const steps: GeneratorStep[] = [
     id: 'choose-style',
     label: 'Choose Style',
     description:
-      'Select from available MagicStix style presets — neon, motion, minimal, retro, and more. Each style maps to a motion preset in the pipeline.',
+      'Select from available STIK MΛGIC style presets — neon, motion, minimal, retro, and more. Each style maps to a motion preset in the pipeline.',
     comingSoon: true
   },
   {
@@ -39,7 +39,7 @@ export default function GeneratorPage() {
         </span>
         <h1 className="mt-5 text-4xl font-semibold tracking-tight text-text sm:text-5xl">Generator UI.</h1>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-          The MagicStix generator frontend is being scaffolded here. When the bot pipeline exposes a generation API,
+          The STIK MΛGIC generator frontend is being scaffolded here. When the bot pipeline exposes a generation API,
           this UI will connect to it and let you create custom animated assets in the browser.
         </p>
       </Panel>
@@ -76,7 +76,7 @@ export default function GeneratorPage() {
       <Panel variant="secondary">
         <h2 className="text-xl font-semibold text-text">Pipeline integration boundary</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          The generator UI will consume a generation API exposed by the MagicStix bot pipeline. No asset generation
+          The generator UI will consume a generation API exposed by the STIK MΛGIC bot pipeline. No asset generation
           logic lives in this repository. This page is the scaffolded frontend waiting for that API boundary to be
           established.
         </p>

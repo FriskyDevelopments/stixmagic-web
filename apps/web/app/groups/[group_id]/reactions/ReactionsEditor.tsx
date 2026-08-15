@@ -53,9 +53,9 @@ const RESPONSE_PLACEHOLDER: Record<ResponseType, string> = {
 
 const RESPONSE_HINT: Partial<Record<ResponseType, string>> = {
   sticker:
-    'To get a sticker file ID: forward the sticker to @userinfobot or use the /sticker command with your Stix Magic bot.',
+    'To get a sticker file ID: forward the sticker to @userinfobot or use the /sticker command with your STIK MΛGIC bot.',
   animation:
-    'To get a GIF file ID: send the animation in a chat with your Stix Magic bot, which will reply with the file ID.'
+    'To get a GIF file ID: send the animation in a chat with your STIK MΛGIC bot, which will reply with the file ID.'
 };
 
 /**
@@ -383,7 +383,7 @@ export default function ReactionsEditor({ groupId }: Props) {
                     className="mt-2 w-full rounded-lg border border-accent-primary/20 bg-background/60 px-3 py-2 text-sm text-text placeholder-muted/50 outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/30"
                   />
                   <p className="mt-1.5 text-xs text-muted">
-                    💡 To find a sticker&apos;s file ID: forward the sticker to your Stix Magic bot
+                    💡 To find a sticker&apos;s file ID: forward the sticker to your STIK MΛGIC bot
                     and it will reply with the file ID you can paste here.
                   </p>
                 </>

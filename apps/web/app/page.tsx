@@ -44,7 +44,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-12 pb-10">
       <Hero
-        badge="STIX MΛGIC · Telegram reaction engine"
+        badge="STIK MΛGIC · Telegram reaction engine"
         title="Make every sticker do something."
         subtitle="Connect a Telegram group, map any sticker or emoji to a magical response, and manage the whole reaction loop from one control center."
         primaryCta="Open Control Center"
@@ -63,7 +63,7 @@ export default async function HomePage() {
             Your group, now programmable.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Choose an emoji or sticker, define what STIX MΛGIC should send back,
+            Choose an emoji or sticker, define what STIK MΛGIC should send back,
             and switch the rule on. The Mini App keeps every group and reaction
             visible without turning setup into bot-command archaeology.
           </p>
