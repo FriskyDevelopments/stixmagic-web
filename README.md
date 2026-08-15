@@ -1,5 +1,18 @@
 # STIX MΛGIC Telegram Platform
 
+## MVP boundary
+
+The MVP is a Telegram-first reaction automation loop:
+
+1. Telegram sends a group message or sticker to `POST /telegram/webhook`.
+2. The API discovers the group and queues the update idempotently.
+3. An authenticated admin opens `/groups`, then creates an emoji or sticker rule.
+4. The worker matches enabled rules and replies through the Telegram Bot API with text, a sticker, an animation, or an inline-link button.
+
+The static Mini App uses `/group?groupId=...` and `/reactions?groupId=...` for live Telegram group IDs, so arbitrary groups work on Cloudflare Pages without requiring dynamic server-rendered routes.
+
+Pack publishing, asset generation, PostgreSQL/S3 persistence, analytics, and non-Telegram adapters are outside the MVP boundary. See [`docs/product/mvp.md`](docs/product/mvp.md) for the acceptance checklist and runtime requirements.
+
 This repository now treats the **Telegram bot**, **Telegram Mini App**, and the supporting API/services as one product system preparing for production.
 
 Instead of “bot over here, web demo over there”, the repo is organized around two Telegram-facing surfaces that share one deployment story:

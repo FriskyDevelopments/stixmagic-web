@@ -1,9 +1,11 @@
 import { claimNextJob, markJobCompleted, markJobFailed, type JobRecord } from './queue.js';
 import { telegramStickerService } from '../telegram/stickerService.js';
+import { executeReactionJob } from '../telegram/reactionExecutor.js';
 
 async function processJob(job: JobRecord): Promise<void> {
   switch (job.jobType) {
     case 'trigger.execute':
+      await executeReactionJob(job.payload);
       return;
     case 'sticker.process':
       return;

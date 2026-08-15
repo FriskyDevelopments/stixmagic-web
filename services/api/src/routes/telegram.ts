@@ -8,6 +8,7 @@ import {
   getTelegramGroup,
   listReactionRules,
   listTelegramGroups,
+  observeTelegramGroup,
   upsertWebhookUpdate,
   updateReactionRule
 } from '../lib/repositories.js';
@@ -30,7 +31,12 @@ const updateSchema = z.object({
   message: z
     .object({
       message_id: z.number().int(),
-      chat: z.object({ id: z.number(), type: z.string(), title: z.string().optional() }),
+      chat: z.object({
+        id: z.number(),
+        type: z.string(),
+        title: z.string().optional(),
+        username: z.string().optional()
+      }),
       text: z.string().optional(),
       sticker: z.object({ file_id: z.string() }).optional()
     })
@@ -125,6 +131,9 @@ export const telegramRoutes: FastifyPluginAsync = async (app) => {
   app.post('/telegram/webhook', async (request, reply) => {
     const secretHeader = request.headers['x-telegram-bot-api-secret-token'];
     const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+    if (process.env.NODE_ENV === 'production' && !expectedSecret) {
+      return reply.status(503).send({ ok: false, data: { message: 'Telegram webhook secret is not configured' } });
+    }
     if (expectedSecret && secretHeader !== expectedSecret) {
       return reply.status(401).send({ ok: false, data: { message: 'Invalid webhook secret' } });
     }
@@ -140,9 +149,18 @@ export const telegramRoutes: FastifyPluginAsync = async (app) => {
       return reply.send({ ok: true, data: { duplicate: true } });
     }
 
+    const message = parsed.data.message;
+    if (message && ['group', 'supergroup'].includes(message.chat.type)) {
+      await observeTelegramGroup({
+        id: String(message.chat.id),
+        name: message.chat.title ?? `Telegram group ${message.chat.id}`,
+        username: message.chat.username ? `@${message.chat.username.replace(/^@/, '')}` : undefined
+      });
+    }
+
     await enqueueJob('trigger.execute', {
       updateId: parsed.data.update_id,
-      message: parsed.data.message ?? null
+      message: message ?? null
     });
 
     return reply.send({ ok: true, data: { accepted: true } });

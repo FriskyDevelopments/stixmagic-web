@@ -1,5 +1,4 @@
-import { MOCK_GROUPS, getGroup } from '../../../lib/mock-data';
-import { notFound } from 'next/navigation';
+import { MOCK_GROUPS } from '../../../lib/mock-data';
 import ReactionsEditor from './ReactionsEditor';
 
 export const dynamicParams = false;
@@ -13,9 +12,5 @@ interface Props {
 }
 
 export default function ReactionsPage({ params }: Props) {
-  const group = getGroup(params.group_id);
-  if (!group) notFound();
-
-  return <ReactionsEditor groupId={group.id} groupName={group.name} />;
+  return <ReactionsEditor groupId={params.group_id} />;
 }
-

@@ -87,6 +87,34 @@ export async function getTelegramGroup(groupId: string): Promise<TelegramGroup |
   return (await loadState()).groups.find((item) => item.id === groupId) ?? null;
 }
 
+export async function observeTelegramGroup(input: {
+  id: string;
+  name: string;
+  username?: string;
+}): Promise<TelegramGroup> {
+  const state = await loadState();
+  const existing = state.groups.find((item) => item.id === input.id);
+  if (existing) {
+    existing.name = input.name;
+    existing.username = input.username;
+    await persistState(state);
+    return existing;
+  }
+
+  const group: TelegramGroup = {
+    id: input.id,
+    name: input.name,
+    username: input.username,
+    memberCount: 0,
+    isAdmin: true,
+    settings: { reactionsEnabled: true, maxReactionsPerMessage: 3, cooldownSeconds: 30 },
+    createdAt: new Date().toISOString()
+  };
+  state.groups.push(group);
+  await persistState(state);
+  return group;
+}
+
 export async function listReactionRules(groupId: string): Promise<ReactionRule[]> {
   return (await loadState()).rules.filter((rule) => rule.groupId === groupId);
 }

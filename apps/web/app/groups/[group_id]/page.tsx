@@ -14,4 +14,3 @@ interface Props {
 export default function GroupPage({ params }: Props) {
   return <GroupView groupId={params.group_id} />;
 }
-

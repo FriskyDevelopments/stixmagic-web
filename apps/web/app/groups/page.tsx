@@ -100,7 +100,7 @@ export default function GroupsPage() {
             const rules = allRules[group.id] ?? [];
             const activeCount = rules.filter((r) => r.enabled).length;
             return (
-              <Link key={group.id} href={`/groups/${group.id}`} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
+              <Link key={group.id} href={{ pathname: '/group', query: { groupId: group.id } }} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
                 <Panel className="flex h-full cursor-pointer flex-col gap-4 transition-shadow">
                   <div className="flex items-start justify-between">
                     <div>
@@ -175,4 +175,3 @@ export default function GroupsPage() {
     </div>
   );
 }
-

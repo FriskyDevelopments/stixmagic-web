@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ReactionRule, TriggerType, ResponseType } from '@stixmagic/types';
 import { getRovingRadioGroupNextIndex, Panel } from '@stixmagic/ui';
-import { getRules, createRule, toggleRule, deleteRule, isDemoModeEnabled } from '../../../lib/api-client';
+import { getGroup, getRules, createRule, toggleRule, deleteRule, isDemoModeEnabled } from '../../../lib/api-client';
 
 interface Props {
   groupId: string;
-  groupName: string;
 }
 
 const TRIGGER_OPTIONS: { value: TriggerType; label: string; icon: string; hint: string }[] = [
@@ -70,10 +69,10 @@ const RESPONSE_HINT: Partial<Record<ResponseType, string>> = {
  * - Simulation is local-only and does not call the backend.
  *
  * @param groupId - The identifier of the group whose reaction rules are managed
- * @param groupName - The display name of the group used in UI labels and messages
  * @returns The React element that provides the ReactionsEditor UI for the specified group
  */
-export default function ReactionsEditor({ groupId, groupName }: Props) {
+export default function ReactionsEditor({ groupId }: Props) {
+  const [groupName, setGroupName] = useState('Connected group');
   const [rules, setRules] = useState<ReactionRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -87,7 +86,8 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
   useEffect(() => {
     async function loadRules() {
       try {
-        const r = await getRules(groupId);
+        const [group, r] = await Promise.all([getGroup(groupId), getRules(groupId)]);
+        if (group) setGroupName(group.name);
         setRules(r);
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error';
@@ -224,7 +224,7 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
             Groups
           </Link>
           {' / '}
-          <Link href={`/groups/${groupId}`} className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
+          <Link href={{ pathname: '/group', query: { groupId } }} className="rounded p-0.5 transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
             {groupName}
           </Link>
           {' / '}
@@ -641,4 +641,3 @@ export default function ReactionsEditor({ groupId, groupName }: Props) {
     </div>
   );
 }
-

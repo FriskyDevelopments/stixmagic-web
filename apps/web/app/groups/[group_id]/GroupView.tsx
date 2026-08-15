@@ -161,7 +161,7 @@ export default function GroupView({ groupId }: Props) {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-text">Reaction Rules</h2>
         <Link
-          href={`/groups/${group.id}/reactions`}
+          href={{ pathname: '/reactions', query: { groupId: group.id } }}
           className="rounded-lg bg-accent-primary/20 px-4 py-2 text-sm font-medium text-accent-indigo transition hover:bg-accent-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50"
         >
           Manage Reactions →
@@ -187,7 +187,7 @@ export default function GroupView({ groupId }: Props) {
           <p className="text-sm text-muted">
             No reaction rules yet.{' '}
             <Link
-              href={`/groups/${group.id}/reactions`}
+              href={{ pathname: '/reactions', query: { groupId: group.id } }}
               className="rounded p-0.5 text-accent-cyan hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
             >
               Create your first rule →
@@ -225,7 +225,7 @@ export default function GroupView({ groupId }: Props) {
                   {rule.enabled ? 'Active' : 'Paused'}
                 </span>
                 <Link
-                  href={`/groups/${group.id}/reactions`}
+                  href={{ pathname: '/reactions', query: { groupId: group.id } }}
                   className="rounded p-0.5 text-xs text-accent-cyan transition hover:text-accent-indigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
                 >
                   Edit
