@@ -11,13 +11,14 @@
     "lint": "ESLINT_USE_FLAT_CONFIG=false eslint . --max-warnings=0 --ignore-pattern .next --ignore-pattern dist --ignore-pattern out"
   },
   "dependencies": {
+    "@stixmagic/config": "workspace:*",
     "@stixmagic/types": "workspace:*",
     "@stixmagic/ui": "workspace:*",
     "framer-motion": "^11.11.17",
+    "jszip": "^3.10.1",
     "next": "^14.2.21",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@stixmagic/config": "workspace:*"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
