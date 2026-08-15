@@ -67,7 +67,16 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8 pb-10">
       <Panel>
-        <p className="text-xs uppercase tracking-wider text-accent-cyan">Telegram Mini App / Control Center</p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-wider text-accent-cyan">Telegram Mini App / Control Center</p>
+          <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+            isDemoModeEnabled()
+              ? 'border-accent-violet/30 bg-accent-violet/10 text-accent-violet'
+              : 'border-accent-teal/30 bg-accent-teal/10 text-accent-teal'
+          }`}>
+            {isDemoModeEnabled() ? 'Preview mode' : 'Live API connected'}
+          </span>
+        </div>
         <h1 className="mt-3 text-3xl font-semibold text-text">STIX MΛGIC Telegram Control Center</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
           Manage the same Telegram product system the bot launches. Groups, reaction rules, and future deployment actions all route through this mini app surface.
@@ -129,7 +138,7 @@ export default function DashboardPage() {
               const rules = allRules[group.id] ?? [];
               const activeCount = rules.filter((r) => r.enabled).length;
               return (
-                <Link key={group.id} href={`/groups/${group.id}`} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
+                <Link key={group.id} href={{ pathname: '/group', query: { groupId: group.id } }} className="rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">
                   <Panel className="cursor-pointer transition-shadow">
                     <div className="flex items-start justify-between">
                       <div>

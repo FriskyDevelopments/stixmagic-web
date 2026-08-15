@@ -208,7 +208,7 @@ export default function ReactionsEditor({ groupId }: Props) {
 
   const handleSimulate = (rule: ReactionRule) => {
     setTestResult(
-      `🔄 Simulated locally — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". Wire Telegram execution in the bot runtime for full production behavior.`
+      `🔄 Preview — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". In live API mode, the queued worker executes this rule through Telegram.`
     );
   };
 
