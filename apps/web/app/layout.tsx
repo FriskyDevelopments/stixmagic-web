@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'STIKMΛGIC — Telegram Reaction Engine',
+  title: 'STIXMΛGIC — Telegram Reaction Engine',
   icons: { icon: '/favicon.svg' },
   description: 'Turn Telegram stickers and emojis into programmable group reactions from one magical control center.'
 };
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <Link href="/" className="inline-flex items-center gap-2 rounded-lg p-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 hover:bg-white/5">
                 <span className="text-xl drop-shadow-[0_0_10px_rgba(0,212,255,0.6)]" aria-hidden="true">🪄</span>
                 <span className="bg-gradient-to-r from-accent-cyan via-accent-indigo to-accent-violet bg-clip-text text-lg font-extrabold tracking-[0.08em] text-transparent">
-                  STIKMΛGIC
+                  STIXMΛGIC
                 </span>
               </Link>
               <nav className="flex items-center gap-1 text-xs text-muted sm:gap-3 sm:text-sm lg:gap-6">
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <p className="mt-1 text-sm text-muted">
               Bringing the magic of{' '}
               <span className="bg-gradient-to-r from-accent-cyan via-accent-indigo to-accent-violet bg-clip-text font-semibold text-transparent">
-                STIKMΛGIC
+                STIXMΛGIC
               </span>{' '}
               to life <span aria-hidden="true">✨</span>
             </p>

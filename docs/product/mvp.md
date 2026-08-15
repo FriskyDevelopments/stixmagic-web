@@ -1,8 +1,8 @@
-# STIKMΛGIC MVP
+# STIXMΛGIC MVP
 
 ## User promise
 
-An approved Telegram admin can connect a group, define a sticker or emoji trigger, and have STIKMΛGIC answer matching group messages automatically.
+An approved Telegram admin can connect a group, define a sticker or emoji trigger, and have STIXMΛGIC answer matching group messages automatically.
 
 ## Included
 

@@ -30,7 +30,7 @@ const components = [
   {
     tag: 'Pipeline',
     title: 'Bot-driven generation',
-    description: 'All assets are produced by the STIKMΛGIC bot pipeline — this site presents, previews, and serves them.'
+    description: 'All assets are produced by the STIXMΛGIC bot pipeline — this site presents, previews, and serves them.'
   }
 ];
 
@@ -63,10 +63,10 @@ export default function EcosystemPage() {
           Ecosystem Overview
         </span>
         <h1 className="mt-5 text-4xl font-semibold tracking-tight text-text sm:text-5xl">
-          The STIKMΛGIC ecosystem.
+          The STIXMΛGIC ecosystem.
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-          STIKMΛGIC is a modular visual system with a clean split between asset generation and presentation. The bot
+          STIXMΛGIC is a modular visual system with a clean split between asset generation and presentation. The bot
           pipeline creates everything. This site shows, previews, and serves it.
         </p>
       </Panel>
@@ -127,7 +127,7 @@ export default function EcosystemPage() {
         <h2 className="text-xl font-semibold text-text">Future extensions</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
           As the pipeline matures, this site will support live custom text preview, style selector, motion alphabet
-          browser, live mockup generator, and account / download library — all powered by the STIKMΛGIC bot pipeline as
+          browser, live mockup generator, and account / download library — all powered by the STIXMΛGIC bot pipeline as
           a backend API.
         </p>
       </Panel>

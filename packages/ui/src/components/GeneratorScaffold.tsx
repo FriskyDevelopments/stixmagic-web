@@ -65,7 +65,7 @@ export const GeneratorScaffold = ({ steps }: GeneratorScaffoldProps) => {
               ) : (
                 <div className="mt-4 rounded-xl border border-dashed border-white/10 bg-background p-8 text-center">
                   <p className="text-sm text-muted">Generator UI component will render here.</p>
-                  <p className="mt-1 text-xs text-muted/60">Connected to the STIKMΛGIC pipeline when available.</p>
+                  <p className="mt-1 text-xs text-muted/60">Connected to the STIXMΛGIC pipeline when available.</p>
                 </div>
               )}
             </div>

@@ -70,7 +70,7 @@ export const Roadmap = () => (
         What’s forging over time
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        STIKMΛGIC is evolving in clear stages so creators get value early and
+        STIXMΛGIC is evolving in clear stages so creators get value early and
         often.
       </p>
     </div>
