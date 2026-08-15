@@ -8,9 +8,10 @@ export async function generateStaticParams() {
 }
 
 interface Props {
-  params: { group_id: string };
+  params: Promise<{ group_id: string }>;
 }
 
-export default function GroupPage({ params }: Props) {
-  return <GroupView groupId={params.group_id} />;
+export default async function GroupPage({ params }: Props) {
+  const { group_id: groupId } = await params;
+  return <GroupView groupId={groupId} />;
 }

@@ -8,9 +8,10 @@ export async function generateStaticParams() {
 }
 
 interface Props {
-  params: { group_id: string };
+  params: Promise<{ group_id: string }>;
 }
 
-export default function ReactionsPage({ params }: Props) {
-  return <ReactionsEditor groupId={params.group_id} />;
+export default async function ReactionsPage({ params }: Props) {
+  const { group_id: groupId } = await params;
+  return <ReactionsEditor groupId={groupId} />;
 }
