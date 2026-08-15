@@ -8,7 +8,19 @@ import type {
 } from '@stixmagic/types';
 import { MOCK_GROUPS, MOCK_RULES } from './mock-data';
 
-const clientEnv = loadTelegramClientEnv();
+// Next.js only replaces NEXT_PUBLIC_* values in browser bundles when each key
+// is referenced statically. Passing process.env wholesale works on the server
+// but leaves the hydrated client with an empty environment object.
+const clientEnv = loadTelegramClientEnv({
+  NODE_ENV: process.env.NODE_ENV,
+  NEXT_PUBLIC_STIXMAGIC_API_BASE_URL: process.env.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL,
+  NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME: process.env.NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME,
+  NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL: process.env.NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL,
+  NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL,
+  NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL: process.env.NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL,
+  NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA: process.env.NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA,
+  NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK: process.env.NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK
+});
 const API_BASE = clientEnv.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL || 'http://localhost:4000';
 const DEMO_MODE = clientEnv.NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA === 'true';
 const ALLOW_API_FALLBACK = clientEnv.NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK === 'true';
