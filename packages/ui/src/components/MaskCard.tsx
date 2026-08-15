@@ -29,7 +29,14 @@ export const MaskCard = forwardRef<HTMLButtonElement, MaskCardProps>(
       )}
       {...props}
     >
-      <p className="text-sm font-semibold text-text">{mask.name}</p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-semibold text-text">{mask.name}</p>
+        {mask.id === 'star' ? (
+          <span className="rounded-full bg-accent-violet/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent-violet">
+            Moving special
+          </span>
+        ) : null}
+      </div>
     <p className="mt-2 text-xs leading-relaxed text-muted">{mask.description}</p>
     <span className="mt-3 inline-flex rounded-full bg-background px-2.5 py-1 text-[10px] uppercase tracking-wide text-accent-violet">
         <span className="sr-only">Category: </span>

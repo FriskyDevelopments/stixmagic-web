@@ -151,12 +151,12 @@ export default function GroupsPage() {
           <div>
             <p className="text-sm font-medium text-text">Don&apos;t see your group?</p>
             <p className="mt-1 text-sm text-muted">
-              Add the STIK MΛGIC bot to your Telegram group and promote it to admin so the bot and mini app stay aligned on the same group inventory and rule set.
+              Add the STIKMΛGIC bot to your Telegram group and promote it to admin so the bot and mini app stay aligned on the same group inventory and rule set.
             </p>
             <ol className="mt-3 space-y-1 text-xs text-muted">
               <li>1. Open your Telegram group settings</li>
               <li>2. Go to Administrators → Add Administrator</li>
-              <li>3. Search for and add the STIK MΛGIC bot</li>
+              <li>3. Search for and add the STIKMΛGIC bot</li>
               <li>4. Grant it permission to send messages and read messages</li>
               <li>5. Refresh this page — your group will appear automatically</li>
             </ol>

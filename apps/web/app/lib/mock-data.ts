@@ -3,7 +3,7 @@ import type { TelegramGroup, ReactionRule } from '@stixmagic/types';
 export const MOCK_GROUPS: TelegramGroup[] = [
   {
     id: '1',
-    name: 'STIK MΛGIC Fans',
+    name: 'STIKMΛGIC Fans',
     username: '@stixmagic_fans',
     memberCount: 1247,
     isAdmin: true,

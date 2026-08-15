@@ -20,6 +20,7 @@ interface AssetPreviewProps {
  */
 export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) => {
   const [state, setState] = useState<PreviewState>(url === '' ? 'pending' : 'loading');
+  const isVideo = /\.webm(?:\?|$)/i.test(url);
 
   if (state === 'pending') {
     return (
@@ -56,17 +57,11 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
           />
         </div>
       )}
-      <img
-        src={url}
-        alt={alt}
-        className={cn(
-          'transition-opacity duration-300',
-          state === 'loading' ? 'opacity-0' : 'opacity-100',
-          imageClassName
-        )}
-        onLoad={() => setState('ready')}
-        onError={() => setState('failed')}
-      />
+      {isVideo ? (
+        <video src={url} aria-label={alt} autoPlay loop muted playsInline className={cn('transition-opacity duration-500', state === 'loading' ? 'opacity-0' : 'opacity-100', imageClassName)} onCanPlay={() => setState('ready')} onError={() => setState('failed')} />
+      ) : (
+        <img src={url} alt={alt} className={cn('transition-opacity duration-500', state === 'loading' ? 'opacity-0' : 'opacity-100', imageClassName)} onLoad={() => setState('ready')} onError={() => setState('failed')} />
+      )}
     </div>
   );
 };

@@ -77,7 +77,7 @@ export default function DashboardPage() {
             {isDemoModeEnabled() ? 'Preview mode' : 'Live API connected'}
           </span>
         </div>
-        <h1 className="mt-3 text-3xl font-semibold text-text">STIK MΛGIC Telegram Control Center</h1>
+        <h1 className="mt-3 text-3xl font-semibold text-text">STIKMΛGIC Telegram Control Center</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
           Manage the same Telegram product system the bot launches. Groups, reaction rules, and future deployment actions all route through this mini app surface.
         </p>
@@ -128,7 +128,7 @@ export default function DashboardPage() {
               <p className="text-2xl" aria-hidden="true">🪄</p>
               <p className="mt-3 text-sm font-medium text-text">No groups connected yet</p>
               <p className="mt-1 text-sm text-muted">
-                Add the STIK MΛGIC bot to your Telegram group and give it admin rights to see it here.
+                Add the STIKMΛGIC bot to your Telegram group and give it admin rights to see it here.
               </p>
             </div>
           </Panel>

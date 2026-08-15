@@ -36,7 +36,7 @@ function buildDemoBootstrap(): TelegramMiniAppBootstrap {
 
   return {
     config: {
-      productName: 'STIK MΛGIC',
+      productName: 'STIKMΛGIC',
       platform: 'telegram',
       runtimeMode: 'polling',
       botUsername,

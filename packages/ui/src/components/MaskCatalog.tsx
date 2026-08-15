@@ -12,7 +12,9 @@ interface MaskCatalogProps {
 }
 
 export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
-  const [selectedId, setSelectedId] = useState<MaskDefinition['id']>(masks[0]?.id ?? 'default');
+  const [selectedId, setSelectedId] = useState<MaskDefinition['id']>(
+    masks.find((mask) => mask.id === 'star')?.id ?? masks[0]?.id ?? 'default'
+  );
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const selectedMask = useMemo(

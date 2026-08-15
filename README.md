@@ -1,4 +1,4 @@
-# STIK MΛGIC Telegram Platform
+# STIKMΛGIC Telegram Platform
 
 ## MVP boundary
 
@@ -26,12 +26,12 @@ Instead of “bot over here, web demo over there”, the repo is organized aroun
 ```txt
 Telegram user/admin
    │
-   ├── STIK MΛGIC Bot (@stixmagic/bot)
+   ├── STIKMΛGIC Bot (@stixmagic/bot)
    │      ├── Telegram commands
    │      ├── Bot → Mini App handoff
    │      └── Trigger execution
    │
-   ├── STIK MΛGIC Mini App (@stixmagic/web)
+   ├── STIKMΛGIC Mini App (@stixmagic/web)
    │      ├── Group + rule management UI
    │      ├── Telegram bootstrap/context read path
    │      └── Uses shared Telegram API contracts
