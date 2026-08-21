@@ -1,6 +1,6 @@
 import type { LoreAuraId, LoreMemberState, LoreResponse } from '@stixmagic/types';
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_STIXMAGIC_API_BASE_URL ?? 'http://localhost:4000').replace(/\/$/, '');
+const API_BASE_URL = (process.env.NEXT_PUBLIC_LORE_API_BASE_URL?.trim() ?? '').replace(/\/$/, '');
 const INVITE_SESSION_KEY = 'lore-invite-token-session';
 
 export type LoreMeResponse = {
@@ -33,6 +33,7 @@ function buildHeaders(): HeadersInit {
 }
 
 async function loreRequest<T>(path: string, init?: RequestInit): Promise<T | null> {
+  if (!API_BASE_URL) return null;
   try {
     const response = await fetch(`${API_BASE_URL}${path}`, {
       ...init,
