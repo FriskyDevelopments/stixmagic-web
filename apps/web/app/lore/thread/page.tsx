@@ -72,7 +72,7 @@ export default function ThreadPage() {
       const nextProgress = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0;
       setProgress(nextProgress);
       window.localStorage.setItem('lore-thread-progress', String(window.scrollY));
-      const visibleChapter = chapterCopy.find((chapter) => {
+      const visibleChapter = [...chapterCopy].reverse().find((chapter) => {
         const element = document.getElementById(chapter.id);
         return element && element.getBoundingClientRect().top < window.innerHeight * 0.42;
       });

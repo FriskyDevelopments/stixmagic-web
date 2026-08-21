@@ -79,7 +79,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function SaveButton({ saved, onClick, label = 'Save to shelf' }: { saved: boolean; onClick: () => void; label?: string }) {
   return (
-    <button type="button" className={`lore-save-button ${saved ? 'is-saved' : ''}`} onClick={onClick} aria-pressed={saved}>
+    <button type="button" className={`lore-save-button ${saved ? 'is-saved' : ''}`} onClick={onClick} aria-pressed={saved} aria-label={saved ? 'Saved to shelf' : label}>
       <span aria-hidden="true">{saved ? '＋' : '＋'}</span> {saved ? 'Saved' : label}
     </button>
   );
@@ -128,6 +128,12 @@ export default function LoreExperience() {
     () => ritualIntent === 'all' ? ritualCards : ritualCards.filter((card) => card.intent === ritualIntent),
     [ritualIntent]
   );
+
+  const chooseRitualIntent = (intent: string) => {
+    const nextPool = intent === 'all' ? ritualCards : ritualCards.filter((card) => card.intent === intent);
+    setRitualIntent(intent);
+    if (nextPool.length) setActiveRitual(nextPool[0]);
+  };
 
   const dismissOnboarding = () => {
     window.localStorage.setItem(STORAGE_KEYS.onboarding, 'true');
@@ -248,7 +254,7 @@ export default function LoreExperience() {
           <h1 id="lore-hero-title">Make room for the unseen.</h1>
           <p className="lore-hero-lede">LORE is a living index of people, fragments, and rituals for paying attention. Follow a signal. Keep a trace. Leave changed.</p>
           <div className="lore-hero-actions">
-            <a className="lore-button lore-button-primary" href="#world">Begin with an Aura <span aria-hidden="true">↘</span></a>
+            <Link className="lore-button lore-button-primary" href="/lore/archive">Enter the Archive <span aria-hidden="true">↘</span></Link>
             <Link className="lore-button lore-button-quiet" href="/lore/thread">Read The Thread <span aria-hidden="true">↗</span></Link>
           </div>
           <p className="lore-disclaimer">A personal creative space. No accounts. No claims of live community.</p>
@@ -342,7 +348,7 @@ export default function LoreExperience() {
         <div className="lore-ritual-layout">
           <div className="lore-ritual-controls" role="group" aria-label="Filter ritual prompts">
             {['all', 'begin', 'make', 'notice', 'write', 'release'].map((intent) => (
-              <button type="button" key={intent} className={ritualIntent === intent ? 'is-active' : ''} onClick={() => setRitualIntent(intent)}>{intent}</button>
+              <button type="button" key={intent} className={ritualIntent === intent ? 'is-active' : ''} onClick={() => chooseRitualIntent(intent)}>{intent}</button>
             ))}
           </div>
           <div className="lore-ritual-card" id={`ritual-${activeRitual.id}`}>

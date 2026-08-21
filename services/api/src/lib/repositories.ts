@@ -6,6 +6,11 @@ import type {
   CreateReactionRuleRequest,
   CreateStickerRequest,
   CreateTriggerRequest,
+  LoreDropRead,
+  LoreFunnelEvent,
+  LoreIntegrationConnection,
+  LoreMemberState,
+  LoreResponse,
   ReactionRule,
   Sticker,
   StickerPack,
@@ -21,6 +26,11 @@ interface PersistedState {
   triggers: Trigger[];
   webhookUpdates: number[];
   packMeta: Record<string, { packName: string; title: string }>;
+  loreMembers: LoreMemberState[];
+  loreResponses: LoreResponse[];
+  loreDropReads: LoreDropRead[];
+  loreEvents: LoreFunnelEvent[];
+  loreIntegrations: LoreIntegrationConnection[];
 }
 
 const statePath = path.resolve(process.cwd(), 'data/state.json');
@@ -43,7 +53,12 @@ const seedState: PersistedState = {
   packs: [],
   triggers: [],
   webhookUpdates: [],
-  packMeta: {}
+  packMeta: {},
+  loreMembers: [],
+  loreResponses: [],
+  loreDropReads: [],
+  loreEvents: [],
+  loreIntegrations: []
 };
 
 async function loadState(): Promise<PersistedState> {
@@ -51,7 +66,16 @@ async function loadState(): Promise<PersistedState> {
 
   try {
     const raw = await readFile(statePath, 'utf8');
-    stateCache = JSON.parse(raw) as PersistedState;
+    const parsed = JSON.parse(raw) as Partial<PersistedState>;
+    stateCache = {
+      ...structuredClone(seedState),
+      ...parsed,
+      loreMembers: parsed.loreMembers ?? [],
+      loreResponses: parsed.loreResponses ?? [],
+      loreDropReads: parsed.loreDropReads ?? [],
+      loreEvents: parsed.loreEvents ?? [],
+      loreIntegrations: parsed.loreIntegrations ?? []
+    };
   } catch {
     stateCache = structuredClone(seedState);
     await persistState(stateCache);
@@ -211,4 +235,128 @@ export async function setTelegramPackMetadata(packId: string, values: { packName
   await updateState((state) => {
     state.packMeta[packId] = values;
   });
+}
+
+
+export async function getOrCreateLoreMember(userId: string, tenantId: string): Promise<LoreMemberState> {
+  const state = await loadState();
+  const existing = state.loreMembers.find((member) => member.userId === userId && member.tenantId === tenantId);
+  if (existing) return existing;
+
+  const member: LoreMemberState = {
+    userId,
+    tenantId,
+    status: 'invited',
+    currentStep: 0,
+    lastActiveAt: new Date().toISOString()
+  };
+  state.loreMembers.push(member);
+  await persistState(state);
+  return member;
+}
+
+export async function saveLoreProgress(input: {
+  userId: string;
+  tenantId: string;
+  currentStep: number;
+  status: LoreMemberState['status'];
+  auraId?: LoreMemberState['auraId'];
+  auraVersion?: string;
+}): Promise<LoreMemberState> {
+  const state = await loadState();
+  const member = state.loreMembers.find((item) => item.userId === input.userId && item.tenantId === input.tenantId);
+  if (!member) {
+    const created: LoreMemberState = {
+      userId: input.userId,
+      tenantId: input.tenantId,
+      status: input.status,
+      currentStep: input.currentStep,
+      auraId: input.auraId,
+      auraVersion: input.auraVersion,
+      lastActiveAt: new Date().toISOString()
+    };
+    state.loreMembers.push(created);
+    await persistState(state);
+    return created;
+  }
+
+  member.status = input.status;
+  member.currentStep = input.currentStep;
+  member.auraId = input.auraId ?? member.auraId;
+  member.auraVersion = input.auraVersion ?? member.auraVersion;
+  member.lastActiveAt = new Date().toISOString();
+  await persistState(state);
+  return member;
+}
+
+export async function saveLoreResponse(input: LoreResponse & { tenantId: string }): Promise<LoreResponse> {
+  const state = await loadState();
+  const existing = state.loreResponses.find((response) => response.userId === input.userId && response.questionId === input.questionId);
+  const response: LoreResponse = {
+    userId: input.userId,
+    questionId: input.questionId,
+    optionId: input.optionId,
+    answeredAt: input.answeredAt
+  };
+  if (existing) Object.assign(existing, response);
+  else state.loreResponses.push(response);
+  await persistState(state);
+  return response;
+}
+
+export async function listLoreResponses(userId: string): Promise<LoreResponse[]> {
+  return (await loadState()).loreResponses.filter((response) => response.userId === userId);
+}
+
+export async function markLoreDropRead(userId: string, dropId: string): Promise<LoreDropRead> {
+  const state = await loadState();
+  const existing = state.loreDropReads.find((read) => read.userId === userId && read.dropId === dropId);
+  if (existing) return existing;
+  const read: LoreDropRead = { userId, dropId, readAt: new Date().toISOString() };
+  state.loreDropReads.push(read);
+  await persistState(state);
+  return read;
+}
+
+export async function hasLoreDropRead(userId: string, dropId: string): Promise<boolean> {
+  return (await loadState()).loreDropReads.some((read) => read.userId === userId && read.dropId === dropId);
+}
+
+export async function recordLoreEvent(event: LoreFunnelEvent): Promise<void> {
+  const state = await loadState();
+  state.loreEvents.push(event);
+  if (state.loreEvents.length > 10_000) state.loreEvents = state.loreEvents.slice(-10_000);
+  await persistState(state);
+}
+
+export async function getLoreFunnelSummary(): Promise<Record<string, { events: number; uniqueUsers: number }>> {
+  const events = (await loadState()).loreEvents;
+  const grouped = new Map<string, { events: number; users: Set<string> }>();
+  for (const event of events) {
+    const current = grouped.get(event.name) ?? { events: 0, users: new Set<string>() };
+    current.events += 1;
+    if (event.userId) current.users.add(event.userId);
+    grouped.set(event.name, current);
+  }
+  return Object.fromEntries(Array.from(grouped.entries()).map(([name, value]) => [name, { events: value.events, uniqueUsers: value.users.size }]));
+}
+
+
+export async function getLoreIntegration(tenantId: string, provider: LoreIntegrationConnection['provider']): Promise<LoreIntegrationConnection | null> {
+  return (await loadState()).loreIntegrations.find((integration) => integration.tenantId === tenantId && integration.provider === provider) ?? null;
+}
+
+export async function saveLoreIntegration(input: LoreIntegrationConnection): Promise<LoreIntegrationConnection> {
+  const state = await loadState();
+  const existing = state.loreIntegrations.find((integration) => integration.tenantId === input.tenantId && integration.provider === input.provider);
+  if (existing) Object.assign(existing, input);
+  else state.loreIntegrations.push(input);
+  await persistState(state);
+  return input;
+}
+
+export async function clearLoreIntegration(tenantId: string, provider: LoreIntegrationConnection['provider']): Promise<void> {
+  const state = await loadState();
+  state.loreIntegrations = state.loreIntegrations.filter((integration) => !(integration.tenantId === tenantId && integration.provider === provider));
+  await persistState(state);
 }

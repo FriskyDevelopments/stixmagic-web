@@ -33,7 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </Link>
               <nav className="flex items-center gap-1 text-xs text-muted sm:gap-3 sm:text-sm lg:gap-5" aria-label="Primary navigation">
                 <Link href="/#world" className="hidden rounded-md px-2 py-1 transition hover:text-text focus-visible:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 sm:inline-flex">World</Link>
-                <Link href="/#archive" className="rounded-md px-2 py-1 transition hover:text-text focus-visible:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Archive</Link>
+                <Link href="/lore/archive" className="rounded-md px-2 py-1 transition hover:text-text focus-visible:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Archive</Link>
                 <Link href="/lore/thread" className="rounded-md px-2 py-1 transition hover:text-text focus-visible:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Thread</Link>
                 <Link href="/#rituals" className="hidden rounded-md px-2 py-1 transition hover:text-text focus-visible:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 sm:inline-flex">Rituals</Link>
                 <Link href="/#shelf" className="rounded-lg border border-accent-primary/30 bg-accent-primary/10 px-3 py-1.5 font-semibold text-accent-cyan transition hover:border-accent-cyan/60 hover:bg-accent-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50">Shelf</Link>

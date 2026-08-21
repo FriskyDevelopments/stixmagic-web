@@ -13,9 +13,12 @@
   },
   "dependencies": {
     "@fastify/cors": "^10.0.2",
+    "@nangohq/node": "^0.71.4",
     "@stixmagic/config": "workspace:*",
     "@stixmagic/types": "workspace:*",
     "fastify": "^5.2.0",
+    "fastify-plugin": "^6.0.0",
+    "fastify-raw-body": "^6.0.1",
     "uuid": "^11.0.3",
     "zod": "^3.24.1"
   },

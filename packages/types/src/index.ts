@@ -479,3 +479,63 @@ export const BUILTIN_MASKS: MaskDefinition[] = [
     category: 'expressive'
   }
 ];
+
+
+export type LoreMemberStatus = 'invited' | 'in_progress' | 'complete' | 'revoked';
+
+export type LoreAuraId = 'tender-static' | 'deep-water' | 'afterglow' | 'night-bloom';
+
+export interface LoreMemberState {
+  userId: string;
+  tenantId: string;
+  status: LoreMemberStatus;
+  currentStep: number;
+  auraId?: LoreAuraId;
+  auraVersion?: string;
+  lastActiveAt: string;
+}
+
+export interface LoreResponse {
+  userId: string;
+  questionId: string;
+  optionId: string;
+  answeredAt: string;
+}
+
+export interface LoreDropRead {
+  userId: string;
+  dropId: string;
+  readAt: string;
+}
+
+export type LoreFunnelEventName =
+  | 'invitation_opened'
+  | 'journey_started'
+  | 'decision_answered'
+  | 'aura_discovered'
+  | 'drop_opened'
+  | 'community_cta_clicked';
+
+export interface LoreFunnelEvent {
+  id: string;
+  userId?: string;
+  tenantId?: string;
+  name: LoreFunnelEventName;
+  occurredAt: string;
+  properties: Record<string, string | number | boolean | undefined>;
+}
+
+
+export type LoreIntegrationStatus = 'not_configured' | 'not_connected' | 'connecting' | 'connected' | 'error' | 'disconnected';
+
+export interface LoreIntegrationConnection {
+  tenantId: string;
+  provider: 'google-calendar';
+  providerConfigKey: string;
+  connectionId?: string;
+  status: LoreIntegrationStatus;
+  accountLabel?: string;
+  lastSyncedAt?: string;
+  lastTraceId?: string;
+  updatedAt: string;
+}
