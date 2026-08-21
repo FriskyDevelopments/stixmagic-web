@@ -7,8 +7,6 @@ async function processJob(job: JobRecord): Promise<void> {
     case 'trigger.execute':
       await executeReactionJob(job.payload);
       return;
-    case 'sticker.process':
-      return;
     case 'sticker.publish': {
       await telegramStickerService.publishStickerJob(job.payload);
       return;
