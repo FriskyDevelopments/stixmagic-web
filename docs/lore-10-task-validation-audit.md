@@ -54,3 +54,7 @@ Do not launch any paid, member-only, or private-community promise before the fol
 5. Confirm the community URL is only returned after server-side completion and that no private URL is present in built JavaScript or static HTML.
 
 This gate turns Tasks 3, 5, 7, 9, and 10 from local MVP contracts into production-capable member flows.
+
+## Final post-deploy smoke
+
+The explicit Pages deployment for commit `6f52490` completed successfully in GitHub Actions run `32492920976`. The production smoke script then confirmed that `https://stixmagic.com/lore/archive/` serves the Aura Map, the six-decision entry, and the expected page title with no browser console errors. A direct request to `https://stixmagic.com/lore/me` still returns HTTP 404, so live remote resume remains intentionally unavailable until a separate HTTPS LORE API is deployed and `LORE_API_BASE_URL_PAGES` is configured.
