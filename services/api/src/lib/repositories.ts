@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { writeJsonAtomically } from './atomicFile.js';
 import type {
   CreatePackRequest,
   CreateReactionRuleRequest,
@@ -85,8 +86,7 @@ async function loadState(): Promise<PersistedState> {
 }
 
 async function persistState(nextState: PersistedState): Promise<void> {
-  await mkdir(path.dirname(statePath), { recursive: true });
-  await writeFile(statePath, JSON.stringify(nextState, null, 2));
+  await writeJsonAtomically(statePath, nextState);
 }
 
 async function updateState(updater: (state: PersistedState) => void): Promise<void> {

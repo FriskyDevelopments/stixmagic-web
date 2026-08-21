@@ -1,8 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { writeJsonAtomically } from '../lib/atomicFile.js';
 
-export type JobType = 'trigger.execute' | 'sticker.process' | 'sticker.publish';
+export type JobType = 'trigger.execute' | 'sticker.publish';
 
 export interface JobRecord<T = Record<string, unknown>> {
   id: string;
@@ -30,8 +31,7 @@ async function loadJobs(): Promise<JobRecord[]> {
 }
 
 async function persistJobs(jobs: JobRecord[]): Promise<void> {
-  await mkdir(path.dirname(jobsPath), { recursive: true });
-  await writeFile(jobsPath, JSON.stringify(jobs, null, 2));
+  await writeJsonAtomically(jobsPath, jobs);
 }
 
 export async function enqueueJob(jobType: JobType, payload: Record<string, unknown>, runAt = new Date()): Promise<string> {
