@@ -1,8 +1,6 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { z } from 'zod';
-import type { MaskType } from '@stixmagic/types';
 import { createSticker } from '../lib/repositories.js';
-import { enqueueJob } from '../jobs/queue.js';
 
 const createStickerSchema = z.object({
   packId: z.string().uuid(),
@@ -13,7 +11,7 @@ const createStickerSchema = z.object({
     height: z.number().int().positive(),
     format: z.enum(['webp', 'png', 'webm']),
     sizeBytes: z.number().int().positive(),
-    maskType: z.custom<MaskType>(),
+    maskType: z.enum(['default', 'circle', 'square', 'oval', 'diamond', 'star', 'heart']),
     interactive: z.boolean()
   })
 });
@@ -26,9 +24,9 @@ export const stickersRoutes: FastifyPluginAsync = async (app) => {
       return reply.status(400).send({ ok: false, data: payload.error.flatten() });
     }
 
+    // Persist only validated metadata. Processing is intentionally not queued
+    // until the sticker-engine upload/storage contract is implemented end-to-end.
     const sticker = await createSticker(payload.data);
-    await enqueueJob('sticker.process', { stickerId: sticker.id, packId: sticker.packId });
-
     return { ok: true, data: sticker };
   });
 };
