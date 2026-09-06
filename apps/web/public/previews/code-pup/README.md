@@ -22,3 +22,7 @@
 
 ## Public HTTPS (after publish)
 `https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/<file>`
+
+## Lab coat (bata de laboratorio)
+- `labcoat-alchemy.gif` / `.png` — canonical chemistry opener (NOT bathrobe)
+- `labcoat-awooo.png` — awooo lab variant
