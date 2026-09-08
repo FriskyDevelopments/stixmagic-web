@@ -1,16 +1,18 @@
 # Code Pup PR previews
 
 ## Opener (still only)
-- `codepup-opener.png` / `code-pup-hero-mark.png` — magenta cyber mark
+- `codepup-opener.png` / `code-pup-hero-mark.png`
 
-## Section headers (NOT openers) — `headers/`
+## Section headers — `headers/` (NOT openers)
 - `header-snapshot-think.gif` — Snapshot
-- `header-findings-passfail.gif` — Findings (default)
-- `header-findings-panic.gif` — Findings (heavy CRIT/HIGH)
-- `header-verdict-live.gif` — Verdict / go-live
+- `header-findings-passfail.gif` — Findings
+- `header-findings-panic.gif` — Findings (heavy)
+- `header-verdict-live.gif` — Verdict
+- `header-nits-refactor.gif` — Nits / refactor (BEFORE→AFTER)
 
-## Legacy root loops
-- `codepup-think-loop.gif` / `codepup-debug-panic.gif` — prefer `headers/` names
-
-## Status cards
-- `status/status-top-up.png` — 0 credits / TOP UP (not opener)
+## Status cards — `status/` (NOT openers)
+- `status-top-up.png` / `status-top-up.gif` — 0 credits
+- `status-ready-to-merge.gif` — APPROVE / merge-ready
+- `status-green-build.gif` — CI green / build→test→deploy
+- `status-p0-incident.gif` — P0 / on-call crisis
+- `status-readme.gif` — docs / README mode
