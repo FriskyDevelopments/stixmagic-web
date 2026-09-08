@@ -195,7 +195,8 @@ Opener stays the still / banner. These GIFs are **section headers** only — one
 | Snapshot | `header-snapshot-think.gif` | always |
 | Findings | `header-findings-passfail.gif` | default (PASSED/FAILED magnify) |
 | Findings (alt) | `header-findings-panic.gif` | heavy `CRIT`/`HIGH` load |
-| Nits / Verdict | none yet | text-only until designed |
+| Verdict | `header-verdict-live.gif` | APPROVE / ship / go-live |
+| Nits | none yet | text-only until designed |
 
 Public base (main):
 `https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/headers/`
