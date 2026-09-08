@@ -196,7 +196,7 @@ Opener stays the still / banner. These GIFs are **section headers** only — one
 | Findings | `header-findings-passfail.gif` | default (PASSED/FAILED magnify) |
 | Findings (alt) | `header-findings-panic.gif` | heavy `CRIT`/`HIGH` load |
 | Verdict | `header-verdict-live.gif` | APPROVE / ship / go-live |
-| Nits | none yet | text-only until designed |
+| Nits | `header-nits-refactor.gif` | polish / refactor |
 
 Public base (main):
 `https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/headers/`
@@ -219,8 +219,20 @@ Do **not** replace the opener with these.
 
 | Asset | When |
 |-------|------|
-| `status/status-top-up.png` | 0 credits / out of budget — show instead of review body |
+| `status/status-top-up.png` / `.gif` | 0 credits / out of budget — show instead of review body |
+| `status/status-ready-to-merge.gif` | APPROVE / merge-ready flourish (optional under Verdict) |
 
 Public:
 `https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/status/status-top-up.png`
+
+| Nits | `header-nits-refactor.gif` | polish / refactor / BEFORE→AFTER |
+
+## Extra status cards
+
+| Asset | When |
+|-------|------|
+| `status/status-ready-to-merge.gif` | APPROVE / merge-ready |
+| `status/status-green-build.gif` | CI green |
+| `status/status-p0-incident.gif` | P0 / outage tone |
+| `status/status-readme.gif` | docs-heavy PR |
 
