@@ -1,17 +1,13 @@
 # Code Pup PR previews
 
-## Opener (still)
-- `codepup-opener.png` — magenta cyber CODE PUP hero mark (live opener)
-- `code-pup-hero-mark.png` — same still
+## Opener (still only)
+- `codepup-opener.png` / `code-pup-hero-mark.png` — magenta cyber mark
 
-## Section headers (NOT openers)
-Under `headers/`:
-- `header-snapshot-think.gif` — Snapshot chapter
-- `header-findings-passfail.gif` — Findings (PASSED/FAILED magnify)
-- `header-findings-panic.gif` — Findings alt (ERROR / STACK TRACE)
+## Section headers (NOT openers) — `headers/`
+- `header-snapshot-think.gif` — Snapshot
+- `header-findings-passfail.gif` — Findings (default)
+- `header-findings-panic.gif` — Findings (heavy CRIT/HIGH)
+- `header-verdict-live.gif` — Verdict / go-live
 
-## Other loops (legacy root copies; prefer headers/)
-- `codepup-think-loop.gif` / `codepup-debug-panic.gif`
-
-## Archived
-- `archive/labcoat-*`
+## Legacy root loops
+- `codepup-think-loop.gif` / `codepup-debug-panic.gif` — prefer `headers/` names
