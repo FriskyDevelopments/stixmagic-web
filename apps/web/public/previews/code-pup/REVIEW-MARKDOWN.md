@@ -213,3 +213,14 @@ Example under Findings:
 
 Do **not** replace the opener with these.
 
+---
+
+## Status / Bot OS cards (not openers, not section headers)
+
+| Asset | When |
+|-------|------|
+| `status/status-top-up.png` | 0 credits / out of budget — show instead of review body |
+
+Public:
+`https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/status/status-top-up.png`
+

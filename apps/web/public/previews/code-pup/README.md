@@ -11,3 +11,6 @@
 
 ## Legacy root loops
 - `codepup-think-loop.gif` / `codepup-debug-panic.gif` — prefer `headers/` names
+
+## Status cards
+- `status/status-top-up.png` — 0 credits / TOP UP (not opener)
