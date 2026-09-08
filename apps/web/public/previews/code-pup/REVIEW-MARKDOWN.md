@@ -184,3 +184,31 @@ None.
 | **Next** | Fix `session.ts:88`, add regression test. |
 ```
 
+---
+
+## Section header GIFs (not openers)
+
+Opener stays the still / banner. These GIFs are **section headers** only — one per chapter, centered, width ~360–480.
+
+| Chapter | Asset | When |
+|---------|-------|------|
+| Snapshot | `header-snapshot-think.gif` | always |
+| Findings | `header-findings-passfail.gif` | default (PASSED/FAILED magnify) |
+| Findings (alt) | `header-findings-panic.gif` | heavy `CRIT`/`HIGH` load |
+| Nits / Verdict | none yet | text-only until designed |
+
+Public base (main):
+`https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/headers/`
+
+Example under Findings:
+
+```md
+<p align="center">
+  <img src="https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/headers/header-findings-passfail.gif" alt="CODE PUP. findings" width="420" />
+</p>
+
+### ▸ Findings
+```
+
+Do **not** replace the opener with these.
+

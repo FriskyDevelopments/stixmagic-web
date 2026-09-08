@@ -1,14 +1,17 @@
-# Code Pup PR opener previews
+# Code Pup PR previews
 
-## Canonical opener (current)
-- `codepup-opener.gif` — review-state CODE PUP (magnify bug, PASSED/FAILED) — **live opener**
-- `codepup-opener.png` — still frame from the same asset
-- `codepup-review-passfail.gif` — same GIF, descriptive alias
+## Opener (still)
+- `codepup-opener.png` — magenta cyber CODE PUP hero mark (live opener)
+- `code-pup-hero-mark.png` — same still
 
-## Other loops
-- `codepup-think-loop.gif` — thinking + holograms
-- `codepup-debug-panic.gif` — ERROR / STACK TRACE head-clutch
+## Section headers (NOT openers)
+Under `headers/`:
+- `header-snapshot-think.gif` — Snapshot chapter
+- `header-findings-passfail.gif` — Findings (PASSED/FAILED magnify)
+- `header-findings-panic.gif` — Findings alt (ERROR / STACK TRACE)
+
+## Other loops (legacy root copies; prefer headers/)
+- `codepup-think-loop.gif` / `codepup-debug-panic.gif`
 
 ## Archived
-- `archive/labcoat-*` — chemistry lab-coat (superseded)
-- `archive/codepup-opener-still-v1.png` — prior magenta still mark
+- `archive/labcoat-*`
