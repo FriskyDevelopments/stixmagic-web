@@ -219,7 +219,8 @@ Do **not** replace the opener with these.
 
 | Asset | When |
 |-------|------|
-| `status/status-top-up.png` | 0 credits / out of budget — show instead of review body |
+| `status/status-top-up.png` / `.gif` | 0 credits / out of budget — show instead of review body |
+| `status/status-ready-to-merge.gif` | APPROVE / merge-ready flourish (optional under Verdict) |
 
 Public:
 `https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/status/status-top-up.png`
