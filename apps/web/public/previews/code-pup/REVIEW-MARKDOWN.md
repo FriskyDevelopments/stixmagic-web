@@ -186,6 +186,28 @@ None.
 
 ---
 
+
+
+## Opener assets (rotate; GIF optional)
+
+**Canonical still opener:** `codepup-opener.png` (magenta cyber mark, ~117KB).
+
+Public base:
+`https://cdn.jsdelivr.net/gh/FriskyDevelopments/stixmagic-web@main/apps/web/public/previews/code-pup/`
+
+| Asset | Role |
+|-------|------|
+| `codepup-opener.png` | Default opener still |
+| `code-pup-pr-banner.svg` / `code-pup-pr-header.svg` | Wordmark chrome |
+| `headers/header-*.gif` | Section headers only (≤500KB) |
+| `status/status-*.gif` | Bot OS status cards only |
+| `codepup-think-loop.gif` / `codepup-debug-panic.gif` | Optional flavor — large; prefer section headers over these as openers |
+| `archive/labcoat-alchemy.gif` | Chemistry lab-coat — **archived** (not default opener; bathrobe also archived) |
+
+`lite/` mirrors the compressed canonical files; prefer paths **without** `/lite/`.
+
+Do **not** use bathrobe as an opener.
+
 ## Section header GIFs (not openers)
 
 Opener stays the still / banner. These GIFs are **section headers** only — one per chapter, centered, width ~360–480.
@@ -199,13 +221,13 @@ Opener stays the still / banner. These GIFs are **section headers** only — one
 | Nits | `header-nits-refactor.gif` | polish / refactor |
 
 Public base (main):
-`https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/headers/`
+`https://cdn.jsdelivr.net/gh/FriskyDevelopments/stixmagic-web@main/apps/web/public/previews/code-pup/headers/`
 
 Example under Findings:
 
 ```md
 <p align="center">
-  <img src="https://raw.githubusercontent.com/FriskyDevelopments/stixmagic-web/main/apps/web/public/previews/code-pup/headers/header-findings-passfail.gif" alt="CODE PUP. findings" width="420" />
+  <img src="https://cdn.jsdelivr.net/gh/FriskyDevelopments/stixmagic-web@main/apps/web/public/previews/code-pup/headers/header-findings-passfail.gif" alt="CODE PUP. findings" width="420" />
 </p>
 
 ### ▸ Findings
@@ -214,6 +236,40 @@ Example under Findings:
 Do **not** replace the opener with these.
 
 ---
+
+
+
+## Verdict status marks (brand kit 1.0)
+
+Small static PNGs (~13KB, display **64×64**) for the Verdict chapter. Text heading stays required when images fail to load.
+
+Public base:
+`https://cdn.jsdelivr.net/gh/FriskyDevelopments/stixmagic-web@main/apps/web/public/previews/code-pup/brand-kit-1.0/status/`
+
+| Mark | File | Use when |
+|------|------|----------|
+| Reviewing | `reviewing.png` | Review actually in progress |
+| Approved | `approved.png` | Explicit approval recorded |
+| Changes requested | `changes-requested.png` | Review requests changes |
+| Blocked | `blocked.png` | Named condition blocks progress |
+
+Do **not** map internal `reviewed` / `paused` / `ignored` / `skipped draft` onto `approved` without a separate explicit approval.
+
+Example under Verdict:
+
+```md
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/FriskyDevelopments/stixmagic-web@main/apps/web/public/previews/code-pup/brand-kit-1.0/status/changes-requested.png" width="64" height="64" alt="" />
+</p>
+
+### ▸ Verdict
+| | |
+|---|---|
+| **Call** | `REQUEST CHANGES` |
+| **Why** | … |
+```
+
+These are separate from the older Bot OS `status/status-*.gif` cards and from section header GIFs.
 
 ## Status / Bot OS cards (not openers, not section headers)
 
