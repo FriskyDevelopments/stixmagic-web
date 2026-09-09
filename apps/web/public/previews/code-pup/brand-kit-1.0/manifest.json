@@ -1,0 +1,133 @@
+{
+  "version": "1.0",
+  "created": "2026-09-09",
+  "identity": "User-provided magenta Code Pup reference",
+  "statusFiles": [
+    {
+      "path": "status/approved.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 12774,
+      "transparentPixels": 20796,
+      "antialiasedPixels": 1452,
+      "nearOpaquePixels": 14616,
+      "sha256": "be9cfc39e871c70840e368f826f1f12269930c5a718e90ab5b8caa9a8d2b574f"
+    },
+    {
+      "path": "status-small/approved.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 5086,
+      "transparentPixels": 4962,
+      "antialiasedPixels": 674,
+      "nearOpaquePixels": 3580,
+      "sha256": "8c4ffa53479dff6f37bf5fd019332ed245829f1014221077ec95a652e65bdbd8"
+    },
+    {
+      "path": "status-master/approved.png",
+      "width": 768,
+      "height": 768,
+      "bytes": 102805,
+      "transparentPixels": 342531,
+      "antialiasedPixels": 5849,
+      "nearOpaquePixels": 241444,
+      "sha256": "bd1a70339c9c4e7777dc75512d911754e7add9c4675bd99db6bbb74a0ba85a08"
+    },
+    {
+      "path": "status/changes-requested.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 13192,
+      "transparentPixels": 21025,
+      "antialiasedPixels": 1414,
+      "nearOpaquePixels": 14425,
+      "sha256": "9ada57cdd5ae85922d117fde666b68f8413fb2d76f7bedde99ef1b6ec18ed895"
+    },
+    {
+      "path": "status-small/changes-requested.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 4997,
+      "transparentPixels": 5047,
+      "antialiasedPixels": 655,
+      "nearOpaquePixels": 3514,
+      "sha256": "3840c0cf8e53651a3efc4b997ad5a45d6405873126b2cf5992d1c66558ee0f0f"
+    },
+    {
+      "path": "status-master/changes-requested.png",
+      "width": 768,
+      "height": 768,
+      "bytes": 114297,
+      "transparentPixels": 344701,
+      "antialiasedPixels": 6818,
+      "nearOpaquePixels": 238305,
+      "sha256": "233b674669ac5a959478bb0268b52a4b3af227329030975a9db69fe77241ad30"
+    },
+    {
+      "path": "status/blocked.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 12716,
+      "transparentPixels": 21151,
+      "antialiasedPixels": 1369,
+      "nearOpaquePixels": 14344,
+      "sha256": "c617f59a38081ce8986fec4d110bc6f1fab4165d6120ca056f99d2bce9613a5f"
+    },
+    {
+      "path": "status-small/blocked.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 4929,
+      "transparentPixels": 5091,
+      "antialiasedPixels": 624,
+      "nearOpaquePixels": 3501,
+      "sha256": "d58198ce8174222de2063dcb39727ad53e3ee24cbb428636a961c69ee78d55a4"
+    },
+    {
+      "path": "status-master/blocked.png",
+      "width": 768,
+      "height": 768,
+      "bytes": 111625,
+      "transparentPixels": 346054,
+      "antialiasedPixels": 6793,
+      "nearOpaquePixels": 236977,
+      "sha256": "4d744d9797617d51d4772d6864dd25a4c15495171a0ba67efe053f8a79c679c1"
+    },
+    {
+      "path": "status/reviewing.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 13032,
+      "transparentPixels": 20334,
+      "antialiasedPixels": 1442,
+      "nearOpaquePixels": 15088,
+      "sha256": "34ed2303df7104a53a53b81b5c8a989df47a6b6bef3f0997ed211cb6512feab3"
+    },
+    {
+      "path": "status-small/reviewing.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 5167,
+      "transparentPixels": 4845,
+      "antialiasedPixels": 713,
+      "nearOpaquePixels": 3658,
+      "sha256": "ad6257664f205d08ef9a9d349e0eb032707edfab5cbc09eb2b1d3be1e7005a8b"
+    },
+    {
+      "path": "status-master/reviewing.png",
+      "width": 768,
+      "height": 768,
+      "bytes": 111361,
+      "transparentPixels": 335709,
+      "antialiasedPixels": 5489,
+      "nearOpaquePixels": 248626,
+      "sha256": "e5714032932ad7beefe5c2a8576cba4034555bb36d429abbf34fe75f1340cd8c"
+    }
+  ],
+  "displaySizes": {
+    "status": 64,
+    "status-small": 32,
+    "status-master": 256
+  },
+  "animation": "All files static; at most one optional GIF reserved for Verdict. No GIF included."
+}

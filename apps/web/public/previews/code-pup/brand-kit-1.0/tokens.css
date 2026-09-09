@@ -1,0 +1,21 @@
+/* Code Pup 1.0 - working production palette derived from the supplied reference. */
+:root {
+  --code-pup-pink: #ff006b;
+  --code-pup-pink-shade: #a90054;
+  --code-pup-black: #08080b;
+  --code-pup-charcoal: #24232b;
+  --code-pup-green: #68ff2b;
+  --code-pup-cyan: #00e5f5;
+  --code-pup-amber: #ffb000;
+  --code-pup-paper: #f5f1e8;
+  --code-pup-coral: #ff6b6b;
+  --code-pup-status-reviewing: var(--code-pup-cyan);
+  --code-pup-status-approved: var(--code-pup-green);
+  --code-pup-status-changes: var(--code-pup-amber);
+  --code-pup-status-blocked: var(--code-pup-coral);
+  --code-pup-font-display: Impact, 'Arial Narrow', sans-serif;
+  --code-pup-font-body: Arial, Helvetica, sans-serif;
+  --code-pup-font-code: Menlo, Consolas, monospace;
+  --code-pup-status-display: 64px;
+  --code-pup-status-inline: 32px;
+}
