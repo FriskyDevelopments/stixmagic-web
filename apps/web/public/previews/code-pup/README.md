@@ -1,18 +1,25 @@
 # Code Pup PR previews
 
-## Opener (still only)
-- `codepup-opener.png` / `code-pup-hero-mark.png`
+GitHub camo-friendly sizes: GIFs ≤500KB, opener PNG ≤300KB.
 
-## Section headers — `headers/` (NOT openers)
-- `header-snapshot-think.gif` — Snapshot
-- `header-findings-passfail.gif` — Findings
-- `header-findings-panic.gif` — Findings (heavy)
-- `header-verdict-live.gif` — Verdict
-- `header-nits-refactor.gif` — Nits / refactor (BEFORE→AFTER)
+## Opener
+- `codepup-opener.png` (~120KB)
 
-## Status cards — `status/` (NOT openers)
-- `status-top-up.png` / `status-top-up.gif` — 0 credits
-- `status-ready-to-merge.gif` — APPROVE / merge-ready
-- `status-green-build.gif` — CI green / build→test→deploy
-- `status-p0-incident.gif` — P0 / on-call crisis
-- `status-readme.gif` — docs / README mode
+## Section headers — `headers/`
+- `header-snapshot-think.gif`
+- `header-findings-passfail.gif`
+- `header-findings-panic.gif`
+- `header-verdict-live.gif`
+- `header-nits-refactor.gif`
+
+## Status — `status/`
+- `status-top-up.gif` / `.png`
+- `status-ready-to-merge.gif`
+- `status-green-build.gif`
+- `status-p0-incident.gif`
+- `status-readme.gif`
+
+## Lite mirror
+Same files under `lite/` for explicit embeds.
+
+CDN: `https://cdn.jsdelivr.net/gh/FriskyDevelopments/stixmagic-web@main/apps/web/public/previews/code-pup/`
