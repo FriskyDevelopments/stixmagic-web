@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120">
-  <rect width="900" height="120" fill="#000"/>
-  <text x="28" y="72" fill="#FF2A8A" font-family="Impact, Haettenschweiler, Arial Black, sans-serif" font-size="56" font-weight="900" letter-spacing="-0.05em">CODE PUP</text>
-  <rect x="312" y="52" width="14" height="14" fill="#FFB020"/>
-  <text x="340" y="68" fill="#EFEADF" font-family="system-ui,sans-serif" font-size="18" letter-spacing="0.12em">a awooo to the code gods</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120"><rect width="900" height="120" fill="#000"/><text x="28" y="72" fill="#FF2A8A" font-family="Impact, Haettenschweiler, Arial Black, sans-serif" font-size="56" font-weight="900" letter-spacing="-.05em">CODE PUP</text><rect width="14" height="14" x="312" y="52" fill="#FFB020"/><text x="340" y="68" fill="#EFEADF" font-family="system-ui,sans-serif" font-size="18" letter-spacing=".12em">a awooo to the code gods</text></svg>
