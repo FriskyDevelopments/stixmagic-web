@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { PreviewState } from '@stixmagic/types';
 import { cn } from '../lib/cn';
 
@@ -21,6 +21,10 @@ interface AssetPreviewProps {
 export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) => {
   const [state, setState] = useState<PreviewState>(url === '' ? 'pending' : 'loading');
   const isVideo = /\.webm(?:\?|$)/i.test(url);
+
+  useEffect(() => {
+    setState(url === '' ? 'pending' : 'loading');
+  }, [url]);
 
   if (state === 'pending') {
     return (
