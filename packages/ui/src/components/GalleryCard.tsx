@@ -21,7 +21,7 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
     <div className="relative h-56 w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,rgba(124,92,255,.22),transparent_48%),linear-gradient(145deg,#090a18,#05060b)]">
       <div className="pointer-events-none absolute inset-0 z-10 opacity-[.12] [background-image:linear-gradient(rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:24px_24px]" />
       <AssetPreview url={asset.previewUrl} alt={asset.name} imageClassName="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
-      <span className="absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/35 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-white backdrop-blur-md"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-cyan shadow-[0_0_8px_currentColor]" />Live loop</span>
+      <span className="absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/35 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-white backdrop-blur-md"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-cyan shadow-[0_0_8px_currentColor]" aria-hidden="true" />Live loop</span>
       {asset.formats.includes('gif') && (
         <span className="absolute left-2 top-2 rounded bg-accent-primary/80 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-text">
           <span className="sr-only">Format: </span>
@@ -54,7 +54,7 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
             key={format}
             href={`/previews/${asset.id}.${format}`}
             download
-            className="rounded-lg border border-white/10 bg-panel-secondary px-3 py-2 text-[10px] font-semibold uppercase tracking-[.14em] text-accent-cyan transition hover:border-accent-cyan/40 hover:text-white"
+            className="rounded-lg border border-white/10 bg-panel-secondary px-3 py-2 text-[10px] font-semibold uppercase tracking-[.14em] text-accent-cyan transition hover:border-accent-cyan/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
           >
             {format === 'webm' && asset.packId === 'motion-alphabet-v1' ? 'Telegram WebM' : format}
           </a>

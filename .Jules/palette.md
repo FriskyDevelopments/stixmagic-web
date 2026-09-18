@@ -85,3 +85,6 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+## 2024-12-16 - Make Interactive Card Elements Accessible
+**Learning:** Decorative and interactive elements inside visual cards (like the "Live loop" dot or "WebM" download links in `GalleryCard`) often lack screen reader compatibility and keyboard navigation. Small elements like pulsing dots shouldn't be read out, and links without explicit focus styles can be hard to track via keyboard.
+**Action:** Always add `aria-hidden="true"` to purely decorative visual components (like dots and glowing spans) to reduce noise, and append `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-[color]/50` to clickable elements to ensure prominent keyboard accessibility paths.
