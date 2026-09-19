@@ -53,21 +53,17 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
         ))}
       </ul>
       <div className="mt-4 flex gap-2 border-t border-white/10 pt-4">
-        {asset.formats.map((format) => {
-          const formatLabel =
-            format === 'webm' && asset.packId === 'motion-alphabet-v1' ? 'Telegram WebM' : format.toUpperCase();
-          return (
-            <a
-              key={format}
-              href={`/previews/${asset.id}.${format}`}
-              download
-              aria-label={`Download ${asset.name} as ${formatLabel}`}
-              className="rounded-lg border border-white/10 bg-panel-secondary px-3 py-2 text-[10px] font-semibold uppercase tracking-[.14em] text-accent-cyan transition hover:border-accent-cyan/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
-            >
-              {formatLabel}
-            </a>
-          );
-        })}
+        {asset.formats.map((format) => (
+          <a
+            key={format}
+            href={`/previews/${asset.id}.${format}`}
+            download
+            aria-label={`Download ${asset.name} as ${format.toUpperCase()}`}
+            className="rounded-lg border border-white/10 bg-panel-secondary px-3 py-2 text-[10px] font-semibold uppercase tracking-[.14em] text-accent-cyan transition hover:border-accent-cyan/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
+          >
+            {format === 'webm' && asset.packId === 'motion-alphabet-v1' ? 'Telegram WebM' : format}
+          </a>
+        ))}
       </div>
     </div>
   </motion.div>
