@@ -85,7 +85,3 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
-
-## 2024-12-16 - Context for Download Links and Floating Badges
-**Learning:** Download links that only visually display the format (e.g. 'WEBM' or 'GIF') and floating decorative badges (e.g. 'Live loop') lack sufficient context for screen reader users. Furthermore, decorative elements inside these badges (like an animated pulsing dot) can create additional noise if not explicitly hidden.
-**Action:** When implementing download links without clear text context, always add a descriptive `aria-label` (e.g. `Download {asset.name} as {format}`). For standalone floating badges, prepend the text with visually hidden context using `<span className="sr-only">Status: </span>`, and apply `aria-hidden="true"` to purely decorative icons or pulsing dots. Additionally, ensure all interactive links have distinct keyboard focus outlines (`focus-visible:ring-2`).
