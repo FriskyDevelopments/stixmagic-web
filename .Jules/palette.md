@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-12-16 - Descriptive ARIA Labels for Format-Only Links
+**Learning:** When implementing download links or buttons that lack visual context (e.g., buttons only displaying the file format like 'WEBM' or 'GIF' in the `GalleryCard`), screen reader users receive insufficient information about what they are downloading. A link that just announces 'WEBM' is ambiguous.
+**Action:** Always add a descriptive `aria-label` (e.g., `Download {asset.name} as {format}`) to format-only download links to ensure accessibility and provide clear context for assistive technologies.
