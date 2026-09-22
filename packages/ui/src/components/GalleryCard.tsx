@@ -54,9 +54,9 @@ export const GalleryCard = ({ asset, className }: GalleryCardProps) => (
             key={format}
             href={`/previews/${asset.id}.${format}`}
             download
+            aria-label={`Download ${asset.name} as ${format}`}
             className="rounded-lg border border-white/10 bg-panel-secondary px-3 py-2 text-[10px] font-semibold uppercase tracking-[.14em] text-accent-cyan transition hover:border-accent-cyan/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
           >
-            <span className="sr-only">Download {asset.name} as </span>
             {format === 'webm' && asset.packId === 'motion-alphabet-v1' ? 'Telegram WebM' : format}
           </a>
         ))}
