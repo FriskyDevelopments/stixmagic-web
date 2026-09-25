@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, KeyboardEvent } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
-import { GalleryGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { GalleryGrid } from '@stixmagic/ui';
 
 const filters = [
   { id: 'all', label: 'All Assets', description: 'Every STIXMΛGIC preview across packs and categories.' },
@@ -15,7 +15,7 @@ type FilterId = (typeof filters)[number]['id'];
 
 export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] }) {
   const [active, setActive] = useState<FilterId>('all');
-  const filterRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const filterButtonsRef = useRef<(HTMLButtonElement | null)[]>([]);
 
   const filtered = useMemo(() => assets.filter((asset) => {
     if (active === 'animated') return asset.tags.includes('animated');
@@ -25,41 +25,29 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   }), [active, assets]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
-    if (nextIndex === null) return;
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = filters.findIndex((f) => f.id === active);
 
-    e.preventDefault();
-    if (nextIndex === index) return;
-
-    setActive(filters[nextIndex].id);
-    filterRefs.current[nextIndex]?.focus();
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % filters.length;
+      filterButtonsRef.current[nextIndex]?.focus();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIndex = (currentIndex - 1 + filters.length) % filters.length;
+      filterButtonsRef.current[prevIndex]?.focus();
+    }
   };
 
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
-        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Asset filters">
-          {filters.map((filter, index) => {
-            const isSelected = active === filter.id;
-            return (
-              <button
-                key={filter.id}
-                type="button"
-                role="radio"
-                aria-checked={isSelected}
-                tabIndex={isSelected ? 0 : -1}
-                ref={(el) => {
-                  filterRefs.current[index] = el;
-                }}
-                onClick={() => setActive(filter.id)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${isSelected ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
-              >
-                {filter.label}
-              </button>
-            );
-          })}
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Asset filters" onKeyDown={handleKeyDown}>
+          {filters.map((filter, index) => (
+            <button key={filter.id} type="button" role="radio" aria-checked={active === filter.id} onClick={() => setActive(filter.id)} onFocus={() => setActive(filter.id)} tabIndex={active === filter.id ? 0 : -1} ref={(el) => { filterButtonsRef.current[index] = el; }} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
+              {filter.label}
+            </button>
+          ))}
         </div>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
           <p className="max-w-3xl text-sm leading-relaxed text-muted">{selected.description}</p>
