@@ -1,4 +1,21 @@
-# STIXMΛGIC Telegram Platform
+<p align="center">
+  <img src="apps/web/public/favicon.svg" alt="STIXMΛGIC mark" width="88">
+</p>
+
+<h1 align="center">STIXMΛGIC Telegram Platform</h1>
+
+<p align="center"><b>Telegram bot + Mini App + shared API for sticker and emoji reaction automation</b></p>
+
+<p align="center">
+  <a href="https://github.com/FriskyDevelopments/stixmagic-web/actions/workflows/ci.yml"><img src="https://github.com/FriskyDevelopments/stixmagic-web/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/FriskyDevelopments/stixmagic-web/actions/workflows/deploy-cf-production.yml"><img src="https://github.com/FriskyDevelopments/stixmagic-web/actions/workflows/deploy-cf-production.yml/badge.svg" alt=".github/workflows/deploy-cf-production.yml"></a>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=white" alt="Next.js">
+  <img src="https://img.shields.io/badge/Telegram-Bot-26A5E4?logo=telegram&logoColor=white" alt="Telegram Bot">
+  <img src="https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare Pages">
+</p>
+
+STIXMΛGIC is a Telegram-first reaction automation product. Group admins add the bot to a group, open the Mini App to create emoji or sticker rules, and the platform replies automatically with text, stickers, animations or inline-link buttons. This pnpm + Turborepo monorepo holds the **Telegram bot**, the **Next.js Mini App**, the **Fastify API** and the supporting sticker and trigger engines, all built on shared typed contracts. It is for the team building and operating STIXMΛGIC.
 
 ## MVP boundary
 
@@ -21,47 +38,169 @@ Instead of “bot over here, web demo over there”, the repo is organized aroun
 - **Mini App surface** — the Telegram Mini App is the operator console for groups, rules, and future deployment actions.
 - **Shared platform layer** — typed contracts, environment strategy, API assumptions, and service topology used by both.
 
-## New architecture
+## Architecture
 
-```txt
-Telegram user/admin
-   │
-   ├── STIXMΛGIC Bot (@stixmagic/bot)
-   │      ├── Telegram commands
-   │      ├── Bot → Mini App handoff
-   │      └── Trigger execution
-   │
-   ├── STIXMΛGIC Mini App (@stixmagic/web)
-   │      ├── Group + rule management UI
-   │      ├── Telegram bootstrap/context read path
-   │      └── Uses shared Telegram API contracts
-   │
-   └── Shared Telegram API (@stixmagic/api)
-          ├── /telegram/platform
-          ├── /telegram/mini-app/bootstrap
-          ├── /groups + /groups/:id/rules
-          ├── packs / stickers / triggers
-          └── production-facing config for both surfaces
+```mermaid
+flowchart LR
+  user([Telegram user / admin]) --> tg[Telegram]
+  tg -->|POST /telegram/webhook<br/>secret header| api[API · Fastify<br/>services/api]
+  tg <-->|commands, handoff| bot[Bot · Telegraf<br/>apps/bot]
+  user -->|opens Mini App| web[Mini App · Next.js static export<br/>apps/web]
+  web -->|bootstrap, groups, rules| api
+  bot --> api
+  api -->|queued jobs| jobs[[Job worker]]
+  jobs -->|replies, pack publishing| tgapi[Telegram Bot API]
+  api --> trig[trigger-engine]
+  api --> stick[sticker-engine]
+  api -.production.-> pg[(PostgreSQL)]
+  api -.production.-> s3[(S3-compatible storage)]
+  web -.deployed to.-> cfp[Cloudflare Pages]
 ```
 
-## Monorepo structure
+### Reaction rule lifecycle
 
-```txt
-stixmagic-web/
-├── apps/
-│   ├── bot/            # Telegram bot runtime and Mini App handoff
-│   └── web/            # Next.js Telegram Mini App UI
-├── services/
-│   ├── api/            # Shared Telegram + asset API surface
-│   ├── sticker-engine/ # Sticker processing service
-│   └── trigger-engine/ # Trigger execution service
-├── packages/
-│   ├── config/         # Shared env parsing + Telegram platform config builders
-│   ├── types/          # Shared domain and Telegram contracts
-│   └── ui/             # Shared React UI components
-├── docs/
-└── infra/
+```mermaid
+sequenceDiagram
+  participant G as Telegram group
+  participant A as API
+  participant W as Job worker
+  participant T as Telegram Bot API
+  G->>A: message / sticker (webhook)
+  A->>A: verify secret, parse, dedupe
+  A-->>G: 200 OK (fast ack)
+  A->>W: enqueue update
+  W->>W: match enabled rules
+  W->>T: sendMessage / sendSticker / sendAnimation
 ```
+
+## Stack
+
+- pnpm workspaces + Turborepo, TypeScript throughout
+- `apps/web`: Next.js, React, Tailwind CSS, Framer Motion (static export in `apps/web/out`)
+- `apps/bot`: Telegraf
+- `services/api`: Fastify, Zod, Nango (calendar integration), tests with `tsx --test`
+- `services/sticker-engine`, `services/trigger-engine`: Fastify services
+- Playwright end-to-end tests (`e2e/`), Docker Compose for local infra (`infra/docker`)
+
+## Project structure
+
+```text
+apps/
+  bot/              # Telegram bot runtime and Mini App handoff
+  web/              # Next.js Telegram Mini App UI (+ public brand assets)
+services/
+  api/              # Shared Telegram + asset API (routes, jobs, auth, telegram)
+  sticker-engine/   # Sticker processing service
+  trigger-engine/   # Trigger execution service
+packages/
+  config/           # Shared env parsing + Telegram platform config builders
+  types/            # Shared domain and Telegram contracts
+  ui/               # Shared React UI components
+e2e/                # Playwright specs
+infra/              # Dockerfiles, docker-compose, production architecture notes
+docs/               # architecture, product, roadmap, web docs
+```
+
+## Local development
+
+```bash
+# Install dependencies (pnpm 9)
+pnpm install
+
+# Copy the environment template
+cp .env.example .env
+
+# Start every surface and service in parallel (turbo)
+pnpm dev
+
+# Or run a single surface
+pnpm --filter @stixmagic/web dev
+pnpm --filter @stixmagic/bot dev
+pnpm --filter @stixmagic/api dev
+
+# Build, typecheck, lint and test across the monorepo
+pnpm build
+pnpm typecheck
+pnpm lint
+pnpm test
+
+# Optional: full local stack with PostgreSQL and MinIO
+docker compose -f infra/docker/docker-compose.yml up
+```
+
+## Environment variables
+
+Names only, from `.env.example` and the code. Values are never committed.
+
+**Runtime and ports**
+
+- `NODE_ENV`
+- `WEB_PORT`
+- `API_PORT`
+- `BOT_PORT`
+- `STICKER_ENGINE_PORT`
+- `TRIGGER_ENGINE_PORT`
+- `ENABLE_JOB_WORKER`
+
+**Storage**
+
+- `POSTGRES_URL`
+- `S3_ENDPOINT`
+- `S3_REGION`
+- `S3_BUCKET`
+- `S3_ACCESS_KEY`
+- `S3_SECRET_KEY`
+
+**Telegram**
+
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_BOT_USERNAME`
+- `TELEGRAM_MINI_APP_URL`
+- `TELEGRAM_BOT_MODE`
+- `TELEGRAM_WEBHOOK_SECRET`
+- `ADMIN_TELEGRAM_USER_ID`
+
+**Shared URLs**
+
+- `STIXMAGIC_PUBLIC_WEB_URL`
+- `STIXMAGIC_API_BASE_URL`
+
+**Mini App build (public)**
+
+- `NEXT_PUBLIC_STIXMAGIC_PUBLIC_WEB_URL`
+- `NEXT_PUBLIC_STIXMAGIC_API_BASE_URL`
+- `NEXT_PUBLIC_STIXMAGIC_BOT_USERNAME`
+- `NEXT_PUBLIC_STIXMAGIC_MINI_APP_URL`
+- `NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL`
+- `NEXT_PUBLIC_STIXMAGIC_USE_DEMO_DATA`
+- `NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK`
+
+**LORE module**
+
+- `LORE_MEMBER_INVITE_SECRET`
+- `LORE_PUBLIC_URL`
+- `LORE_DEFAULT_TENANT_ID`
+- `LORE_ALLOW_DEV_IDENTITY`
+- `LORE_ALLOW_ADMIN_INVITE_PREVIEW`
+- `LORE_EMAIL_WEBHOOK_URL`
+- `LORE_PRIVATE_COMMUNITY_URL`
+
+**Integrations**
+
+- `NANGO_API_KEY`
+- `NANGO_HOST`
+- `NANGO_GOOGLE_CALENDAR_INTEGRATION_ID`
+- `NANGO_WEBHOOK_SIGNING_KEY`
+
+## Deploy
+
+**Mini App (web):** GitHub Actions builds `apps/web` as a static export (`apps/web/out`) and deploys it to **Cloudflare Pages**: `main` goes to production (`deploy-cf-production.yml`), while `preview`/`dev` branches and PRs get preview deployments (`deploy-cf-preview.yml`). Build with the production `NEXT_PUBLIC_STIXMAGIC_*` values, and point `TELEGRAM_MINI_APP_URL` at the deployed Mini App route.
+
+**Bot:** long-running service. In production use `TELEGRAM_BOT_MODE=webhook` behind a stable HTTPS ingress.
+
+**API:** shared by the bot and the Mini App. Both must point at the same `STIXMAGIC_API_BASE_URL` / `NEXT_PUBLIC_STIXMAGIC_API_BASE_URL`.
+
+**Supporting services:** `sticker-engine` and `trigger-engine` stay as backends for asset processing and trigger execution. A real deployment needs PostgreSQL and S3-compatible storage. Container builds live in `infra/docker/` and the target topology is in [`infra/deploy/production-architecture.md`](infra/deploy/production-architecture.md).
 
 ## What was unified
 
@@ -126,54 +265,6 @@ Optional fallback behavior can still be turned on explicitly per environment:
 
 - `NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK=true` → allows fallback to seeded data when live API requests fail
 - Keep `NEXT_PUBLIC_STIXMAGIC_ALLOW_API_FALLBACK=false` in production so failures are visible and actionable
-
-## Local development
-
-1. Install dependencies:
-
-```bash
-pnpm install
-```
-
-2. Copy environment template:
-
-```bash
-cp .env.example .env
-```
-
-3. Start the platform locally:
-
-```bash
-pnpm dev
-```
-
-Or run individual surfaces/services:
-
-```bash
-pnpm --filter @stixmagic/web dev
-pnpm --filter @stixmagic/bot dev
-pnpm --filter @stixmagic/api dev
-```
-
-## Deployment model
-
-### Bot
-- Deploy as a long-running worker/service.
-- Use `TELEGRAM_BOT_MODE=webhook` in production where the platform supports a stable HTTPS ingress.
-- Set `TELEGRAM_WEBHOOK_URL` to the public bot webhook endpoint.
-
-### Mini App
-- Deploy as the public web surface.
-- `TELEGRAM_MINI_APP_URL` should point at the deployed Mini App route.
-- Build using the `NEXT_PUBLIC_STIXMAGIC_*` values for the production environment.
-
-### API
-- Deploy as the shared internal/public API surface used by both bot and mini app.
-- The bot and mini app should reference the same `STIXMAGIC_API_BASE_URL` / `NEXT_PUBLIC_STIXMAGIC_API_BASE_URL` target.
-
-### Supporting services
-- `sticker-engine` and `trigger-engine` remain service backends for asset processing and trigger execution.
-- PostgreSQL and S3-compatible storage are still required for a real deployment.
 
 ## Backend hardening status
 
