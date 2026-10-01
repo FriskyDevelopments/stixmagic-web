@@ -85,3 +85,9 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+## 2026-10-01 - Accessible Stateful Toggle Buttons
+**Learning:** For custom stateful toggle buttons used in filter groups or controls that are not part of a strict ARIA radiogroup, screen readers will not announce when a button is selected if only visual `className` changes are used.
+**Action:** Explicitly apply `aria-pressed={isActive}` to accurately communicate their active/toggled state to screen readers.
+## 2026-10-01 - Accessible Pagination Dots
+**Learning:** When implementing pagination dots or step navigators (e.g., onboarding sequences), the active state must be semantically communicated, not just visually.
+**Action:** Explicitly add `aria-current="step"` (or `aria-current="true"`) to the active button to ensure screen readers correctly identify the currently active item within the set.
