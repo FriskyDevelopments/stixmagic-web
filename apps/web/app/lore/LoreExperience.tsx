@@ -348,7 +348,7 @@ export default function LoreExperience() {
         <div className="lore-ritual-layout">
           <div className="lore-ritual-controls" role="group" aria-label="Filter ritual prompts">
             {['all', 'begin', 'make', 'notice', 'write', 'release'].map((intent) => (
-              <button type="button" key={intent} className={ritualIntent === intent ? 'is-active' : ''} onClick={() => chooseRitualIntent(intent)} aria-pressed={ritualIntent === intent}>{intent}</button>
+              <button type="button" key={intent} className={ritualIntent === intent ? 'is-active' : ''} onClick={() => chooseRitualIntent(intent)}>{intent}</button>
             ))}
           </div>
           <div className="lore-ritual-card" id={`ritual-${activeRitual.id}`}>
@@ -437,7 +437,7 @@ export default function LoreExperience() {
             <button type="button" className="lore-onboarding-skip" onClick={dismissOnboarding}>Skip intro</button>
             <div className="lore-onboarding-art" aria-hidden="true"><span>{String(onboardingStep + 1).padStart(2, '0')}</span><i /></div>
             <div className="lore-onboarding-copy"><p className="lore-label">{onboardingPanels[onboardingStep].kicker}</p><h2 id="onboarding-title">{onboardingPanels[onboardingStep].title}</h2><p>{onboardingPanels[onboardingStep].body}</p></div>
-            <div className="lore-onboarding-footer"><div className="lore-onboarding-dots" aria-label={`Step ${onboardingStep + 1} of ${onboardingPanels.length}`}>{onboardingPanels.map((panel, index) => <button type="button" key={panel.kicker} className={index === onboardingStep ? 'is-active' : ''} onClick={() => setOnboardingStep(index)} aria-label={`Go to intro step ${index + 1}`} aria-current={index === onboardingStep ? 'step' : undefined} />)}</div>{onboardingStep < onboardingPanels.length - 1 ? <button type="button" className="lore-button lore-button-primary" onClick={() => setOnboardingStep((step) => step + 1)}>Continue <span aria-hidden="true">↘</span></button> : <button type="button" className="lore-button lore-button-primary" onClick={dismissOnboarding}>Enter LORE <span aria-hidden="true">↗</span></button>}</div>
+            <div className="lore-onboarding-footer"><div className="lore-onboarding-dots" aria-label={`Step ${onboardingStep + 1} of ${onboardingPanels.length}`}>{onboardingPanels.map((panel, index) => <button type="button" key={panel.kicker} className={index === onboardingStep ? 'is-active' : ''} onClick={() => setOnboardingStep(index)} aria-label={`Go to intro step ${index + 1}`} />)}</div>{onboardingStep < onboardingPanels.length - 1 ? <button type="button" className="lore-button lore-button-primary" onClick={() => setOnboardingStep((step) => step + 1)}>Continue <span aria-hidden="true">↘</span></button> : <button type="button" className="lore-button lore-button-primary" onClick={dismissOnboarding}>Enter LORE <span aria-hidden="true">↗</span></button>}</div>
           </section>
         </div>
       )}
