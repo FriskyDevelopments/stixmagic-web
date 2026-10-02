@@ -120,7 +120,18 @@ export default function ThreadPage() {
         <aside className="thread-chapter-nav" aria-label="Thread chapters">
           <p className="lore-label">CHAPTERS</p>
           <ol>
-            {chapters.map((chapter) => <li key={chapter.id}><a className={`${activeChapter === chapter.id ? 'is-active ' : ''}focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50`} aria-label={`Read chapter ${chapter.number}: ${chapter.label}`} href={`#${chapter.id}`}><span>{chapter.number}</span>{chapter.label}</a></li>)}
+            {chapters.map((chapter) => (
+              <li key={chapter.id}>
+                <a
+                  className={activeChapter === chapter.id ? 'is-active' : ''}
+                  aria-label={`Read chapter ${chapter.number}: ${chapter.label}`}
+                  href={`#${chapter.id}`}
+                >
+                  <span>{chapter.number}</span>
+                  {chapter.label}
+                </a>
+              </li>
+            ))}
           </ol>
           <p className="thread-keyboard-note">Use ↑ ↓ to read<br />Print view available</p>
         </aside>

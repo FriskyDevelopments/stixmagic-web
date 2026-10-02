@@ -654,3 +654,9 @@ a {
   .lore-aura-map-rule { display: block; }
   .lore-aura-map-rule p { margin-top: 11px; }
 }
+
+.thread-chapter-nav a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26,25,24,0.5);
+  border-radius: 4px;
+}
