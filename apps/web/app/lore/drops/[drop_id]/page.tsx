@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import DropsExperience from '../DropsExperience';
 import { LORE_DROPS } from '../../drop-data';
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return LORE_DROPS.map((drop) => ({ drop_id: drop.id }));
 }
