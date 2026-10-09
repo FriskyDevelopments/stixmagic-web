@@ -58,6 +58,7 @@ export const MaskHeroPreview = ({ selectedMask }: MaskHeroPreviewProps) => {
               className="absolute right-1 top-2 text-2xl text-accent-cyan"
               animate={reduceMotion ? undefined : { opacity: [0.2, 1, 0.2], scale: [0.7, 1.25, 0.7], rotate: [0, 35, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              aria-hidden="true"
             >
               ✦
             </motion.span>
