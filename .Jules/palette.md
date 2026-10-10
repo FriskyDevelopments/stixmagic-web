@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-12-16 - Accessible Step Dots
+**Learning:** When building pagination dots or step navigators (e.g., onboarding sequences), the active dot must be explicitly identified to screen readers. Relying solely on visual styling (like an `is-active` class) leaves assistive technology users without context about their current position in the sequence.
+**Action:** Always add `aria-current="step"` (or `aria-current="true"`) to the active button in a set of pagination dots to ensure screen readers correctly identify the currently active item within the set.
