@@ -34,7 +34,7 @@ export const FeatureGrid = ({ items }: FeatureGridProps) => {
           transition={{ duration: 0.3, delay: index * 0.05 }}
         >
           <Panel className="h-full">
-            <p className="text-xs uppercase tracking-wider text-accent-cyan">{item.tag}</p>
+            <p className="text-xs uppercase tracking-wider text-accent-cyan"><span className="sr-only">Category: </span>{item.tag}</p>
             <h3 className="mt-3 bg-gradient-to-r from-accent-cyan to-accent-indigo bg-clip-text text-lg font-semibold text-transparent">
               {item.title}
             </h3>
