@@ -89,3 +89,7 @@
 ## 2024-12-16 - Accessible Step Dots
 **Learning:** When building pagination dots or step navigators (e.g., onboarding sequences), the active dot must be explicitly identified to screen readers. Relying solely on visual styling (like an `is-active` class) leaves assistive technology users without context about their current position in the sequence.
 **Action:** Always add `aria-current="step"` (or `aria-current="true"`) to the active button in a set of pagination dots to ensure screen readers correctly identify the currently active item within the set.
+
+## 2024-12-16 - Accessible Roles for Grouped Controls
+**Learning:** When using generic container elements (like `div`) to group interactive controls (such as pagination dots) and assigning them an `aria-label`, the label may be ignored by screen readers if the container lacks an explicit role. A generic container does not intrinsically imply grouping or navigation semantics.
+**Action:** Always add an appropriate role (e.g., `role="group"` or `role="navigation"`) to generic containers that use `aria-label` to group related interactive elements, ensuring the label is reliably announced across different screen readers.
