@@ -26,7 +26,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
         <div className="flex flex-wrap gap-2" role="tablist" aria-label="Pack filters">
-          {filters.map((filter) => <button key={filter.id} type="button" role="tab" aria-selected={active === filter.id} onClick={() => setActive(filter.id)} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>{filter.label}</button>)}
+          {filters.map((filter) => <button key={filter.id} type="button" role="tab" aria-selected={active === filter.id} onClick={() => setActive(filter.id)} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>{filter.label}</button>)}
         </div>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
           <p className="max-w-3xl text-sm leading-relaxed text-muted">{selected.description}</p>
