@@ -40,7 +40,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
                 tabIndex={isSelected ? 0 : -1}
                 onClick={() => setActive(filter.id)}
                 onKeyDown={(e) => {
-                  let nextIndex = null;
+                  let nextIndex: number | null = null;
                   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                     nextIndex = (index + 1) % filters.length;
                   } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
