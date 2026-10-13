@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useRef } from 'react';
 import type { ProductPack } from '@stixmagic/types';
-import { PackGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { PackGrid } from '@stixmagic/ui';
 
 const filters = [
   { id: 'all', label: 'All Packs', description: 'Every currently shipped STIXMΛGIC pack with real previews and truthful asset counts.' },
@@ -39,13 +39,18 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
                 tabIndex={isSelected ? 0 : -1}
                 onClick={() => setActive(filter.id)}
                 onKeyDown={(e) => {
-                  const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
-                  if (nextIndex === null) return;
-                  e.preventDefault();
-                  if (nextIndex !== index) {
-                    setActive(filters[nextIndex].id);
-                    btnRefs.current[nextIndex]?.focus();
+                  let nextIndex = null;
+                  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextIndex = (index + 1) % filters.length;
+                  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    nextIndex = (index - 1 + filters.length) % filters.length;
                   }
+
+                  if (nextIndex === null) return;
+
+                  e.preventDefault();
+                  setActive(filters[nextIndex].id);
+                  btnRefs.current[nextIndex]?.focus();
                 }}
                 className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${isSelected ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
               >
