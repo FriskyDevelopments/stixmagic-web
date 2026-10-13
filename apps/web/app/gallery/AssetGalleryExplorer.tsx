@@ -27,7 +27,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
-        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Asset filters">
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-orientation="horizontal" aria-label="Asset filters">
           {filters.map((filter, index) => {
             const isSelected = active === filter.id;
             return (

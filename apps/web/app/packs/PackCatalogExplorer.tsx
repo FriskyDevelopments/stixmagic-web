@@ -26,7 +26,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
-        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Pack filters">
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-orientation="horizontal" aria-label="Pack filters">
           {filters.map((filter, index) => {
             const isSelected = active === filter.id;
             return (
