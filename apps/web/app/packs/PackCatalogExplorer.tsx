@@ -55,7 +55,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
               }}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onClick={() => setActive(filter.id)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
             >
               {filter.label}
             </button>
