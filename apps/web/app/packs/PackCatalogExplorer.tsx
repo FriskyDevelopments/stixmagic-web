@@ -1,5 +1,6 @@
 'use client';
 
+import type { KeyboardEvent } from 'react';
 import { useMemo, useRef, useState } from 'react';
 import type { ProductPack } from '@stixmagic/types';
 import { PackGrid } from '@stixmagic/ui';
@@ -23,8 +24,8 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
   }), [active, packs]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    let nextIndex = null;
+  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let nextIndex: number | null = null;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       nextIndex = (index + 1) % filters.length;
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
