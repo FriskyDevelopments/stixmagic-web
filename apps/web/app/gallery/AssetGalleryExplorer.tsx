@@ -56,7 +56,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
                 type="button"
                 role="radio"
                 aria-checked={isSelected}
-                tabIndex={isSelected ? 0 : -1}
+                tabIndex={isSelected || (!active && index === 0) ? 0 : -1}
                 ref={(el) => {
                   buttonRefs.current[index] = el;
                 }}
