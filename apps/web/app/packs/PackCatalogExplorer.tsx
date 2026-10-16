@@ -2,7 +2,24 @@
 
 import { useMemo, useState, useRef } from 'react';
 import type { ProductPack } from '@stixmagic/types';
-import { PackGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { PackGrid } from '@stixmagic/ui';
+
+function getRovingRadioGroupNextIndex(
+  key: string,
+  currentIndex: number,
+  itemCount: number
+): number | null {
+  if (itemCount <= 0 || currentIndex < 0) {
+    return null;
+  }
+  if (key === 'ArrowRight' || key === 'ArrowDown') {
+    return (currentIndex + 1) % itemCount;
+  }
+  if (key === 'ArrowLeft' || key === 'ArrowUp') {
+    return (currentIndex - 1 + itemCount) % itemCount;
+  }
+  return null;
+}
 
 const filters = [
   { id: 'all', label: 'All Packs', description: 'Every currently shipped STIXMΛGIC pack with real previews and truthful asset counts.' },
