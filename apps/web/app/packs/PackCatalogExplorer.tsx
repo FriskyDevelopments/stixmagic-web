@@ -1,8 +1,20 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
+import type { KeyboardEvent } from 'react';
 import type { ProductPack } from '@stixmagic/types';
-import { PackGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { PackGrid } from '@stixmagic/ui';
+
+function getRovingRadioGroupNextIndex(
+  key: string,
+  currentIndex: number,
+  itemCount: number
+): number | null {
+  if (itemCount <= 0 || currentIndex < 0) return null;
+  if (key === 'ArrowRight' || key === 'ArrowDown') return (currentIndex + 1) % itemCount;
+  if (key === 'ArrowLeft' || key === 'ArrowUp') return (currentIndex - 1 + itemCount) % itemCount;
+  return null;
+}
 
 const filters = [
   { id: 'all', label: 'All Packs', description: 'Every currently shipped STIXMΛGIC pack with real previews and truthful asset counts.' },
@@ -24,7 +36,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
   }), [active, packs]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+  const handleKeyDown = (e: KeyboardEvent, index: number) => {
     if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
 
     const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
