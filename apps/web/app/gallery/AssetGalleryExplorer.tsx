@@ -15,7 +15,7 @@ type FilterId = (typeof filters)[number]['id'];
 
 export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] }) {
   const [active, setActive] = useState<FilterId>('all');
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
@@ -25,7 +25,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
     if (nextIndex === index) return;
 
     setActive(filters[nextIndex].id);
-    tabRefs.current[nextIndex]?.focus();
+    radioRefs.current[nextIndex]?.focus();
   };
 
   const filtered = useMemo(() => assets.filter((asset) => {
@@ -44,7 +44,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
             <button
               key={filter.id}
               type="button"
-              ref={(el) => { tabRefs.current[index] = el; }}
+              ref={(el) => { radioRefs.current[index] = el; }}
               role="radio"
               aria-checked={active === filter.id}
               tabIndex={active === filter.id ? 0 : -1}

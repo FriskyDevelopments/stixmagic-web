@@ -14,7 +14,7 @@ type FilterId = (typeof filters)[number]['id'];
 
 export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
   const [active, setActive] = useState<FilterId>('all');
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
@@ -24,7 +24,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
     if (nextIndex === index) return;
 
     setActive(filters[nextIndex].id);
-    tabRefs.current[nextIndex]?.focus();
+    radioRefs.current[nextIndex]?.focus();
   };
 
   const filtered = useMemo(() => packs.filter((pack) => {
@@ -43,7 +43,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             <button
               key={filter.id}
               type="button"
-              ref={(el) => { tabRefs.current[index] = el; }}
+              ref={(el) => { radioRefs.current[index] = el; }}
               role="radio"
               aria-checked={active === filter.id}
               tabIndex={active === filter.id ? 0 : -1}
