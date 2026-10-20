@@ -86,6 +86,6 @@
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
 
-## 2024-10-20 - Radiogroup for Filter Toggles
+## 2026-10-20 - Radiogroup for Filter Toggles
 **Learning:** For custom mutually exclusive selection UI components built with buttons (like the `AssetGalleryExplorer` and `PackCatalogExplorer` filters), using `role="tablist"` and `role="tab"` is semantically incorrect when they don't act as navigation tabs and don't have associated `tabpanel`s. Using `role="radiogroup"` with `role="radio"` and `aria-checked` accurately communicates semantic grouping for filters.
 **Action:** When fixing elements improperly labeled with `role="tablist"` and `role="tab"` that function as filters rather than true navigation panels, convert them to `role="radiogroup"` and `role="radio"` and update `aria-selected` to `aria-checked`, and ensure arrow key navigation and roving `tabIndex` are implemented.
