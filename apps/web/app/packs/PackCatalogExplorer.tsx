@@ -21,6 +21,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
     return true;
   }), [active, packs]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
+  const hasActiveFilter = filters.some(f => f.id === active);
 
   return (
     <section className="space-y-6">
@@ -54,7 +55,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
         >
           {filters.map((filter, index) => {
             const isActive = active === filter.id;
-            const isFallback = !filters.some(f => f.id === active) && index === 0;
+            const isFallback = !hasActiveFilter && index === 0;
             return (
               <button
                 key={filter.id}
