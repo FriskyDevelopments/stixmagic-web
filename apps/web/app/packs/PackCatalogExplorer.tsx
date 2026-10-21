@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { ProductPack } from '@stixmagic/types';
 import { PackGrid } from '@stixmagic/ui';
 
@@ -14,6 +14,8 @@ type FilterId = (typeof filters)[number]['id'];
 
 export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
   const [active, setActive] = useState<FilterId>('all');
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
   const filtered = useMemo(() => packs.filter((pack) => {
     if (active === 'motion') return ['motion-alphabet', 'dj-pack', 'cloud-pack', 'emoji-set'].includes(pack.category);
     if (active === 'signals') return ['motion-alphabet', 'neon-signals'].includes(pack.category);
@@ -37,19 +39,22 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             const isPrev = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
             if (!isNext && !isPrev) return;
             e.preventDefault();
-            let currentIndex = filters.findIndex(f => f.id === active);
-            let nextIndex;
-            if (currentIndex === -1) {
-              nextIndex = 0;
-            } else {
-              nextIndex = isNext
+
+            // Derive currentIndex from focused element if available (handles diverging focus/active states), fallback to active
+            const focusedFilterId = Array.from(buttonRefs.current.entries()).find(([, el]) => el === document.activeElement)?.[0];
+            let currentIndex = filters.findIndex(f => f.id === (focusedFilterId ?? active));
+
+            let nextIndex = 0;
+            if (currentIndex !== -1) {
+               nextIndex = isNext
                 ? (currentIndex + 1) % filters.length
                 : (currentIndex - 1 + filters.length) % filters.length;
             }
+
             const nextFilter = filters[nextIndex];
             if (nextFilter) {
               setActive(nextFilter.id);
-              document.getElementById(`pack-filter-${nextFilter.id}`)?.focus();
+              buttonRefs.current.get(nextFilter.id)?.focus();
             }
           }}
         >
@@ -59,10 +64,14 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             return (
               <button
                 key={filter.id}
+                ref={(el) => {
+                  if (el) buttonRefs.current.set(filter.id, el);
+                  else buttonRefs.current.delete(filter.id);
+                }}
                 id={`pack-filter-${filter.id}`}
                 type="button"
                 role="radio"
-                aria-checked={isActive}
+                aria-checked={isActive || isFallback}
                 tabIndex={isActive || isFallback ? 0 : -1}
                 onClick={() => setActive(filter.id)}
                 className={`rounded-lg px-4 py-2 text-sm font-medium transition ${isActive ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
