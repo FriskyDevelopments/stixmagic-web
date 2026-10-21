@@ -36,7 +36,8 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             const isPrev = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
             if (!isNext && !isPrev) return;
             e.preventDefault();
-            const currentIndex = filters.findIndex(f => f.id === active);
+            let currentIndex = filters.findIndex(f => f.id === active);
+            if (currentIndex === -1) currentIndex = 0;
             const nextIndex = isNext
               ? (currentIndex + 1) % filters.length
               : (currentIndex - 1 + filters.length) % filters.length;
