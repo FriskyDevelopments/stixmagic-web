@@ -36,7 +36,9 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
             const isNext = e.key === 'ArrowRight' || e.key === 'ArrowDown';
             const isPrev = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
-            if (!isNext && !isPrev) return;
+            const isFirst = e.key === 'Home';
+            const isLast = e.key === 'End';
+            if (!isNext && !isPrev && !isFirst && !isLast) return;
             e.preventDefault();
 
             // Derive currentIndex from focused element if available (handles diverging focus/active states), fallback to active
@@ -44,10 +46,16 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             let currentIndex = filters.findIndex(f => f.id === (focusedFilterId ?? active));
 
             let nextIndex = 0;
-            if (currentIndex !== -1) {
+            if (isFirst) {
+              nextIndex = 0;
+            } else if (isLast) {
+              nextIndex = filters.length - 1;
+            } else if (currentIndex !== -1) {
                nextIndex = isNext
                 ? (currentIndex + 1) % filters.length
                 : (currentIndex - 1 + filters.length) % filters.length;
+            } else {
+               nextIndex = isNext ? 0 : filters.length - 1;
             }
 
             const nextFilter = filters[nextIndex];
@@ -66,7 +74,6 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
                   if (el) buttonRefs.current.set(filter.id, el);
                   else buttonRefs.current.delete(filter.id);
                 }}
-                id={`pack-filter-${filter.id}`}
                 type="button"
                 role="radio"
                 aria-checked={isActive}
