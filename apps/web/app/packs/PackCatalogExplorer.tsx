@@ -52,20 +52,24 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             }
           }}
         >
-          {filters.map((filter) => (
-            <button
-              key={filter.id}
-              id={`pack-filter-${filter.id}`}
-              type="button"
-              role="radio"
-              aria-checked={active === filter.id}
-              tabIndex={active === filter.id ? 0 : -1}
-              onClick={() => setActive(filter.id)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
-            >
-              {filter.label}
-            </button>
-          ))}
+          {filters.map((filter, index) => {
+            const isActive = active === filter.id;
+            const isFallback = !filters.some(f => f.id === active) && index === 0;
+            return (
+              <button
+                key={filter.id}
+                id={`pack-filter-${filter.id}`}
+                type="button"
+                role="radio"
+                aria-checked={isActive}
+                tabIndex={isActive || isFallback ? 0 : -1}
+                onClick={() => setActive(filter.id)}
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition ${isActive ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
         </div>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
           <p className="max-w-3xl text-sm leading-relaxed text-muted">{selected.description}</p>
