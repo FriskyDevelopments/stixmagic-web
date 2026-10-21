@@ -37,10 +37,14 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
             if (!isNext && !isPrev) return;
             e.preventDefault();
             let currentIndex = filters.findIndex(f => f.id === active);
-            if (currentIndex === -1) currentIndex = 0;
-            const nextIndex = isNext
-              ? (currentIndex + 1) % filters.length
-              : (currentIndex - 1 + filters.length) % filters.length;
+            let nextIndex;
+            if (currentIndex === -1) {
+              nextIndex = 0;
+            } else {
+              nextIndex = isNext
+                ? (currentIndex + 1) % filters.length
+                : (currentIndex - 1 + filters.length) % filters.length;
+            }
             const nextFilter = filters[nextIndex];
             if (nextFilter) {
               setActive(nextFilter.id);
