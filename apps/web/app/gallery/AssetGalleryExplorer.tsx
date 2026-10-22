@@ -60,10 +60,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
                 role="radio"
                 aria-checked={isActive}
                 tabIndex={isActive ? 0 : -1}
-                onClick={() => {
-                  setActive(filter.id);
-                  btnRefs.current[index]?.focus();
-                }}
+                onClick={() => setActive(filter.id)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${isActive ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
                 {filter.label}
