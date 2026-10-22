@@ -50,7 +50,6 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
         <div className="flex flex-wrap gap-2" role="radiogroup" aria-orientation="horizontal" aria-label="Asset filters">
           {filters.map((filter, index) => {
             const isActive = active === filter.id;
-            const isFallback = !filters.some(f => f.id === active) && index === 0;
             return (
               <button
                 key={filter.id}
@@ -60,7 +59,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
                 type="button"
                 role="radio"
                 aria-checked={isActive}
-                tabIndex={isActive || isFallback ? 0 : -1}
+                tabIndex={isActive ? 0 : -1}
                 onClick={() => {
                   setActive(filter.id);
                   btnRefs.current[index]?.focus();
