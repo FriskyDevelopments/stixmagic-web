@@ -1,7 +1,7 @@
 'use client';
 
-import type { KeyboardEvent } from 'react';
 import { useMemo, useState, useRef } from 'react';
+import type { KeyboardEvent } from 'react';
 import type { ProductPack } from '@stixmagic/types';
 import { PackGrid } from '@stixmagic/ui';
 
