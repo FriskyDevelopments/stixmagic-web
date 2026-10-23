@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-10-23 - ARIA radiogroup orientation and focus
+**Learning:** When using `role="radiogroup"` for horizontal filtering navigation in `@stixmagic/web` (like AssetGalleryExplorer and PackCatalogExplorer), we must explicitly set `aria-orientation="horizontal"`, otherwise screen readers default to assuming a vertical list. Additionally, providing custom arrow key navigation is necessary as basic `tabIndex` approaches don't handle W3C's roving tab index requirement automatically in React.
+**Action:** Always add `aria-orientation="horizontal"` to horizontal `role="radiogroup"` components, and implement a custom keyboard handler (e.g., using `ArrowLeft`/`ArrowRight` and optionally `ArrowUp`/`ArrowDown` for flex-wrapped items) to manage `tabIndex` and `focus()` correctly.
