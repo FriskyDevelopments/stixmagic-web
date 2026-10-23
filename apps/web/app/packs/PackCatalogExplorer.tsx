@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, KeyboardEvent } from 'react';
 import type { ProductPack } from '@stixmagic/types';
 import { PackGrid } from '@stixmagic/ui';
 
@@ -17,7 +17,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
   const [active, setActive] = useState<FilterId>('all');
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+  const handleKeyDown = (e: KeyboardEvent, index: number) => {
     if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
 
     let nextIndex: number | null = null;

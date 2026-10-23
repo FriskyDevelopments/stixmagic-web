@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, KeyboardEvent } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
 import { GalleryGrid } from '@stixmagic/ui';
 
@@ -18,7 +18,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   const [active, setActive] = useState<FilterId>('all');
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+  const handleKeyDown = (e: KeyboardEvent, index: number) => {
     if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
 
     let nextIndex: number | null = null;
