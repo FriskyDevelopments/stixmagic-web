@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 type Aura = {
   id: string;
@@ -86,6 +86,7 @@ function SaveButton({ saved, onClick, label = 'Save to shelf' }: { saved: boolea
 }
 
 export default function LoreExperience() {
+  const ritualButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [ambientEnabled, setAmbientEnabled] = useState(true);
@@ -352,10 +353,13 @@ export default function LoreExperience() {
                 type="button"
                 role="radio"
                 key={intent}
+                ref={(el) => {
+                  ritualButtonRefs.current[index] = el;
+                }}
                 className={ritualIntent === intent ? 'is-active' : ''}
                 onClick={() => chooseRitualIntent(intent)}
                 aria-checked={ritualIntent === intent}
-                tabIndex={ritualIntent === intent || (ritualIntent === '' && index === 0) ? 0 : -1}
+                tabIndex={ritualIntent === intent || (!arr.includes(ritualIntent) && index === 0) ? 0 : -1}
                 onKeyDown={(e) => {
                   let nextIndex: number | null = null;
                   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextIndex = (index + 1) % arr.length;
@@ -363,7 +367,7 @@ export default function LoreExperience() {
                   if (nextIndex !== null && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
                     e.preventDefault();
                     chooseRitualIntent(arr[nextIndex]);
-                    (e.currentTarget.parentElement?.children[nextIndex] as HTMLElement)?.focus();
+                    ritualButtonRefs.current[nextIndex]?.focus();
                   }
                 }}
               >
