@@ -346,9 +346,29 @@ export default function LoreExperience() {
           <p>Draw a card when you need a beginning. Save the ones that keep looking back.</p>
         </div>
         <div className="lore-ritual-layout">
-          <div className="lore-ritual-controls" role="group" aria-label="Filter ritual prompts">
-            {['all', 'begin', 'make', 'notice', 'write', 'release'].map((intent) => (
-              <button type="button" key={intent} className={ritualIntent === intent ? 'is-active' : ''} onClick={() => chooseRitualIntent(intent)}>{intent}</button>
+          <div className="lore-ritual-controls" role="radiogroup" aria-orientation="horizontal" aria-label="Filter ritual prompts">
+            {['all', 'begin', 'make', 'notice', 'write', 'release'].map((intent, index, arr) => (
+              <button
+                type="button"
+                role="radio"
+                key={intent}
+                className={ritualIntent === intent ? 'is-active' : ''}
+                onClick={() => chooseRitualIntent(intent)}
+                aria-checked={ritualIntent === intent}
+                tabIndex={ritualIntent === intent || (ritualIntent === '' && index === 0) ? 0 : -1}
+                onKeyDown={(e) => {
+                  let nextIndex: number | null = null;
+                  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextIndex = (index + 1) % arr.length;
+                  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') nextIndex = (index - 1 + arr.length) % arr.length;
+                  if (nextIndex !== null && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+                    e.preventDefault();
+                    chooseRitualIntent(arr[nextIndex]);
+                    (e.currentTarget.parentElement?.children[nextIndex] as HTMLElement)?.focus();
+                  }
+                }}
+              >
+                {intent}
+              </button>
             ))}
           </div>
           <div className="lore-ritual-card" id={`ritual-${activeRitual.id}`}>
