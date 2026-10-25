@@ -2,7 +2,18 @@
 
 import { useMemo, useState, useRef } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
-import { GalleryGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { GalleryGrid } from '@stixmagic/ui';
+
+function getRovingRadioGroupNextIndex(
+  key: string,
+  currentIndex: number,
+  itemCount: number
+): number | null {
+  if (itemCount <= 0 || currentIndex < 0) return null;
+  if (key === 'ArrowRight' || key === 'ArrowDown') return (currentIndex + 1) % itemCount;
+  if (key === 'ArrowLeft' || key === 'ArrowUp') return (currentIndex - 1 + itemCount) % itemCount;
+  return null;
+}
 
 const filters = [
   { id: 'all', label: 'All Assets', description: 'Every STIXMΛGIC preview across packs and categories.' },
