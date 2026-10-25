@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
 import { GalleryGrid } from '@stixmagic/ui';
+import { getRovingRadioGroupNextIndex } from '@stixmagic/ui';
 
 const filters = [
   { id: 'all', label: 'All Assets', description: 'Every STIXMΛGIC preview across packs and categories.' },
@@ -15,6 +16,7 @@ type FilterId = (typeof filters)[number]['id'];
 
 export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] }) {
   const [active, setActive] = useState<FilterId>('all');
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const filtered = useMemo(() => assets.filter((asset) => {
     if (active === 'animated') return asset.tags.includes('animated');
     if (active === 'overlay') return asset.tags.includes('overlay');
@@ -23,12 +25,35 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   }), [active, assets]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
+    if (nextIndex === null) return;
+
+    e.preventDefault();
+    if (nextIndex === index) return;
+
+    setActive(filters[nextIndex].id);
+    buttonRefs.current[nextIndex]?.focus();
+  };
+
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Asset filters">
-          {filters.map((filter) => (
-            <button key={filter.id} type="button" role="tab" aria-selected={active === filter.id} onClick={() => setActive(filter.id)} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-orientation="horizontal" aria-label="Asset filters">
+          {filters.map((filter, index) => (
+            <button
+              key={filter.id}
+              type="button"
+              role="radio"
+              aria-checked={active === filter.id}
+              onClick={() => setActive(filter.id)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              ref={(el) => {
+                buttonRefs.current[index] = el;
+              }}
+              tabIndex={active === filter.id ? 0 : -1}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}
+            >
               {filter.label}
             </button>
           ))}
