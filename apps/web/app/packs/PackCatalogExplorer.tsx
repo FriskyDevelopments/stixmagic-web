@@ -30,6 +30,7 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
     e.preventDefault();
     if (nextIndex === index) return;
 
+    if (!filters[nextIndex]) return;
     setActive(filters[nextIndex].id);
     buttonRefs.current[nextIndex]?.focus();
   };

@@ -31,6 +31,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
     e.preventDefault();
     if (nextIndex === index) return;
 
+    if (!filters[nextIndex]) return;
     setActive(filters[nextIndex].id);
     buttonRefs.current[nextIndex]?.focus();
   };
