@@ -2,8 +2,7 @@
 
 import { useMemo, useState, useRef } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
-import { GalleryGrid } from '@stixmagic/ui';
-import { getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { GalleryGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
 
 const filters = [
   { id: 'all', label: 'All Assets', description: 'Every STIXMΛGIC preview across packs and categories.' },

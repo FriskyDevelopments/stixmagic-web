@@ -2,8 +2,7 @@
 
 import { useMemo, useState, useRef } from 'react';
 import type { ProductPack } from '@stixmagic/types';
-import { PackGrid } from '@stixmagic/ui';
-import { getRovingRadioGroupNextIndex } from '@stixmagic/ui';
+import { PackGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
 
 const filters = [
   { id: 'all', label: 'All Packs', description: 'Every currently shipped STIXMΛGIC pack with real previews and truthful asset counts.' },
