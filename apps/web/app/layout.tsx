@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Inter } from 'next/font/google';
 import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800']
+});
 
 export const metadata: Metadata = {
   title: 'LORE — Make room for the unseen',
@@ -11,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased text-text bg-background">
+      <body className={inter.className}>
         <div className="relative min-h-screen bg-background">
           <a
             href="#main-content"
