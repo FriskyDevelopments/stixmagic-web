@@ -153,12 +153,12 @@ export default function GroupsPage() {
             <p className="mt-1 text-sm text-muted">
               Add the STIXMΛGIC bot to your Telegram group and promote it to admin so the bot and mini app stay aligned on the same group inventory and rule set.
             </p>
-            <ol className="mt-3 space-y-1 text-xs text-muted">
-              <li>1. Open your Telegram group settings</li>
-              <li>2. Go to Administrators → Add Administrator</li>
-              <li>3. Search for and add the STIXMΛGIC bot</li>
-              <li>4. Grant it permission to send messages and read messages</li>
-              <li>5. Refresh this page — your group will appear automatically</li>
+            <ol role="list" className="mt-3 list-none space-y-1 text-xs text-muted">
+              <li><span aria-hidden="true">1. </span>Open your Telegram group settings</li>
+              <li><span aria-hidden="true">2. </span>Go to Administrators → Add Administrator</li>
+              <li><span aria-hidden="true">3. </span>Search for and add the STIXMΛGIC bot</li>
+              <li><span aria-hidden="true">4. </span>Grant it permission to send messages and read messages</li>
+              <li><span aria-hidden="true">5. </span>Refresh this page — your group will appear automatically</li>
             </ol>
           </div>
           <a
