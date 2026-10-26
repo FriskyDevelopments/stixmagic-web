@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, useRef } from 'react';
+import type { KeyboardEvent } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
 import { GalleryGrid } from '@stixmagic/ui';
 
@@ -35,7 +36,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   }), [active, assets]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+  const handleKeyDown = (e: KeyboardEvent, index: number) => {
     const nextIndex = getRovingRadioGroupNextIndex(e.key, index, filters.length);
     if (nextIndex === null) return;
 
