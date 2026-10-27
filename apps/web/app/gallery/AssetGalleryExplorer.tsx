@@ -1,7 +1,6 @@
 'use client';
 
-import type { KeyboardEvent } from 'react';
-import { useMemo, useState, useRef } from 'react';
+import { type KeyboardEvent, useMemo, useState, useRef } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
 import { GalleryGrid } from '@stixmagic/ui';
 
