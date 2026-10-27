@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-12-16 - Improper Tablist Filters
+**Learning:** Elements improperly labeled with `role="tablist"` and `role="tab"` that function as mutually exclusive filters rather than true navigation panels create confusion for screen reader users. They should be converted to `role="radiogroup"` (with `aria-orientation="horizontal"` if laid out in a row) and `role="radio"`. Additionally, `aria-selected` must be updated to `aria-checked`, and a full roving `tabIndex` implementation with arrow-key navigation logic must be included so the group functions as a single keyboard tab stop.
+**Action:** Always verify if a `tablist` is actually controlling a `tabpanel`. If it's just filtering content below it, convert it to a `radiogroup` with standard roving tabindex keyboard accessibility.
