@@ -31,8 +31,11 @@ export function PackCatalogExplorer({ packs }: { packs: ProductPack[] }) {
     e.preventDefault();
     if (nextIndex === index) return;
 
-    setActive(filters[nextIndex].id);
-    filterRefs.current[nextIndex]?.focus();
+    const nextFilter = filters[nextIndex];
+    if (nextFilter) {
+      setActive(nextFilter.id);
+      filterRefs.current[nextIndex]?.focus();
+    }
   };
 
   const filtered = useMemo(() => packs.filter((pack) => {
