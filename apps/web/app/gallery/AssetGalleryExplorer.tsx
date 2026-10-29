@@ -37,8 +37,8 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
     }
 
     if (nextIndex !== null) {
-      e.preventDefault();
       if (nextIndex !== index) {
+        e.preventDefault();
         setActive(filters[nextIndex].id);
         buttonRefs.current[nextIndex]?.focus();
       }
@@ -55,7 +55,7 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
               type="button"
               role="radio"
               aria-checked={active === filter.id}
-              tabIndex={active === filter.id ? 0 : active === 'all' && index === 0 ? 0 : -1}
+              tabIndex={active === filter.id ? 0 : -1}
               onClick={() => setActive(filter.id)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               ref={(el) => {
