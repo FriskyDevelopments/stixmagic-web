@@ -15,7 +15,7 @@ const nextConfig = {
   },
   basePath,
   assetPrefix: basePath || undefined,
-  typedRoutes: true,
+
   transpilePackages: ['@stixmagic/ui', '@stixmagic/types', '@stixmagic/config']
 };
 
