@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-12-16 - VoiceOver/Safari Double-Announcement Bug on Manual Lists
+**Learning:** When using `<ol>` tags but explicitly writing out numbers in the content (e.g., `<li>1. Upload</li>`), VoiceOver and Safari can announce the number twice—once for the native ordered list bullet, and once for the manually typed text. This creates a confusing and redundant experience for screen reader users.
+**Action:** Always apply `role="list"` and `list-none` to the `<ol>` element when manually numbering items, and wrap the manually typed visual number inside an `aria-hidden="true"` span (e.g., `<li><span aria-hidden="true">1. </span>Upload</li>`). This prevents the double announcement while preserving the visual design.
