@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-10-26 - Screen Reader Redundancy in Ordered Lists
+**Learning:** When manually numbering list items inside an `<ol>` element (e.g., `<li>1. Upload</li>`), screen readers often announce the number twice: once for the ordered list item itself and once for the text (e.g., "1. 1. Upload").
+**Action:** Always wrap manual numbers in `aria-hidden="true"` and prepend a screen-reader-only element (e.g., `<span className="sr-only">Step 1: </span>`) to provide clear, non-redundant context for assistive technologies.

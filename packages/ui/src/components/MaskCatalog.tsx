@@ -65,10 +65,10 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
       <Panel>
         <h3 className="text-lg font-semibold text-text">How your sticker is made</h3>
         <ol className="mt-3 space-y-2 text-sm text-muted">
-          <li>1. Upload an image.</li>
-          <li>2. Pick the mask shape you like most.</li>
-          <li>3. The platform prepares a clean, chat-ready sticker.</li>
-          <li>4. Optionally attach an interaction to make it more engaging.</li>
+          <li><span className="sr-only">Step 1: </span><span aria-hidden="true">1. </span>Upload an image.</li>
+          <li><span className="sr-only">Step 2: </span><span aria-hidden="true">2. </span>Pick the mask shape you like most.</li>
+          <li><span className="sr-only">Step 3: </span><span aria-hidden="true">3. </span>The platform prepares a clean, chat-ready sticker.</li>
+          <li><span className="sr-only">Step 4: </span><span aria-hidden="true">4. </span>Optionally attach an interaction to make it more engaging.</li>
         </ol>
       </Panel>
     </section>
