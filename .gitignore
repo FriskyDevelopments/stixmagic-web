@@ -21,6 +21,10 @@ coverage/
 
 # Env
 .env
+.dev.vars*
 apps/web/tsconfig.tsbuildinfo
 .vercel/
 apps/web/.vercel/
+
+# Cloudflare Workers
+.wrangler/
