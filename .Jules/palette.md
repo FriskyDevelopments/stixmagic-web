@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-10-30 - ARIA Roles for Mutually Exclusive Filter Buttons
+**Learning:** Using `role="tablist"` for filter buttons isn't correct semantics when the buttons act as a single set of mutually exclusive options instead of controlling visible tabbed content. In this application, elements grouped visually to perform a segmented filter control should use the full ARIA `radiogroup` pattern.
+**Action:** When creating grouped filters with native button elements, ensure the container has `role="radiogroup"` (and `aria-orientation="horizontal"` if laid out horizontally), the buttons use `role="radio"` with `aria-checked`, and keyboard navigation is handled with custom roving `tabIndex` utilizing arrow keys to properly traverse the group as a single tab stop.
