@@ -85,3 +85,8 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-12-17 - Lore Ritual Controls Roving TabIndex
+
+**Learning:** When building filter controls or segmented buttons (like the `lore-ritual-controls` in `LoreExperience.tsx`) that are visually presented as a group but are built with generic buttons inside a `div`, it's crucial to implement the ARIA `radiogroup` and `radio` roles for semantic meaning. More importantly, to meet keyboard accessibility standards, a roving tabindex pattern with arrow-key navigation must be implemented so the entire group acts as a single tab stop, rather than forcing users to tab through every single filter option.
+**Action:** Always apply the ARIA `radiogroup`/`radio` pattern, including arrow-key navigation and roving tabindex logic, to visually grouped mutually exclusive selection controls.
