@@ -6,7 +6,9 @@ const shelfStorageKey = 'lore-shelf-v1';
 const journeyStorageKey = 'lore-aura-journey-v1';
 const profileStorageKey = 'lore-aura-profile-v1';
 
-test.describe('LORE MVP homepage', () => {
+// Skipped, not deleted: these five drove the LORE experience at `/`, which is the
+// STIXMΛGIC landing again. They belong with the LORE port to lore-aura-control-co.
+test.describe.skip('LORE MVP homepage', () => {
   test.beforeEach(async ({ page }) => {
     // addInitScript re-runs on every navigation, so a page.reload() inside a test would
     // re-seed these keys and erase the state the test just created. Seed only when absent.
