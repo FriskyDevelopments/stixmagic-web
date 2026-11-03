@@ -86,6 +86,6 @@
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
 
-## 2024-12-17 - Tablist vs Radiogroup for Segmented Filters
+## 2026-12-17 - Tablist vs Radiogroup for Segmented Filters
 **Learning:** When using buttons as mutually exclusive filters in a visual bar, assigning them `role="tablist"` and `role="tab"` is semantically incorrect unless they actually control `tabpanel` elements below them. For simple filter selections that update a grid without functioning as a navigation interface, the correct ARIA pattern is a `radiogroup` with `role="radio"` and `aria-checked`, alongside a roving tab index and arrow-key navigation.
 **Action:** Convert faux-tablists used for filtering into ARIA radiogroups to ensure screen readers correctly interpret them as selection controls rather than navigation panels.

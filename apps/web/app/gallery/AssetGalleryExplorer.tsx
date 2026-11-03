@@ -38,13 +38,14 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   }), [active, assets]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
+  const activeIndex = filters.findIndex(f => f.id === active);
+
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
         <div className="flex flex-wrap gap-2" role="radiogroup" aria-orientation="horizontal" aria-label="Asset filters">
           {filters.map((filter, index) => {
             const isSelected = active === filter.id;
-            const activeIndex = filters.findIndex(f => f.id === active);
             const isTabable = isSelected || (activeIndex === -1 && index === 0);
 
             return (
