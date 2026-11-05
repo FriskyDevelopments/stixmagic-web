@@ -44,6 +44,7 @@ export const MaskCatalog = ({ masks }: MaskCatalogProps) => {
         className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
         role="radiogroup"
         aria-label="Mask styles"
+        aria-orientation="horizontal"
       >
         {masks.map((mask, index) => {
           const isSelected = mask.id === selectedMask.id;
