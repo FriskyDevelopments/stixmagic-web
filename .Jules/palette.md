@@ -85,3 +85,7 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+
+## 2024-12-16 - Accessible Radiogroup Navigation with Fallback Focus
+**Learning:** When implementing a roving `tabIndex` for custom ARIA `radiogroup` components (like `PackCatalogExplorer`), if there is no initially matched active item, the group can become entirely unreachable via keyboard navigation if all items have `tabIndex={-1}`.
+**Action:** Always provide a fallback by explicitly making the first item focusable (`tabIndex={0}`) if no other item is currently active or selected, to ensure the widget remains reachable by keyboard.
