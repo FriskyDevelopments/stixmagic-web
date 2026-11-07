@@ -1,8 +1,15 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
 import { GalleryGrid } from '@stixmagic/ui';
+
+function getNextIndex(key: string, currentIndex: number, itemCount: number): number | null {
+  if (itemCount <= 0 || currentIndex < 0) return null;
+  if (key === 'ArrowRight' || key === 'ArrowDown') return (currentIndex + 1) % itemCount;
+  if (key === 'ArrowLeft' || key === 'ArrowUp') return (currentIndex - 1 + itemCount) % itemCount;
+  return null;
+}
 
 const filters = [
   { id: 'all', label: 'All Assets', description: 'Every STIXMΛGIC preview across packs and categories.' },
@@ -15,6 +22,7 @@ type FilterId = (typeof filters)[number]['id'];
 
 export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] }) {
   const [active, setActive] = useState<FilterId>('all');
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const filtered = useMemo(() => assets.filter((asset) => {
     if (active === 'animated') return asset.tags.includes('animated');
     if (active === 'overlay') return asset.tags.includes('overlay');
@@ -22,13 +30,26 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
     return true;
   }), [active, assets]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
+  const activeIndex = Math.max(0, filters.findIndex(f => f.id === active));
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const nextIndex = getNextIndex(e.key, activeIndex, filters.length);
+    if (nextIndex !== null) {
+      if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+        e.preventDefault();
+        const nextId = filters[nextIndex].id;
+        setActive(nextId);
+        buttonRefs.current[nextIndex]?.focus();
+      }
+    }
+  };
 
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Asset filters">
-          {filters.map((filter) => (
-            <button key={filter.id} type="button" role="tab" aria-selected={active === filter.id} onClick={() => setActive(filter.id)} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-orientation="horizontal" aria-label="Asset filters">
+          {filters.map((filter, idx) => (
+            <button key={filter.id} ref={el => { buttonRefs.current[idx] = el; }} type="button" role="radio" aria-checked={active === filter.id} tabIndex={idx === activeIndex ? 0 : -1} onClick={() => setActive(filter.id)} onKeyDown={handleKeyDown} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
               {filter.label}
             </button>
           ))}
