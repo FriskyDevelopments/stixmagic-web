@@ -604,15 +604,16 @@ export default function ReactionsEditor({ groupId }: Props) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleSimulate(rule)}
+                    disabled={deletingIds.has(rule.id)}
                     aria-label={`Simulate rule ${rule.name}`}
                     title="Simulates the rule locally — connect a backend to fire it in Telegram"
-                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
+                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Simulate
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
-                    disabled={togglingIds.has(rule.id)}
+                    disabled={togglingIds.has(rule.id) || deletingIds.has(rule.id)}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
                     className={`inline-flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${
                       rule.enabled
@@ -639,6 +640,7 @@ export default function ReactionsEditor({ groupId }: Props) {
                     onClick={() => handleDelete(rule.id)}
                     disabled={deletingIds.has(rule.id)}
                     aria-label={`Delete rule ${rule.name}`}
+                    aria-busy={deletingIds.has(rule.id)}
                     className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     {deletingIds.has(rule.id) ? (

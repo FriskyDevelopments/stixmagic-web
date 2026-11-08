@@ -88,3 +88,6 @@
 ## 2024-11-13 - Add Loading State to Delete Reaction Button
 **Learning:** Optimistic UI state updates for destructive actions (like delete) can cause confusion if they fail, while pessimistic updates (waiting for API and showing a loading spinner) provide better UX and confidence.
 **Action:** Always refactor destructive API buttons to pessimistic loading state and remember to remove the error rollback state.
+## 2024-11-13 - Add `aria-busy` to Loading State and Disable Sibling Actions
+**Learning:** Adding a visual loading spinner to a disabled button isn't enough for screen readers; `aria-busy` should be toggled as well. Additionally, all other interactive actions on a list item should be disabled when it is being deleted to avoid stale state.
+**Action:** Consistently use `aria-busy` along with `disabled` for async action buttons. When a list item is being deleted, disable all of its sibling action buttons.
