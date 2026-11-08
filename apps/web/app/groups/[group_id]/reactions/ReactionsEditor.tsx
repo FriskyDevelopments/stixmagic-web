@@ -145,6 +145,9 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleToggle = async (id: string, current: boolean) => {
+    if (deletingIds.has(id)) {
+      return;
+    }
     const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
     setTogglingIds((prev) => {
@@ -169,6 +172,9 @@ export default function ReactionsEditor({ groupId }: Props) {
 
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this reaction rule?')) {
+      return;
+    }
+    if (togglingIds.has(id)) {
       return;
     }
     setDeletingIds((prev) => {
