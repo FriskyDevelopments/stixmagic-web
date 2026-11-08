@@ -94,3 +94,6 @@
 ## 2024-12-18 - Clear Error State Before API Retry
 **Learning:** When a user retries an action that previously failed, if the old error message is not explicitly cleared, it remains visible while the new request is in flight. This creates a confusing UI where the user sees a "Failed" message alongside a loading spinner.
 **Action:** Always call `setError(null)` immediately before awaiting a new API call to ensure a clean slate and avoid displaying stale error feedback during retries.
+## 2024-12-18 - Clear Error State Before API Retry
+**Learning:** When a user retries an action that previously failed, if the old error message is not explicitly cleared, it remains visible while the new request is in flight. This creates a confusing UI where the user sees a "Failed" message alongside a loading spinner.
+**Action:** Always call `setError(null)` immediately before awaiting a new API call to ensure a clean slate and avoid displaying stale error feedback during retries.
