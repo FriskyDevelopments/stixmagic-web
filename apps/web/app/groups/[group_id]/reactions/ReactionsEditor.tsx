@@ -148,6 +148,10 @@ export default function ReactionsEditor({ groupId }: Props) {
     if (deletingIds.has(id)) {
       return;
     }
+    const ruleIndex = rules.findIndex((r) => r.id === id);
+    if (ruleIndex === -1) {
+      return;
+    }
     const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
     setTogglingIds((prev) => {
@@ -171,10 +175,10 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this reaction rule?')) {
+    if (togglingIds.has(id)) {
       return;
     }
-    if (togglingIds.has(id)) {
+    if (!window.confirm('Are you sure you want to delete this reaction rule?')) {
       return;
     }
     setDeletingIds((prev) => {
@@ -645,7 +649,7 @@ export default function ReactionsEditor({ groupId }: Props) {
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
-                    disabled={deletingIds.has(rule.id)}
+                    disabled={togglingIds.has(rule.id) || deletingIds.has(rule.id)}
                     aria-label={`Delete rule ${rule.name}`}
                     aria-busy={deletingIds.has(rule.id)}
                     className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 disabled:cursor-not-allowed disabled:opacity-40"
