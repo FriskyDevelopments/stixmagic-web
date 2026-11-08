@@ -85,3 +85,6 @@
 ## 2024-12-16 - Stepper Components Accessibility
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
+## 2024-11-13 - Add Loading State to Delete Reaction Button
+**Learning:** Optimistic UI state updates for destructive actions (like delete) can cause confusion if they fail, while pessimistic updates (waiting for API and showing a loading spinner) provide better UX and confidence.
+**Action:** Always refactor destructive API buttons to pessimistic loading state and remember to remove the error rollback state.
