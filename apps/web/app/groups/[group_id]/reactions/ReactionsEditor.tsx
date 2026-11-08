@@ -227,6 +227,9 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleSimulate = (rule: ReactionRule) => {
+    if (deletingIds.has(rule.id)) {
+      return;
+    }
     setTestResult(
       `🔄 Preview — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". In live API mode, the queued worker executes this rule through Telegram.`
     );
