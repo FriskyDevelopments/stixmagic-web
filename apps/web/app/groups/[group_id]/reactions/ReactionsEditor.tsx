@@ -176,6 +176,7 @@ export default function ReactionsEditor({ groupId }: Props) {
       next.add(id);
       return next;
     });
+    setError(null);
     try {
       await deleteRule(groupId, id);
       setRules((prev) => prev.filter((r) => r.id !== id));

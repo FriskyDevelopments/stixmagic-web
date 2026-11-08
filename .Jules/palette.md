@@ -91,3 +91,6 @@
 ## 2024-12-17 - Add `aria-busy` to Loading State and Disable Sibling Actions
 **Learning:** Adding a visual loading spinner to a disabled button isn't enough for screen readers; `aria-busy` should be toggled as well. Additionally, all other interactive actions on a list item should be disabled when it is being deleted to avoid stale state.
 **Action:** Consistently use `aria-busy` along with `disabled` for async action buttons. When a list item is being deleted, disable all of its sibling action buttons.
+## 2024-12-18 - Clear Error State Before API Retry
+**Learning:** When a user retries an action that previously failed, if the old error message is not explicitly cleared, it remains visible while the new request is in flight. This creates a confusing UI where the user sees a "Failed" message alongside a loading spinner.
+**Action:** Always call `setError(null)` immediately before awaiting a new API call to ensure a clean slate and avoid displaying stale error feedback during retries.
