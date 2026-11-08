@@ -148,8 +148,7 @@ export default function ReactionsEditor({ groupId }: Props) {
     if (deletingIds.has(id)) {
       return;
     }
-    const ruleIndex = rules.findIndex((r) => r.id === id);
-    if (ruleIndex === -1) {
+    if (!rules.some((r) => r.id === id)) {
       return;
     }
     const previousRules = rules;
@@ -175,7 +174,7 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleDelete = async (id: string) => {
-    if (togglingIds.has(id)) {
+    if (deletingIds.has(id) || togglingIds.has(id)) {
       return;
     }
     if (!window.confirm('Are you sure you want to delete this reaction rule?')) {
