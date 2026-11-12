@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { AssetPreviewItem } from '@stixmagic/types';
-import { GalleryGrid } from '@stixmagic/ui';
+import { GalleryGrid, getRovingRadioGroupNextIndex } from '@stixmagic/ui';
 
 const filters = [
   { id: 'all', label: 'All Assets', description: 'Every STIXMΛGIC preview across packs and categories.' },
@@ -23,12 +23,28 @@ export function AssetGalleryExplorer({ assets }: { assets: AssetPreviewItem[] })
   }), [active, assets]);
   const selected = filters.find((filter) => filter.id === active) ?? filters[0];
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = filters.findIndex((f) => f.id === active);
+    const nextIndex = getRovingRadioGroupNextIndex(e.key, currentIndex, filters.length);
+    if (nextIndex === null) return;
+
+    e.preventDefault();
+    const nextValue = filters[nextIndex].id;
+    setActive(nextValue);
+
+    const group = e.currentTarget;
+    setTimeout(() => {
+      const radios = Array.from(group.querySelectorAll('[role="radio"]')) as HTMLElement[];
+      radios[nextIndex]?.focus();
+    }, 0);
+  };
+
   return (
     <section className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-panel p-6">
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Asset filters">
-          {filters.map((filter) => (
-            <button key={filter.id} type="button" role="tab" aria-selected={active === filter.id} onClick={() => setActive(filter.id)} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Asset filters" onKeyDown={handleKeyDown}>
+          {filters.map((filter, i) => (
+            <button key={filter.id} type="button" role="radio" aria-checked={active === filter.id} tabIndex={active === filter.id || (!active && i === 0) ? 0 : -1} onClick={() => setActive(filter.id)} className={`rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 ${active === filter.id ? 'bg-accent-primary text-text' : 'bg-panel-secondary text-muted hover:text-text'}`}>
               {filter.label}
             </button>
           ))}
