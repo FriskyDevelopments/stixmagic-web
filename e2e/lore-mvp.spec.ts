@@ -6,13 +6,19 @@ const shelfStorageKey = 'lore-shelf-v1';
 const journeyStorageKey = 'lore-aura-journey-v1';
 const profileStorageKey = 'lore-aura-profile-v1';
 
-test.describe('LORE MVP homepage', () => {
+// Skipped, not deleted: these five drove the LORE experience at `/`, which is the
+// STIXMΛGIC landing again. They belong with the LORE port to lore-aura-control-co.
+test.describe.skip('LORE MVP homepage', () => {
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript(([onboardingKey, ambientKey, shelfKey]) => {
-      window.localStorage.setItem(onboardingKey, 'false');
-      window.localStorage.setItem(ambientKey, 'true');
-      window.localStorage.removeItem(shelfKey);
-    }, [onboardingStorageKey, ambientStorageKey, shelfStorageKey]);
+    // addInitScript re-runs on every navigation, so a page.reload() inside a test would
+    // re-seed these keys and erase the state the test just created. Seed only when absent.
+    await page.addInitScript(([onboardingKey, ambientKey]) => {
+      const seed = (key: string, value: string) => {
+        if (window.localStorage.getItem(key) === null) window.localStorage.setItem(key, value);
+      };
+      seed(onboardingKey, 'false');
+      seed(ambientKey, 'true');
+    }, [onboardingStorageKey, ambientStorageKey]);
   });
 
   test('completes the optional first-visit onboarding and persists the choice', async ({ page }) => {
