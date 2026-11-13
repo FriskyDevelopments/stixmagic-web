@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { PreviewState } from '@stixmagic/types';
 import { cn } from '../lib/cn';
 
@@ -20,7 +20,18 @@ interface AssetPreviewProps {
  */
 export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) => {
   const [state, setState] = useState<PreviewState>(url === '' ? 'pending' : 'loading');
+  const imgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const isVideo = /\.webm(?:\?|$)/i.test(url);
+
+  // A cached media can finish loading before React attaches onLoad/onCanPlay,
+  // which would leave the tile stuck in the loading state forever.
+  useEffect(() => {
+    const img = imgRef.current;
+    const video = videoRef.current;
+    if (img && img.complete && img.naturalWidth > 0) setState('ready');
+    if (video && video.readyState >= 2) setState('ready');
+  }, [url]);
 
   if (state === 'pending') {
     return (
@@ -58,9 +69,9 @@ export const AssetPreview = ({ url, alt, imageClassName }: AssetPreviewProps) =>
         </div>
       )}
       {isVideo ? (
-        <video src={url} aria-label={alt} autoPlay loop muted playsInline className={cn('transition-opacity duration-500', state === 'loading' ? 'opacity-0' : 'opacity-100', imageClassName)} onCanPlay={() => setState('ready')} onError={() => setState('failed')} />
+        <video ref={videoRef} src={url} aria-label={alt} autoPlay loop muted playsInline className={cn('transition-opacity duration-500', state === 'loading' ? 'opacity-0' : 'opacity-100', imageClassName)} onCanPlay={() => setState('ready')} onError={() => setState('failed')} />
       ) : (
-        <img src={url} alt={alt} className={cn('transition-opacity duration-500', state === 'loading' ? 'opacity-0' : 'opacity-100', imageClassName)} onLoad={() => setState('ready')} onError={() => setState('failed')} />
+        <img ref={imgRef} src={url} alt={alt} className={cn('transition-opacity duration-500', state === 'loading' ? 'opacity-0' : 'opacity-100', imageClassName)} onLoad={() => setState('ready')} onError={() => setState('failed')} />
       )}
     </div>
   );
