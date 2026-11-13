@@ -97,18 +97,32 @@ jobs:
           name: web-out
           path: apps/web/out
 
+      # The secrets context is unavailable in a step-level `if`, so presence is tested here
+      # and exposed as an output that `if` is allowed to read.
+      - name: Check deploy credentials
+        id: creds
+        env:
+          DEPLOY_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -n "$DEPLOY_TOKEN" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::VERCEL_TOKEN is not set; skipping deploy."
+          fi
+
       - name: Install Vercel CLI
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
+        if: steps.creds.outputs.ready == 'true'
         run: pnpm install -g vercel@latest
 
       - name: Pull Vercel environment
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
+        if: steps.creds.outputs.ready == 'true'
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: apps/web
 
       - name: Deploy to Vercel (preview)
         id: deploy
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
+        if: steps.creds.outputs.ready == 'true'
         run: |
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> "$GITHUB_OUTPUT"

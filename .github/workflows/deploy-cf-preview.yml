@@ -83,9 +83,24 @@ jobs:
           name: web-out
           path: apps/web/out
 
+      # The secrets context is unavailable in a step-level `if`, so presence is tested here
+      # and exposed as an output that `if` is allowed to read.
+      - name: Check deploy credentials
+        id: creds
+        env:
+          DEPLOY_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          DEPLOY_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$DEPLOY_TOKEN" ] && [ -n "$DEPLOY_ACCOUNT" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is not set; skipping deploy."
+          fi
+
       - name: Deploy to Cloudflare Pages (preview)
         id: deploy
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+        if: steps.creds.outputs.ready == 'true'
         uses: cloudflare/pages-action@1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
