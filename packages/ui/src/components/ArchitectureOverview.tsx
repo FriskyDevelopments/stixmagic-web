@@ -87,6 +87,7 @@ export const ArchitectureOverview = () => (
         >
           <Panel variant="secondary" className="h-full">
             <p className={`text-xs uppercase tracking-wider ${group.accent}`}>
+              <span className="sr-only">Phase: </span>
               {group.label}
             </p>
             <ul className="mt-3 space-y-2">
