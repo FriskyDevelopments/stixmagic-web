@@ -90,6 +90,11 @@
 
 **Learning:** When building filter controls or segmented buttons (like the `lore-ritual-controls` in `LoreExperience.tsx`) that are visually presented as a group but are built with generic buttons inside a `div`, it's crucial to implement the ARIA `radiogroup` and `radio` roles for semantic meaning. More importantly, to meet keyboard accessibility standards, a roving tabindex pattern with arrow-key navigation must be implemented so the entire group acts as a single tab stop, rather than forcing users to tab through every single filter option.
 **Action:** Always apply the ARIA `radiogroup`/`radio` pattern, including arrow-key navigation and roving tabindex logic, to visually grouped mutually exclusive selection controls.
+
+## 2024-12-16 - VoiceOver/Safari Double-Announcement Bug on Manual Lists
+**Learning:** When using `<ol>` tags but explicitly writing out numbers in the content (e.g., `<li>1. Upload</li>`), VoiceOver and Safari can announce the number twice—once for the native ordered list bullet, and once for the manually typed text. This creates a confusing and redundant experience for screen reader users.
+**Action:** Always apply `role="list"` and `list-none` to the `<ol>` element when manually numbering items, and wrap the manually typed visual number inside an `aria-hidden="true"` span (e.g., `<li><span aria-hidden="true">1. </span>Upload</li>`). This prevents the double announcement while preserving the visual design.
+
 ## 2024-12-17 - Roving TabIndex Fallbacks
 **Learning:** When implementing a custom roving tabindex pattern (e.g., for ARIA radiogroups or tablists), the active or selected item typically receives `tabIndex={0}` while others receive `-1`. However, if the state is uninitialized, stale, or the current active item doesn't exist in the DOM (e.g., when the active item index evaluates to `-1`), the entire group becomes unreachable via keyboard navigation.
 **Action:** Always provide a reliable fallback by setting `tabIndex={0}` on the first item in the widget array (or using a calculated fallback to `0`) if no explicit item is active, ensuring the component always remains a viable tab stop.
