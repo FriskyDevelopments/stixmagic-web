@@ -86,9 +86,22 @@
 **Learning:** Stepper components in UI (e.g., GeneratorScaffold) must use semantic ordered lists (`<ol aria-label="Steps">` with `<li>` items) and explicitly hidden visual numbers (`aria-hidden="true"`) paired with visually hidden screen reader text (e.g., `<span className="sr-only">Step X: </span>`) for structural context.
 **Action:** When building stepper UI components, always use `<ol>` and `<li>` tags to ensure screen readers announce the sequential structure.
 
+## 2024-12-17 - Add Loading State to Delete Reaction Button
+**Learning:** Optimistic UI state updates for destructive actions (like delete) can cause confusion if they fail, while pessimistic updates (waiting for API and showing a loading spinner) provide better UX and confidence.
+**Action:** Always refactor destructive API buttons to pessimistic loading state and remember to remove the error rollback state.
+
+## 2024-12-17 - Add `aria-busy` to Loading State and Disable Sibling Actions
+**Learning:** Adding a visual loading spinner to a disabled button isn't enough for screen readers; `aria-busy` should be toggled as well. Additionally, all other interactive actions on a list item should be disabled when it is being deleted to avoid stale state.
+**Action:** Consistently use `aria-busy` along with `disabled` for async action buttons. When a list item is being deleted, disable all of its sibling action buttons.
+
+## 2024-12-18 - Clear Error State Before API Retry
+**Learning:** When a user retries an action that previously failed, if the old error message is not explicitly cleared, it remains visible while the new request is in flight. This creates a confusing UI where the user sees a "Failed" message alongside a loading spinner.
+**Action:** Always call `setError(null)` immediately before awaiting a new API call to ensure a clean slate and avoid displaying stale error feedback during retries.
+
 ## 2024-12-16 - VoiceOver/Safari Double-Announcement Bug on Manual Lists
 **Learning:** When using `<ol>` tags but explicitly writing out numbers in the content (e.g., `<li>1. Upload</li>`), VoiceOver and Safari can announce the number twice—once for the native ordered list bullet, and once for the manually typed text. This creates a confusing and redundant experience for screen reader users.
 **Action:** Always apply `role="list"` and `list-none` to the `<ol>` element when manually numbering items, and wrap the manually typed visual number inside an `aria-hidden="true"` span (e.g., `<li><span aria-hidden="true">1. </span>Upload</li>`). This prevents the double announcement while preserving the visual design.
+
 ## 2024-12-17 - Roving TabIndex Fallbacks
 **Learning:** When implementing a custom roving tabindex pattern (e.g., for ARIA radiogroups or tablists), the active or selected item typically receives `tabIndex={0}` while others receive `-1`. However, if the state is uninitialized, stale, or the current active item doesn't exist in the DOM (e.g., when the active item index evaluates to `-1`), the entire group becomes unreachable via keyboard navigation.
 **Action:** Always provide a reliable fallback by setting `tabIndex={0}` on the first item in the widget array (or using a calculated fallback to `0`) if no explicit item is active, ensuring the component always remains a viable tab stop.

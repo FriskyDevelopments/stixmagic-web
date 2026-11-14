@@ -79,6 +79,7 @@ export default function ReactionsEditor({ groupId }: Props) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
+  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
   const [testResult, setTestResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -144,6 +145,12 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleToggle = async (id: string, current: boolean) => {
+    if (deletingIds.has(id)) {
+      return;
+    }
+    if (!rules.some((r) => r.id === id)) {
+      return;
+    }
     const previousRules = rules;
     setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !current } : r)));
     setTogglingIds((prev) => {
@@ -167,17 +174,30 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleDelete = async (id: string) => {
+    if (deletingIds.has(id) || togglingIds.has(id)) {
+      return;
+    }
     if (!window.confirm('Are you sure you want to delete this reaction rule?')) {
       return;
     }
-    const previousRules = rules;
-    setRules((prev) => prev.filter((r) => r.id !== id));
+    setDeletingIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    setError(null);
     try {
       await deleteRule(groupId, id);
+      setRules((prev) => prev.filter((r) => r.id !== id));
     } catch (err) {
-      setRules(previousRules);
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(`Failed to delete rule: ${message}`);
+    } finally {
+      setDeletingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   };
 
@@ -207,6 +227,9 @@ export default function ReactionsEditor({ groupId }: Props) {
   };
 
   const handleSimulate = (rule: ReactionRule) => {
+    if (deletingIds.has(rule.id)) {
+      return;
+    }
     setTestResult(
       `🔄 Preview — trigger: "${rule.triggerValue}" → response (${rule.responseType}): "${rule.responseContent}". In live API mode, the queued worker executes this rule through Telegram.`
     );
@@ -594,15 +617,16 @@ export default function ReactionsEditor({ groupId }: Props) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleSimulate(rule)}
+                    disabled={deletingIds.has(rule.id)}
                     aria-label={`Simulate rule ${rule.name}`}
                     title="Simulates the rule locally — connect a backend to fire it in Telegram"
-                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50"
+                    className="rounded-lg border border-accent-cyan/20 px-3 py-1.5 text-xs font-medium text-accent-cyan transition hover:border-accent-cyan/40 hover:bg-accent-cyan/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Simulate
                   </button>
                   <button
                     onClick={() => handleToggle(rule.id, rule.enabled)}
-                    disabled={togglingIds.has(rule.id)}
+                    disabled={togglingIds.has(rule.id) || deletingIds.has(rule.id)}
                     aria-label={`${rule.enabled ? 'Pause' : 'Enable'} rule ${rule.name}`}
                     className={`inline-flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${
                       rule.enabled
@@ -627,10 +651,25 @@ export default function ReactionsEditor({ groupId }: Props) {
                   </button>
                   <button
                     onClick={() => handleDelete(rule.id)}
+                    disabled={togglingIds.has(rule.id) || deletingIds.has(rule.id)}
                     aria-label={`Delete rule ${rule.name}`}
-                    className="rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50"
+                    aria-busy={deletingIds.has(rule.id)}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-accent-pink/20 px-3 py-1.5 text-xs font-medium text-accent-pink transition hover:border-accent-pink/40 hover:bg-accent-pink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    Delete
+                    {deletingIds.has(rule.id) ? (
+                      <svg
+                        className="h-3 w-3 animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      'Delete'
+                    )}
                   </button>
                 </div>
               </div>
