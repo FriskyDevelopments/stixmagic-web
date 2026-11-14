@@ -43,7 +43,7 @@ export const HowItWorks = () => (
         Four steps from raw image to living magic in chat.
       </p>
     </div>
-    <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <ol aria-label="Steps" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((step, i) => (
         <motion.li
           key={step.number}
@@ -57,6 +57,7 @@ export const HowItWorks = () => (
             {step.number}
           </p>
           <h3 className="mt-2 text-base font-semibold text-text">
+            <span className="sr-only">Step {i + 1}: </span>
             {step.title}
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">
