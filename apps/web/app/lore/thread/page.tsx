@@ -125,6 +125,7 @@ export default function ThreadPage() {
                 <a
                   className={activeChapter === chapter.id ? 'is-active' : ''}
                   aria-label={`Read chapter ${chapter.number}: ${chapter.label}`}
+                  aria-current={activeChapter === chapter.id ? 'step' : undefined}
                   href={`#${chapter.id}`}
                 >
                   <span>{chapter.number}</span>
