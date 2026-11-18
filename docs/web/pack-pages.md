@@ -4,7 +4,7 @@ This document describes the pack catalog and individual pack page architecture.
 
 ## Pack Catalog (`/packs`)
 
-The pack catalog page displays all available MagicStix packs in a filterable grid.
+The pack catalog page displays all available StixMagic packs in a filterable grid.
 
 ### Components
 

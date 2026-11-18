@@ -1,6 +1,6 @@
 # Web Architecture
 
-The `stixmagic-web` repository is the presentation, catalog, and future generator frontend for the MagicStix ecosystem.
+The `stixmagic-web` repository is the presentation, catalog, and future generator frontend for the StixMagic ecosystem.
 
 ## Responsibility Split
 

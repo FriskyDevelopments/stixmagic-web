@@ -1,6 +1,6 @@
 # Generator UI Plan
 
-This document describes the planned architecture for the MagicStix generator frontend.
+This document describes the planned architecture for the StixMagic generator frontend.
 
 ## Guiding Constraint
 

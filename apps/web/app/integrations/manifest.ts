@@ -1,7 +1,7 @@
 /**
  * Manifest ingestion adapter
  *
- * Loads the MagicStix pipeline manifest at build time (static export).
+ * Loads the StixMagic pipeline manifest at build time (static export).
  * When NEXT_PUBLIC_STIXMAGIC_MANIFEST_URL is set, fetches from that URL and validates
  * the response. Falls back to local sample data if the URL is unset, the
  * request fails, or the response fails schema validation.
