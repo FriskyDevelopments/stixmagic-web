@@ -23,7 +23,7 @@ const steps = [
       "Optionally connect your sticker to a reply, reaction, or automation for living magic in chat.",
   },
   {
-    number: "🪄",
+    number: "✧",
     title: "Release into the world",
     description:
       "Publish to chat and watch your community wield stickers that feel alive and distinctly yours.",

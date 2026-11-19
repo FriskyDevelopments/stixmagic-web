@@ -1,5 +1,9 @@
 import type { Config } from 'tailwindcss';
 
+/**
+ * Stix Magic brand tokens (brand book §6.2).
+ * Dark glass on navy, one accent at a time. Violet is the voice.
+ */
 const config: Config = {
   content: [
     './app/**/*.{ts,tsx}',
@@ -9,18 +13,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#080c18',
-        panel: '#0d1222',
-        'panel-secondary': '#12192e',
-        text: '#e0f0ff',
-        muted: '#4a6080',
-        'accent-primary': '#6366f1',
-        'accent-cyan': '#00d4ff',
-        'accent-indigo': '#818cf8',
-        'accent-violet': '#a855f7',
-        'accent-pink': '#ec4899',
-        'accent-teal': '#2dd4bf',
-        'accent-orange': '#f97316'
+        background: '#05060b',
+        panel: '#0b0d14',
+        'panel-secondary': '#10131d',
+        'panel-raised': '#10131d',
+        text: '#f5f7ff',
+        muted: '#aeb6cf',
+        line: 'rgba(174,182,207,.14)',
+        'line-strong': '#1d2232',
+        'accent-primary': '#9d7dff',
+        'accent-violet': '#9d7dff',
+        'accent-blue': '#4d86ff',
+        'accent-indigo': '#4d86ff',
+        'accent-cyan': '#7cf2ff',
+        'accent-pink': '#ff7fdc',
+        'accent-teal': '#7cf2ff',
+        'accent-orange': '#ff7fdc'
+      },
+      fontFamily: {
+        mono: ['var(--font-plex-mono)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+      },
+      maxWidth: {
+        site: '1280px'
       }
     }
   },
