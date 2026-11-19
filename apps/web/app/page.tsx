@@ -2,13 +2,11 @@ import {
   ArchitectureOverview,
   CTASection,
   FeatureGrid,
-  Hero,
-  HeroAssetShowcase,
   HowItWorks,
-  Panel,
   Roadmap,
 } from "@stixmagic/ui";
-import { loadPipelineManifest } from "./integrations/manifest";
+import { CinematicHero, StingerIntro } from "./components/CinematicHero";
+import { Reveal } from "./components/Reveal";
 
 const features = [
   {
@@ -18,7 +16,7 @@ const features = [
       "Turn a sticker or emoji into a reply, animation, sticker, or action button without leaving Telegram.",
   },
   {
-    tag: "Control Center",
+    tag: "Control center",
     title: "Rules you can actually manage",
     description:
       "See connected groups, active rules, and cooldown settings from one focused Mini App.",
@@ -37,61 +35,64 @@ const features = [
   },
 ];
 
-export default async function HomePage() {
-  const manifest = await loadPipelineManifest();
-  const showcaseAssets = manifest.assets.slice(0, 6);
-
+export default function HomePage() {
   return (
-    <div className="space-y-12 pb-10">
-      <Hero
-        badge="STIXMΛGIC · Telegram reaction engine"
-        title="Make every sticker do something."
-        subtitle="Connect a Telegram group, map any sticker or emoji to a magical response, and manage the whole reaction loop from one control center."
-        primaryCta="Open Control Center"
+    <div className="pb-10">
+      <StingerIntro />
+
+      <CinematicHero
+        primaryCta="Open the control center ✦"
         primaryHref="/dashboard"
-        secondaryCta="Browse Magic Packs"
+        secondaryCta="Browse magic packs"
         secondaryHref="/packs"
-        previewSlot={<HeroAssetShowcase items={showcaseAssets} />}
       />
 
-      <section className="grid gap-4 lg:grid-cols-2">
-        <Panel>
-          <p className="text-xs uppercase tracking-wider text-accent-cyan">
-            One trigger. One response. Instant magic.
+      <Reveal>
+        <hr className="stx-wand-seam" aria-hidden="true" />
+      </Reveal>
+
+      <section className="grid gap-4 pt-14 lg:grid-cols-2">
+        <Reveal className="stx-glass stx-glow-card p-7">
+          <p className="stx-eyebrow" style={{ color: "var(--stx-violet)" }}>
+            One trigger · one response
           </p>
-          <h2 className="mt-3 text-xl font-semibold text-text">
-            Your group, now programmable.
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted">
-            Choose an emoji or sticker, define what STIXMΛGIC should send back,
+          <h2 className="stx-h2 mt-4">Your group, now programmable.</h2>
+          <p className="stx-lede mt-3">
+            Choose an emoji or sticker, define what STIX MΛGIC should send back,
             and switch the rule on. The Mini App keeps every group and reaction
             visible without turning setup into bot-command archaeology.
           </p>
-        </Panel>
-        <Panel variant="secondary">
-          <p className="text-xs uppercase tracking-wider text-accent-violet">
-            Live MVP
-          </p>
-          <h2 className="mt-3 text-xl font-semibold text-text">
-            A complete reaction loop.
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted">
+        </Reveal>
+        <Reveal delay={0.12} className="stx-glass stx-glass-raised stx-glow-card p-7">
+          <p className="stx-eyebrow">Live MVP</p>
+          <h2 className="stx-h2 mt-4">A complete reaction loop.</h2>
+          <p className="stx-lede mt-3">
             Group discovery, rule management, queued matching, and Telegram Bot
             API responses now form one coherent product flow. The public build
             uses safe demo data until the production API runtime is connected.
           </p>
-        </Panel>
+        </Reveal>
       </section>
 
-      <FeatureGrid items={features} />
+      <Reveal className="pt-14">
+        <FeatureGrid items={features} />
+      </Reveal>
 
-      <ArchitectureOverview />
+      <Reveal className="pt-14">
+        <ArchitectureOverview />
+      </Reveal>
 
-      <HowItWorks />
+      <Reveal className="pt-14">
+        <HowItWorks />
+      </Reveal>
 
-      <Roadmap />
+      <Reveal className="pt-14">
+        <Roadmap />
+      </Reveal>
 
-      <CTASection />
+      <Reveal className="pt-14">
+        <CTASection />
+      </Reveal>
     </div>
   );
 }
