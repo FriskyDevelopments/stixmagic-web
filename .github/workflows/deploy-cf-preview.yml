@@ -74,7 +74,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
     environment:
       name: dev
-      url: ${{ steps.deploy.outputs.url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
 
     steps:
       - name: Download build artifact
@@ -101,10 +101,11 @@ jobs:
       - name: Deploy to Cloudflare Pages (preview)
         id: deploy
         if: steps.creds.outputs.ready == 'true'
-        uses: cloudflare/pages-action@1
+        # cloudflare/pages-action is deprecated and "@1" is not a valid ref
+        # (run 44586549606: "Unable to resolve action `cloudflare/pages-action`, not found").
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ vars.CF_PAGES_PROJECT_NAME || 'stixmagic-web' }}
-          directory: apps/web/out
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy apps/web/out --project-name=${{ vars.CF_PAGES_PROJECT_NAME || 'stixmagic-web' }} --branch=${{ github.head_ref || github.ref_name }}
