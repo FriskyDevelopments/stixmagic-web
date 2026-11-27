@@ -29,7 +29,7 @@ def build_backdrop() -> Image.Image:
 BACKDROP = build_backdrop()
 
 
-def glow(base: Image.Image, layer: Image.Image, radius: int = 22) -> None:
+def glow(base: Image.Image, layer: Image.Image, radius: int) -> None:
     base.alpha_composite(layer.filter(ImageFilter.GaussianBlur(radius)))
     base.alpha_composite(layer.filter(ImageFilter.GaussianBlur(max(4, radius // 3))))
     base.alpha_composite(layer)
@@ -41,7 +41,7 @@ def canvas(alpha: bool = False) -> Image.Image:
     return BACKDROP.copy()
 
 
-def particles(im: Image.Image, t: float, seed: int = 0) -> None:
+def particles(im: Image.Image, t: float, seed: int) -> None:
     d = ImageDraw.Draw(im)
     for i in range(12):
         a = i * 2.399 + seed
@@ -52,7 +52,7 @@ def particles(im: Image.Image, t: float, seed: int = 0) -> None:
         d.ellipse((x-q, y-q, x+q, y+q), fill=(123, 242, 255, 110))
 
 
-def letter_frame(letter: str, t: float, magenta: bool = False) -> Image.Image:
+def letter_frame(letter: str, t: float, magenta: bool) -> Image.Image:
     im = canvas(); particles(im, t, ord(letter))
     pulse = .88 + .12 * math.sin(t * math.tau)
     font = ImageFont.truetype(FONT, int(300 * pulse))
