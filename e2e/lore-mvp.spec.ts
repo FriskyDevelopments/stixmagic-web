@@ -120,7 +120,7 @@ test.describe('LORE Canon Thread', () => {
 
     await expect(page.getByRole('heading', { name: 'The Canon Thread' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'The room keeps weather.' })).toBeVisible();
-    await expect(page.getByRole('link', { name: /02 the room keeps weather/i })).toHaveClass(/is-active/);
+    await expect(page.getByRole('link', { name: /chapter 02: the room keeps weather/i })).toHaveClass(/is-active/);
 
     await page.keyboard.press('ArrowDown');
     await expect.poll(() => page.evaluate(() => Number(localStorage.getItem('lore-thread-progress') ?? '0'))).toBeGreaterThan(0);
