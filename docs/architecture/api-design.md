@@ -99,7 +99,7 @@ Basic service liveness probe.
 
 ### `POST /internal/jobs/process-once`
 
-Manually process one queued job (operational debug path).
+Manually process one queued job (operational debug path). Requires authenticated Telegram admin access.
 
 ## Internal/Admin API
 

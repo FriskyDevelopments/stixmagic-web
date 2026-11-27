@@ -35,7 +35,7 @@ export async function buildApp() {
   await app.register(fp(loreAuthPlugin));
 
   app.get('/health', async () => ({ ok: true, data: { service: 'api', status: 'up' } }));
-  app.post('/internal/jobs/process-once', async () => ({ ok: true, data: { processed: await processOneJob() } }));
+  app.post('/internal/jobs/process-once', { preHandler: [app.authorizeAdmin] }, async () => ({ ok: true, data: { processed: await processOneJob() } }));
 
   await app.register(packsRoutes, { prefix: '/' });
   await app.register(stickersRoutes, { prefix: '/' });
